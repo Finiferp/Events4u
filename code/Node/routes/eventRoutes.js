@@ -3,5 +3,6 @@
 module.exports = function (app) {
     const event = require("../controllers/eventController.js");
 
-    app.route("/event/create").post(event.createAsset);
+    app.route("/event/create").post(event.createEvent);
+    app.route("/event/all").get(event.getEvents);
 }

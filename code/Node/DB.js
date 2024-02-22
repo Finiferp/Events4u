@@ -12,11 +12,26 @@ const DBConnectOpts = {
 const pool = mysql.createPool(DBConnectOpts);
 
 const executeQuery = async (sql, values) => {
-    const connection = await pool.getConnection();
+    const conn = await pool.getConnection();
+
     try {
-        const [results] = await connection.execute(sql, values);
-        return results;
-    } finally {
-        connection.release();
-    }
+        conn.query(sql, values);
+        const row = await conn.query("Select @output as outputJSON");
+       
+        return row[0][0];
+      } catch (err) {
+        throw err;
+      } finally {
+        if (conn) conn.release();
+      }
+    
 };
+
+const getEvents = async () => {
+    const sql = 'CALL sp_getEvents(@output)';
+    return await executeQuery(sql);
+}
+
+module.exports = {
+    getEvents
+}
