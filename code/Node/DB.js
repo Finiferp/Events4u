@@ -45,8 +45,14 @@ const toggleFavorite = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const getCategories = async (JSON) => {
+  const sql = 'CALL sp_getCategories(@output)';
+  return await executeQuery(sql);
+}
+
 module.exports = {
     getEvents,
     getEvent,
-    toggleFavorite
+    toggleFavorite,
+    getCategories
 }

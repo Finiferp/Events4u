@@ -66,9 +66,29 @@ const toggleFavorite = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+const getCategories = async (req, res) => {
+    try {
+        const dbOutput = await db.getCategories();
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+        if(data === null){
+            status_code = 404;
+            message =  "No Categories Found";
+        }
+        
+        res.status(status_code).json({
+            message,
+            data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 
 module.exports = {
     getEvent,
     getEvents,
-    toggleFavorite
+    toggleFavorite,
+    getCategories
 };

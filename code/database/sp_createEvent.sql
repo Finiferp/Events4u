@@ -31,7 +31,7 @@ BEGIN
                                     "categories": {"type": "string"},
                                     "imageUrl": {"type": "string"}
                                 }, 
-                                "required": ["title", "startDateTime", "endDateTime", "price", "location", "ownerId", "categories"] 
+                                "required": ["title", "startDateTime", "endDateTime", "price", "location", "ownerId", "categories", "imageUrl"] 
                         }';
     
 
