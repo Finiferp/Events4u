@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Renderer2  } from '@angular/core';
 
 
 @Component({
@@ -10,4 +10,9 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  constructor(private renderer: Renderer2) {}
+
+  scrollToFooter() {
+    window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+  }
 }

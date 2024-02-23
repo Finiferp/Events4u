@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class EventsListComponent implements OnInit {
   public eventsData: any[] = [];
+  
   async ngOnInit() {
     const response = await fetch(`http://127.0.0.1:3000/event/all`, {
       method: "GET",
@@ -18,8 +19,6 @@ export class EventsListComponent implements OnInit {
       },
     });
     const data = await response.json();    
-    this.eventsData = data.data; 
-    console.log(this.eventsData[0].eventImage);
-    
-  }  
+    this.eventsData = data.data;
+  } 
 }

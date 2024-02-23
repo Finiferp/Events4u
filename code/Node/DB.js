@@ -15,7 +15,7 @@ const executeQuery = async (sql, values) => {
     const conn = await pool.getConnection();
 
     try {
-        conn.query(sql, values);
+        conn.execute(sql, values);
         const row = await conn.query("Select @output as outputJSON");
        
         return row[0][0];
@@ -27,11 +27,26 @@ const executeQuery = async (sql, values) => {
     
 };
 
-const getEvents = async () => {
-    const sql = 'CALL sp_getEvents(@output)';
-    return await executeQuery(sql);
+const getEvents = async (JSON) => {
+    const sql = 'CALL sp_getEvents(?, @output)';
+    const values = [JSON];
+    return await executeQuery(sql, values);
+}
+
+const getEvent = async (JSON) => {
+  const sql = 'CALL sp_getEvent(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const toggleFavorite = async (JSON) => {
+  const sql = 'CALL sp_toggleFavorite(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
 }
 
 module.exports = {
-    getEvents
+    getEvents,
+    getEvent,
+    toggleFavorite
 }
