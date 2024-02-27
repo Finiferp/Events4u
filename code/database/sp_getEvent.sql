@@ -44,7 +44,8 @@ BEGIN
                     'startDateTime', e.startDateTime,
                     'endDateTime', e.endDateTime,
                     'eventPrice', e.price,
-                    'eventLocation', e.location,
+                    'eventLocation', l.adress,
+                    'eventLocationCode', e.location_FK,
                     'eventImage', e.imageUrl,
                     'ownerName', CONCAT(u.firstName, ' ', u.lastName),
                     'isFavorited', isFavorited,
@@ -58,6 +59,7 @@ BEGIN
             )
             FROM Event e
             JOIN User u ON e.owner_FK = u.code_PK
+            JOIN Location l ON e.location_FK = l.code_PK
             WHERE e.code_PK = input_eventId
         );
     END IF;

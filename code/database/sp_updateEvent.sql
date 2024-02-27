@@ -11,7 +11,7 @@ BEGIN
     DECLARE input_startDateTime DATETIME;
     DECLARE input_endDateTime DATETIME;
     DECLARE input_price INT;
-    DECLARE input_location VARCHAR(450);
+    DECLARE input_location INT;
     DECLARE input_imageUrl VARCHAR(450);
     DECLARE input_isVisible TINYINT;
 
@@ -28,7 +28,7 @@ BEGIN
                                     "startDateTime": {"type": "string"},
                                     "endDateTime": {"type": "string"},
                                     "price": {"type": "number"},
-                                    "location": {"type": "string"},
+                                    "location": {"type": "number"},
                                     "categories": {"type": "string"},
                                     "imageUrl": {"type": "string"},
                                     "isVisible": {"type": number}

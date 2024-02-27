@@ -15,8 +15,8 @@ BEGIN
             'message', response_message,
             'data', JSON_ARRAYAGG(
                 JSON_OBJECT(
-                    'categoryCode', c.code_PK,
-                    'categoryLabel', c.label
+                    'id', c.code_PK,
+                    'name', c.label
                 )
             )
         )

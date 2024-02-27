@@ -45,14 +45,49 @@ const toggleFavorite = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
-const getCategories = async (JSON) => {
+const getCategories = async () => {
   const sql = 'CALL sp_getCategories(@output)';
   return await executeQuery(sql);
+}
+
+
+const getEventsOnCategories = async (JSON) => {
+  const sql = 'CALL sp_getEventsOnCategories(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const createEvent = async (JSON) => {
+  const sql = 'CALL sp_createEvent(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getLocations = async () => {
+  const sql = 'CALL sp_getLocations(@output)';
+  return await executeQuery(sql);
+}
+
+const addLocation = async (JSON) => {
+  const sql = 'CALL sp_createLocation(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const updateEvent = async (JSON) => {
+  const sql = 'CALL sp_updateEvent(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
 }
 
 module.exports = {
     getEvents,
     getEvent,
     toggleFavorite,
-    getCategories
+    getCategories,
+    getEventsOnCategories,
+    createEvent,
+    getLocations,
+    addLocation,
+    updateEvent
 }

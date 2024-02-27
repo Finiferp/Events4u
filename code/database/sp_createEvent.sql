@@ -10,7 +10,7 @@ BEGIN
     DECLARE input_startDateTime DATETIME;
     DECLARE input_endDateTime DATETIME;
     DECLARE input_price INT;
-    DECLARE input_location VARCHAR(450);
+    DECLARE input_location INT;
     DECLARE input_ownerID INT;
     DECLARE input_imageUrl VARCHAR(450);
     DECLARE v_last_eventID INT;
@@ -26,12 +26,12 @@ BEGIN
                                     "startDateTime": {"type": "string"},
                                     "endDateTime": {"type": "string"},
                                     "price": {"type": "number"},
-                                    "location": {"type": "string"},
+                                    "location_FK": {"type": "number"},
                                     "ownerId": {"type": "number"},
                                     "categories": {"type": "string"},
                                     "imageUrl": {"type": "string"}
                                 }, 
-                                "required": ["title", "startDateTime", "endDateTime", "price", "location", "ownerId", "categories", "imageUrl"] 
+                                "required": ["title", "startDateTime", "endDateTime", "price", "location_FK", "ownerId", "categories", "imageUrl"] 
                         }';
     
 
@@ -44,14 +44,14 @@ BEGIN
         SET input_startDateTime = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.startDateTime'));
         SET input_endDateTime = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.endDateTime'));
         SET input_price = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.price'));
-        SET input_location = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.location'));
+        SET input_location = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.location_FK'));
         SET input_ownerID = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.ownerId'));
         SET category_list = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.categories'));
         SET input_imageUrl = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.imageUrl'));
 
         START TRANSACTION;
 
-            INSERT INTO Event (title, startDateTime, endDateTime, price, location, owner_FK, imageUrl) 
+            INSERT INTO Event (title, startDateTime, endDateTime, price, location_FK, owner_FK, imageUrl) 
             VALUES (input_title, input_startDateTime, input_endDateTime, input_price, input_location, input_ownerID, input_imageUrl);
 
             SET v_last_eventID = LAST_INSERT_ID();

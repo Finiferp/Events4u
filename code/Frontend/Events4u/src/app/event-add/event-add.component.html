@@ -1,12 +1,13 @@
 <div class="max-w-md mx-auto mt-8">
-    <form (ngSubmit)="onSubmit()" [formGroup]="eventAddForm" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form (ngSubmit)="onSubmit()" enctype="multipart/form-data" [formGroup]="eventAddForm" 
+        class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
                 Title
             </label>
             <input type="text" id="title" placeholder="Enter event title"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName = "title" required>
+                formControlName="title" required>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="startDateTime">
@@ -14,7 +15,7 @@
             </label>
             <input type="datetime-local" id="startDateTime"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName = "startDateTime" required>
+                formControlName="startDateTime" required>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="endDateTime">
@@ -22,39 +23,80 @@
             </label>
             <input type="datetime-local" id="endDateTime"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName = "endDateTime" required>
+                formControlName="endDateTime" required>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="price">
                 Price in €
             </label>
-            <input type="number" id="price" placeholder="Enter event price"
+            <input type="number" id="price" placeholder="Enter event price in €" min="0" pattern="[0-9]+" value="0"
+                oninput="this.value = Math.abs(this.value)"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName = "price" required>
+                formControlName="price" required>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="location">
                 Location
             </label>
-            <input type="text" id="location" placeholder="Enter event location"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName = "location" required>
+            <select class="w-full bg-white border border-gray-300 rounded-lg px-2 py-2 pr-8 focus:outline-none focus:border-teal-500 mr-2"
+                formControlName="location" (change)="onOptionChange(locationSelect.value)" #locationSelect>
+                <option disabled selected value="-1">Adress</option>
+                <option *ngFor="let location of locations" [value]="location.id">{{ location.adress }}</option>
+                <option value="addLocation">Add Location</option>
+            </select>
         </div>
-        <div class="mb-4">
+        <div class="relative">
+            <dialog [open]="isDialogOpen" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-8 w-3xl z-10">
+                <h1 class="text-xl font-bold mb-4">Add a Location</h1>
+                <input type="text" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500 mb-4"
+                        placeholder="Enter new Location" #newLocation>
+                <div class="flex justify-end">
+                    <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none focus:shadow-outline"
+                            (click)="onOptionChange(-1)">
+                        Cancel
+                    </button>
+                    <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                            (click)="createLocation(newLocation)">
+                        Create
+                    </button>
+                </div>
+            </dialog>
+        </div>
+        
+
+        
+        
+        
+        
+
+
+        <div class="mb-4 flex flex-col" #categoryDiv>
             <label class="block text-gray-700 text-sm font-bold mb-2" for="categories">
                 Categories
             </label>
-            <input type="text" id="categories" placeholder="Enter event categories (comma-separated)"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName = "categories" required>
+            <div class="relative">
+                <input type="text" id="categories" placeholder="Enter event categories"
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                    formControlName="categories" required readonly>
+                <div class="flex items-center mt-2">
+                    <select #categorySelect
+                        class="appearance-none bg-white border border-gray-300 rounded-l-lg px-2 py-2 pr-8 focus:outline-none focus:border-teal-500 mr-2"
+                        (change)="addCategory(categorySelect.value)">
+                        <option disabled value="-1" selected>Category</option>
+                        <option *ngFor="let option of options" [value]="option.name">{{ option.name }}</option>
+                    </select>
+                    <button (click)="deleteLastCategory()" class="px-4 py-2 bg-red-500 text-white rounded focus:outline-none focus:bg-red-600" onclick>Delete last category</button>
+                </div>
+            </div>
         </div>
+
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="imageUrl">
                 Image URL
             </label>
-            <input type="text" id="imageUrl" placeholder="Enter event image URL"
+            <input type="file" id="imageUrl" placeholder="Enter event image URL" (change)="onFileChange($event)"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName = "imageUrl" required>
+                 required>
         </div>
         <div class="flex items-center justify-center">
             <button type="submit"
