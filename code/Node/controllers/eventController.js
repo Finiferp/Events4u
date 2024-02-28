@@ -9,16 +9,21 @@ const getEvent = async (req, res) => {
 
         const inputData = { eventId, activeUser };
         const dbOutput = await db.getEvent(inputData);
-        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
-        if(data === null){
-            status_code = 404;
-            message =  "Event no longer exists.";
+        if(JSON.parse(dbOutput.outputJSON) === null){
+            let status_code = 404;
+            let message =  "Event no longer exists.";
+            res.status(status_code).json({
+                message
+            });
+          
+        } else {
+            let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+            res.status(status_code).json({
+                message,
+                data: data,
+            });
         }
         
-        res.status(status_code).json({
-            message,
-            data: data,
-        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -141,7 +146,7 @@ const create = async (req, res) => {
         const inputData = { title, startDateTime, endDateTime, price, location_FK, categories, ownerId, imageUrl };
         const dbOutput = await db.createEvent(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
-        console.log(message);
+        // console.log(message);
         res.status(status_code).json({
             message            
         });
@@ -153,19 +158,40 @@ const create = async (req, res) => {
 
 const updateEvent = async (req, res) => {
     try {
-        const eventID = parseInt(req.params.eventID);
-        const title = req.body.title;
-        const startDateTime = req.body.startDateTime;
-        const endDateTime = req.body.endDateTime;
+        const eventID = parseInt(req.body.eventID);
+        const title = (req.body.title).toString();
+        const startDateTime = (req.body.startDateTime).toString();
+        const endDateTime = (req.body.endDateTime).toString();
         const price = parseInt(req.body.price);
         const location = parseInt(req.body.location);
-        const categories = req.body.categories;
+        const categories = (req.body.categories).toString();
         const isVisible = parseInt(req.body.isVisible);
+        let imageUrl;
+        if(req.file){
+            imageUrl =`http://127.0.0.1:3000/assets/images/${title}/` + req.file.filename;
+        }else{
+            imageUrl = (req.body.oldImageUrl).toString();
+        }
+        const inputData = { eventID, title, startDateTime, endDateTime, price, location, categories, imageUrl, isVisible};
+        const dbOutput = await db.updateEvent(inputData);
+        let { status_code, message } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({
+            message            
+        });
         
-        const ownerId = 1; //TODO IF NO ONE LOGGED IN SET TO -1 
-        const imageUrl =`http://127.0.0.1:3000/assets/images/${title}/` + req.file.filename;
-        const inputData = { eventID,title, startDateTime, endDateTime, price, location, categories, ownerId, imageUrl, isVisible};
-        const dbOutput = await db.createEvent(inputData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+
+const deleteEvent = async (req, res) => {
+    try {
+        const eventID = parseInt(req.body.eventID);
+        const inputData = { eventID};
+        const dbOutput = await db.deleteEvent(inputData);
+        console.log(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
         console.log(message);
         res.status(status_code).json({
@@ -186,5 +212,6 @@ module.exports = {
     getEventsOnCategories,
     search,
     create,
-    updateEvent
+    updateEvent,
+    deleteEvent
 };

@@ -1,5 +1,5 @@
 <div class="max-w-md mx-auto mt-8">
-    <form (ngSubmit)="onSubmit()" enctype="multipart/form-data" [formGroup]="eventUpdateForm" 
+    <form enctype="multipart/form-data" [formGroup]="eventUpdateForm" 
         class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
@@ -11,13 +11,18 @@
                 value="{{eventData.eventTitle}}">
         </div>
         <div class="mb-4">
+            <input type="checkbox" id="isVisible"
+                formControlName="isVisible" [checked]="eventUpdateForm.get('isVisible')?.value"
+                class="form-checkbox text-teal-500 h-5 w-5 mr-2">
+            <label class="text-gray-700" for="isVisible">Is Event visible?</label>
+        </div>
+        <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="startDateTime">
                 Start Date & Time
             </label>
             <input type="datetime-local" id="startDateTime"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName="startDateTime" required
-                value="{{eventData.startDateTime}}">
+                formControlName="startDateTime" required>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="endDateTime">
@@ -25,8 +30,7 @@
             </label>
             <input type="datetime-local" id="endDateTime"
                 class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                formControlName="endDateTime" required
-                value="{{eventData.endDateTime}}">
+                formControlName="endDateTime" required>
         </div>
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="price">
@@ -94,18 +98,29 @@
             <label class="block text-gray-700 text-sm font-bold mb-2" for="imageUrl">
                 Image URL
             </label>
-            <div class="mb-4 flex flex-col" #categoryDiv>
-                <img src="{{eventData.eventImage}}" alt="Logo" class="h-32 w-auto">
+            <div class="mb-4 flex justify-center items-center" >
+                <img src="{{eventData.eventImage}}" alt="Event Image" class="max-h-96 max-w-full">
             </div>
-            <input type="file" id="imageUrl" placeholder="Enter event image URL" (change)="onFileChange($event)"
-                class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                 required>
+            <input type="file" id="imageUrl" placeholder="Upload event image" (change)="onFileChange($event)"
+                class="form-input" required>
         </div>
-        <div class="flex items-center justify-center">
-            <button type="submit"
+
+        <div class="flex items-center justify-between">
+            <button (click)="onSubmit()"
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                Create Event
+                Update Event
             </button>
+            <button *ngIf="!this.eventUpdateForm.value.isVisible; else disabledDeleteButton"
+                (click)="onDelete()"
+                class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Delete Event
+            </button>
+            <ng-template #disabledDeleteButton>
+                <button disabled title="To delete an event the event can't be visible."
+                    class="bg-gray-300 text-gray-500 cursor-not-allowed font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    Delete Event
+                </button>
+            </ng-template>
         </div>
     </form>
 </div>

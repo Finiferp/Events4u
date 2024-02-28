@@ -2,6 +2,8 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-event-update',
@@ -10,7 +12,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './event-update.component.html',
   styleUrl: './event-update.component.scss'
 })
-export class EventUpdateComponent {
+export class EventUpdateComponent implements OnInit {
   @ViewChild('categoryDiv', { static: true }) categoryDiv!: ElementRef;
   @ViewChild('locationSelect', { static: true }) locationSelect!: ElementRef;
 
@@ -19,6 +21,7 @@ export class EventUpdateComponent {
   categories: string[] = [];
   options: any[] = [];
   locations: any[] = [];
+  oldImageUrl: string = '';
 
   constructor(private route: ActivatedRoute) { };
 
@@ -30,6 +33,7 @@ export class EventUpdateComponent {
     price: new FormControl(''),
     location: new FormControl(''),
     categories: new FormControl(''),
+    isVisible: new FormControl(true),
   });
   public file: any;
   public isDialogOpen: boolean = false;
@@ -37,10 +41,10 @@ export class EventUpdateComponent {
   ngOnInit() {
     this.loadEvent();
     this.fetchCategories();
-    this.fetchLocations();    
+    this.fetchLocations();
   }
 
-  async loadEvent(){
+  async loadEvent() {
     this.getIdFromUrl();
     const response = await fetch(`http://127.0.0.1:3000/event/${this.id}`, {
       method: "GET",
@@ -48,12 +52,25 @@ export class EventUpdateComponent {
         "Content-Type": "application/json",
       },
     });
-    const data = await response.json();    
-    this.eventData = data.data; 
+  
+    if (await !response.ok) {
+      window.location.href = 'http://localhost:4200/events'; // TODO go back to myevents
+    } else {
+      const data = await response.json();
 
-    console.log(this.eventData);
-    console.log(this.eventData.eventLocationCode);
-    this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
+      this.eventData = data.data;
+      this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
+
+      this.eventUpdateForm.patchValue({ title: this.eventData.eventTitle });
+      this.eventUpdateForm.patchValue({ startDateTime: new Date(this.eventData.startDateTime).toISOString().slice(0, 16) });
+      this.eventUpdateForm.patchValue({ endDateTime: new Date(this.eventData.endDateTime).toISOString().slice(0, 16) });
+      this.eventUpdateForm.patchValue({ price: this.eventData.eventPrice });
+      this.eventUpdateForm.patchValue({ location: this.eventData.eventLocationCode });
+      this.eventUpdateForm.patchValue({ categories: this.eventData.categories });
+      // this.categories = this.eventData.categories.split(',');
+      this.eventUpdateForm.patchValue({ isVisible: this.eventData.isVisible === 1 ? true : false });
+      this.oldImageUrl = this.eventData.eventImage;
+    }
 
   }
 
@@ -104,26 +121,34 @@ export class EventUpdateComponent {
     let price = this.eventUpdateForm.value.price;
     let location = this.eventUpdateForm.value.location;
     let categories = this.eventUpdateForm.value.categories;
-    console.log(eventID,title,startDateTime,endDateTime,price,location,categories);
-    
-    /*
-        if (title && startDateTime && endDateTime && price && location && categories) {
-          const formData = new FormData();
-          formData.append("title", title);
-          formData.append("startDateTime", startDateTime)
-          formData.append("endDateTime", endDateTime)
-          formData.append("price", price)
-          formData.append("location", location)
-          formData.append("categories", categories)
-          formData.append("imageUrl", this.file);
-          
-          
-    
-          const response = await fetch(`http://127.0.0.1:3000/event/create`, {
-            method: "POST",
-            body: formData,
-          });
-        }*/
+    let isVisible = this.eventUpdateForm.value.isVisible;
+    //console.log(eventID,title,startDateTime,endDateTime,price,location,categories);
+
+    // console.log(this.oldImageUrl);
+    if (eventID && title && startDateTime && endDateTime && price && location && categories) {
+      const formData = new FormData();
+      formData.append("eventID", eventID);
+      formData.append("title", title);
+      formData.append("startDateTime", startDateTime)
+      formData.append("endDateTime", endDateTime)
+      formData.append("price", price)
+      formData.append("location", location)
+      formData.append("categories", categories)
+      formData.append("imageUrl", this.file);
+      formData.append("oldImageUrl", this.oldImageUrl);
+      formData.append("isVisible", isVisible ? '1' : '0');
+
+
+
+      const response = await fetch(`http://127.0.0.1:3000/event/update`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if (response.ok) {
+        this.ngOnInit();
+      }
+    }
   }
 
   addCategory(category: string): void {
@@ -147,14 +172,14 @@ export class EventUpdateComponent {
   }
 
   onFileChange(event: any) {
-    console.log(event.target.files[0]);
+    // console.log(event.target.files[0]);
     this.file = event.target.files[0];
   }
 
   async createLocation(newLocation: any) {
 
     const inputData = { "adress": newLocation.value };
-    
+
     const response = await fetch(`http://127.0.0.1:3000/location/add`, {
       method: "POST",
       headers: {
@@ -165,6 +190,48 @@ export class EventUpdateComponent {
     if (await response.ok) {
       this.fetchLocations();
       this.isDialogOpen = false;
+    }
+  }
+
+
+  async onDelete() {
+    const result = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this event!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    });
+
+    if (result.isConfirmed) {
+      const eventID = this.eventData.eventCode;
+      const inputData = { eventID };
+
+      const response = await fetch(`http://127.0.0.1:3000/event/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputData)
+      });
+
+      if (response.ok) {
+        window.location.href = 'http://localhost:4200/events';  // TODO use location of MYEVENTS
+
+        Swal.fire(
+          'Deleted!',
+          'Your event has been deleted.',
+          'success'
+        );
+      } else {
+        Swal.fire(
+          'Error!',
+          'Failed to delete the event.',
+          'error'
+        );
+      }
     }
   }
 }

@@ -27,8 +27,12 @@ export class EventDetailsComponent implements OnInit {
         "Content-Type": "application/json",
       },
     });
-    const data = await response.json();    
-    this.eventData = data.data; 
+    if (await !response.ok) {
+      window.location.href = 'http://localhost:4200/events'; // TODO go back to myevents
+    } else {
+      const data = await response.json();    
+      this.eventData = data.data; 
+    }
   }
 
   getIdFromUrl(): void {

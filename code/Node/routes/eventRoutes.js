@@ -29,6 +29,7 @@ module.exports = function (app) {
     app.route("/categories").get(event.getCategories);
     app.route("/event/category/:category").get(event.getEventsOnCategories);
     app.route("/event/search").post(event.search);
+    app.route("/event/delete").delete(event.deleteEvent);
     app.route("/event/create").post(
         (req, res, next) => {
             upload(req, res, (err) => {
@@ -41,7 +42,7 @@ module.exports = function (app) {
             });
         },
         event.create);
-    app.route("/event/update").put(
+    app.route("/event/update").post(
         (req, res, next) => {
             upload(req, res, (err) => {
                 if (err) {
@@ -53,4 +54,5 @@ module.exports = function (app) {
             });
         },
         event.updateEvent);
+
 };

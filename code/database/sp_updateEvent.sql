@@ -31,9 +31,9 @@ BEGIN
                                     "location": {"type": "number"},
                                     "categories": {"type": "string"},
                                     "imageUrl": {"type": "string"},
-                                    "isVisible": {"type": number}
+                                    "isVisible": {"type": "number"}
                                 }, 
-                                "required": ["title", "startDateTime", "endDateTime", "price", "location", "isVisible"] 
+                                "required": ["eventID", "title", "startDateTime", "endDateTime", "price", "location", "categories", "imageUrl", "isVisible"] 
                         }';
     
 
@@ -59,7 +59,7 @@ BEGIN
                 startDateTime = input_startDateTime, 
                 endDateTime = input_endDateTime, 
                 price = input_price, 
-                location = input_location,
+                location_FK = input_location,
                 imageUrl = input_imageUrl,
                 isVisible = input_isVisible
             WHERE code_PK = input_eventID;

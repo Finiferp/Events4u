@@ -47,6 +47,7 @@ BEGIN
                     'eventLocation', l.adress,
                     'eventLocationCode', e.location_FK,
                     'eventImage', e.imageUrl,
+                    'isVisible', e.isVisible,
                     'ownerName', CONCAT(u.firstName, ' ', u.lastName),
                     'isFavorited', isFavorited,
                     'categories', (
