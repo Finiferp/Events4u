@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchServiceService } from '../search-service.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-events-list',
@@ -14,7 +16,7 @@ export class EventsListComponent implements OnInit {
   public eventsData: any[] = [];
   clickEventsubscription: Subscription;
 
-  constructor(private searchEvent: SearchServiceService) {
+  constructor(private searchEvent: SearchServiceService, private router: Router) {
     this.clickEventsubscription = this.searchEvent.getSearchEvent().subscribe((data)=>{      
       this.search(data);
     });
@@ -43,8 +45,10 @@ export class EventsListComponent implements OnInit {
     });
     const data = await response.json();
     this.eventsData = data.data;   
-    console.log(this.eventsData);
+  }
 
+  goTo(url:string){
+    this.router.navigateByUrl(url);
   }
 }
 

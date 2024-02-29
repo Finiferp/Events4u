@@ -98,6 +98,18 @@ const getReviews = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const getUserEvents = async (JSON) => {
+  const sql = 'CALL sp_getUserEvents(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getLocationEvents = async (JSON) => {
+  const sql = 'CALL sp_getLocationEvents(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
 
 module.exports = {
     getEvents,
@@ -111,5 +123,7 @@ module.exports = {
     updateEvent,
     deleteEvent,
     addEventReview,
-    getReviews
+    getReviews,
+    getUserEvents,
+    getLocationEvents
 }

@@ -1,0 +1,23 @@
+<ul class="flex flex-wrap justify-center">
+    <ng-container *ngFor="let event of eventData">
+      <li *ngIf="event.eventIsVisible === 1" class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
+        <a (click)="goTo('/event/' + event.eventCode)" class="block w-full h-full">
+          <img src="{{ event.eventImage }}" alt="{{ event.eventTitle }}" class="w-full h-56 object-cover object-center">
+          <div class="p-6">
+            <h3 class="text-xl font-semibold text-gray-800">{{ event.eventTitle }}</h3>
+            <p class="mt-2 text-base text-gray-600"><strong>Owner:</strong> {{ event.ownerName }}</p>
+            <p class="text-base text-gray-600"><strong>Start Date & Time:</strong> {{ event.startDateTime | date:'short' }}</p>
+          </div>
+          <div class="flex justify-center mt-2">
+            <svg *ngIf="event.isFavorited === 1" xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 cursor-pointer text-yellow-500" viewBox="0 0 20 20" fill="#00b300 ">
+              <path fill-rule="evenodd" d="M10 3l1.68 3.37 3.75.55-2.72 2.65.64 3.74-3.34-1.76-3.34 1.76.64-3.74-2.72-2.65 3.75-.55L10 3z" clip-rule="evenodd" />
+            </svg>
+            <svg *ngIf="event.isFavorited === 0" xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 cursor-pointer text-gray-400" viewBox="0 0 20 20" fill="#d3d3d3">
+              <path fill-rule="evenodd" d="M10 3l1.68 3.37 3.75.55-2.72 2.65.64 3.74-3.34-1.76-3.34 1.76.64-3.74-2.72-2.65 3.75-.55L10 3z" clip-rule="evenodd" />
+            </svg>
+          </div>
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+  

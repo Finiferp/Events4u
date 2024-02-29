@@ -32,6 +32,8 @@ module.exports = function (app) {
     app.route("/event/delete").delete(event.deleteEvent);
     app.route("/event/addReview").post(event.addEventReview);
     app.route("/event/getReviews/:id").get(event.getReviews);
+    app.route("/myEvents").get(event.getUserEvents);
+    app.route("/events/location/:id").get(event.getLocationEvents);
     app.route("/event/create").post(
         (req, res, next) => {
             upload(req, res, (err) => {

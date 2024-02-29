@@ -1,7 +1,7 @@
 <ul class="flex flex-wrap justify-center">
   <ng-container *ngFor="let event of eventsData">
     <li *ngIf="event.eventIsVisible === 1" class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
-      <a [href]="'/event/' + event.eventCode" class="block w-full h-full">
+      <a (click)="goTo('/event/' + event.eventCode)" class="block w-full h-full">
         <img src="{{ event.eventImage }}" alt="{{ event.eventTitle }}" class="w-full h-56 object-cover object-center">
         <div class="p-6">
           <h3 class="text-xl font-semibold text-gray-800">{{ event.eventTitle }}</h3>

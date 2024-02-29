@@ -3,12 +3,16 @@ import { EventsListComponent } from './events-list/events-list.component';
 import { EventDetailsComponent } from './event-details/event-details.component';
 import { EventAddComponent } from './event-add/event-add.component';
 import { EventUpdateComponent } from './event-update/event-update.component';
+import { MyEventsComponent } from './my-events/my-events.component';
+import { EventsLocationComponent } from './events-location/events-location.component';
 
 export const routes: Routes = [
     {path: 'event/add', component: EventAddComponent },
     {path: 'event/update/:id', component: EventUpdateComponent },
     {path: 'events', component: EventsListComponent},
     {path: 'event/:id', component: EventDetailsComponent },
+    {path: 'myEvents', component: MyEventsComponent },
+    {path: 'event/location/:id', component: EventsLocationComponent },
    
     { path: '', redirectTo: 'events', pathMatch: 'full' }
 ];

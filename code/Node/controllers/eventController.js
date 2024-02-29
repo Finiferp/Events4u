@@ -241,6 +241,44 @@ const getReviews = async (req, res) => {
     }
 }
 
+const getUserEvents = async (req, res) => {
+    try {
+        const userID = 1; //TODO Change when LUXID
+
+        const inputData = { userID };
+
+        const dbOutput = await db.getUserEvents(inputData);
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message,
+            data
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+const getLocationEvents = async (req, res) => {
+    try {
+        const locationID = parseInt(req.params.id);
+        const userID = 1 //TODO Change when LUXID
+        const inputData = { locationID, userID };
+        console.log(inputData);
+        const dbOutput = await db.getLocationEvents(inputData);
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message,
+            data
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 module.exports = {
     getEvent,
     getEvents,
@@ -252,5 +290,7 @@ module.exports = {
     updateEvent,
     deleteEvent,
     addEventReview,
-    getReviews
+    getReviews,
+    getUserEvents,
+    getLocationEvents
 };

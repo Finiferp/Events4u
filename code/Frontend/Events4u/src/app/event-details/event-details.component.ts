@@ -58,4 +58,7 @@ export class EventDetailsComponent implements OnInit {
     }); 
     this.loadEvent();
   }
+
+
+
 }
