@@ -32,6 +32,8 @@ export class EventsListComponent implements OnInit {
   }
 
   async search(inputData: any){
+    console.log(inputData);
+    
     const response = await fetch(`http://127.0.0.1:3000/event/search`, {
       method: "POST",
       headers: {
@@ -40,7 +42,9 @@ export class EventsListComponent implements OnInit {
       body: JSON.stringify(inputData)
     });
     const data = await response.json();
-    this.eventsData = data.data;    
+    this.eventsData = data.data;   
+    console.log(this.eventsData);
+
   }
 }
 

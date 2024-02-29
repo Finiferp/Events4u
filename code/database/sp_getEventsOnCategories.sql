@@ -60,6 +60,7 @@ BEGIN
                   'startDateTime', (SELECT startDateTime FROM Event WHERE code_PK = currentEventID AND title LIKE CONCAT('%', input_title, '%')),
                   'endDateTime', (SELECT endDateTime FROM Event WHERE code_PK = currentEventID AND title LIKE CONCAT('%', input_title, '%')),
                   'eventPrice', (SELECT price FROM Event WHERE code_PK = currentEventID AND title LIKE CONCAT('%', input_title, '%')),
+                  'eventIsVisible', (SELECT isVisible FROM Event WHERE code_PK = currentEventID),
                   'eventLocation', (SELECT l.adress FROM Location l JOIN Event e ON e.location_FK = l.code_PK WHERE e.code_PK = currentEventID AND e.title LIKE CONCAT('%', input_title, '%')),
                   'eventImage', (SELECT imageUrl FROM Event WHERE code_PK = currentEventID AND title LIKE CONCAT('%', input_title, '%')),
                   'ownerName', (SELECT CONCAT(firstName, ' ', lastName) FROM User WHERE code_PK = (SELECT owner_FK FROM Event WHERE code_PK = currentEventID AND title LIKE CONCAT('%', input_title, '%'))),

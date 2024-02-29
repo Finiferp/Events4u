@@ -9,6 +9,7 @@ BEGIN
 
     DECLARE input_stars INT;
     DECLARE input_review TEXT;
+    DECLARE input_date TEXT;
     DECLARE input_userID INT;
     DECLARE input_eventID INT;
     DECLARE v_JSONSchema JSON;
@@ -16,10 +17,11 @@ BEGIN
                                 "properties": {
                                     "stars": {"type": "number"}, 
                                     "review": {"type": "string"},
+                                    "date": {"type": "string"},
                                     "userID": {"type": "number"},
                                     "eventID": {"type": "number"}
                                 }, 
-                                "required": ["stars", "review", "userID", "eventID"] 
+                                "required": ["stars", "review", "userID", "eventID", "date"] 
                         }';
     
 
@@ -30,12 +32,13 @@ BEGIN
     ELSE
         SET input_stars = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.stars'));
         SET input_review = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.review'));
+        SET input_date = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.date'));
         SET input_userID = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.userID'));
         SET input_eventID = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.eventID'));
 
 
-        INSERT INTO Review (stars, review, userID, eventID) 
-        VALUES (input_stars, input_review, input_userID, input_eventID);
+        INSERT INTO Review (stars, review, user_code_review_FK, event_code_describes_FK, creationDate) 
+        VALUES (input_stars, input_review, input_userID, input_eventID, input_date);
 
         SET response_message = 'Review created successfully';
         SET response_code = 200;

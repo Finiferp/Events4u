@@ -21,7 +21,7 @@ BEGIN
 
     SET v_JSONSchema = '{"type": "object",
                                 "properties": {
-                                    "activeUser": {"type": "integer"}
+                                    "activeUser": {"type": "number"}
                                 }, 
                                 "required": ["activeUser"] 
                         }';

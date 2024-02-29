@@ -86,6 +86,19 @@ const deleteEvent = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const addEventReview = async (JSON) => {
+  const sql = 'CALL sp_addReview(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getReviews = async (JSON) => {
+  const sql = 'CALL sp_getReviews(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+
 module.exports = {
     getEvents,
     getEvent,
@@ -96,5 +109,7 @@ module.exports = {
     getLocations,
     addLocation,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+    addEventReview,
+    getReviews
 }

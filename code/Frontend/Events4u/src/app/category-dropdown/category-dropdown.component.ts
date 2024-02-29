@@ -2,6 +2,8 @@ import { Component, OnInit, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { SearchServiceService } from '../search-service.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-category-dropdown',
@@ -13,7 +15,7 @@ import { SearchServiceService } from '../search-service.service';
 export class CategoryDropdownComponent implements OnInit  {
   options: any[] = [];
 
-  constructor(private searchService: SearchServiceService) {}
+  constructor(private searchService: SearchServiceService, private router: Router) {}
 
   ngOnInit() {
     this.fetchCategories();
@@ -31,6 +33,7 @@ export class CategoryDropdownComponent implements OnInit  {
   }
 
   search(selectedCategory: string, searchInputValue: string) {
+    this.router.navigateByUrl("/events");
     const inputData = {"category": selectedCategory, "title": searchInputValue}
     this.searchService.sendSearchParam(inputData);
   }

@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 
@@ -23,7 +24,7 @@ export class EventUpdateComponent implements OnInit {
   locations: any[] = [];
   oldImageUrl: string = '';
 
-  constructor(private route: ActivatedRoute) { };
+  constructor(private route: ActivatedRoute, private router: Router) { };
 
 
   eventUpdateForm = new FormGroup({
@@ -52,12 +53,12 @@ export class EventUpdateComponent implements OnInit {
         "Content-Type": "application/json",
       },
     });
-  
-    if (await !response.ok) {
-      window.location.href = 'http://localhost:4200/events'; // TODO go back to myevents
+    const data = await response.json();
+        
+    if (data.redirect !== undefined) {
+      const redirectedUrl = data.redirect;
+      this.router.navigateByUrl(redirectedUrl); // TODO go back to myevents
     } else {
-      const data = await response.json();
-
       this.eventData = data.data;
       this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
 
@@ -218,13 +219,15 @@ export class EventUpdateComponent implements OnInit {
       });
 
       if (response.ok) {
-        window.location.href = 'http://localhost:4200/events';  // TODO use location of MYEVENTS
-
-        Swal.fire(
-          'Deleted!',
-          'Your event has been deleted.',
-          'success'
-        );
+        Swal.fire({
+          title: 'Deleted!',
+          text: 'Your event has been deleted.',
+          icon: 'success'
+        }).then((result)=>{
+            if(result.isConfirmed){
+              this.router.navigateByUrl('/events');  // TODO use location of MYEVENTS
+            }
+        });
       } else {
         Swal.fire(
           'Error!',
