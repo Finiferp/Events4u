@@ -47,14 +47,14 @@ BEGIN
 
         SET response_data = JSON_ARRAY_APPEND(response_data, '$', JSON_OBJECT(
             'eventCode', currentEventID,
-            'eventTitle', (SELECT title FROM Event WHERE code_PK = currentEventID),
-            'startDateTime', (SELECT startDateTime FROM Event WHERE code_PK = currentEventID),
-            'endDateTime', (SELECT endDateTime FROM Event WHERE code_PK = currentEventID),
-            'eventPrice', (SELECT price FROM Event WHERE code_PK = currentEventID),
-            'eventIsVisible', (SELECT isVisible FROM Event WHERE code_PK = currentEventID),
-            'eventLocation', (SELECT l.adress FROM Location l JOIN Event e ON e.location_FK = l.code_PK WHERE e.code_PK = currentEventID),
-            'eventImage', (SELECT imageUrl FROM Event WHERE code_PK = currentEventID),
-            'ownerName', (SELECT CONCAT(firstName, ' ', lastName) FROM User WHERE code_PK = (SELECT owner_FK FROM Event WHERE code_PK = currentEventID)),
+            'eventTitle', (SELECT title FROM Event WHERE code_PK = currentEventID AND group_view_FK = 1),
+            'startDateTime', (SELECT startDateTime FROM Event WHERE code_PK = currentEventID AND group_view_FK = 1),
+            'endDateTime', (SELECT endDateTime FROM Event WHERE code_PK = currentEventID AND group_view_FK = 1),
+            'eventPrice', (SELECT price FROM Event WHERE code_PK = currentEventID AND group_view_FK = 1),
+            'eventIsVisible', (SELECT isVisible FROM Event WHERE code_PK = currentEventID AND group_view_FK = 1),
+            'eventLocation', (SELECT l.adress FROM Location l JOIN Event e ON e.location_FK = l.code_PK WHERE e.code_PK = currentEventID AND group_view_FK = 1),
+            'eventImage', (SELECT imageUrl FROM Event WHERE code_PK = currentEventID AND group_view_FK = 1),
+            'ownerName', (SELECT CONCAT(firstName, ' ', lastName) FROM User WHERE code_PK = (SELECT owner_FK FROM Event WHERE code_PK = currentEventID AND group_view_FK = 1)),
             'isFavorited', isFavorited
         ));
 

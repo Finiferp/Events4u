@@ -13,6 +13,7 @@ BEGIN
     DECLARE input_location INT;
     DECLARE input_ownerID INT;
     DECLARE input_imageUrl VARCHAR(450);
+    DECLARE input_group INT;
     DECLARE v_last_eventID INT;
     DECLARE category_list VARCHAR(10000);
     DECLARE category_name VARCHAR(450);
@@ -29,9 +30,10 @@ BEGIN
                                     "location_FK": {"type": "number"},
                                     "ownerId": {"type": "number"},
                                     "categories": {"type": "string"},
-                                    "imageUrl": {"type": "string"}
+                                    "imageUrl": {"type": "string"},
+                                    "group": {"type": "number"}
                                 }, 
-                                "required": ["title", "startDateTime", "endDateTime", "price", "location_FK", "ownerId", "categories", "imageUrl"] 
+                                "required": ["title", "startDateTime", "endDateTime", "price", "location_FK", "ownerId", "categories", "imageUrl", "group" ] 
                         }';
     
 
@@ -48,11 +50,12 @@ BEGIN
         SET input_ownerID = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.ownerId'));
         SET category_list = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.categories'));
         SET input_imageUrl = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.imageUrl'));
+        SET input_group = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.group'));
 
         START TRANSACTION;
 
-            INSERT INTO Event (title, startDateTime, endDateTime, price, location_FK, owner_FK, imageUrl) 
-            VALUES (input_title, input_startDateTime, input_endDateTime, input_price, input_location, input_ownerID, input_imageUrl);
+            INSERT INTO Event (title, startDateTime, endDateTime, price, location_FK, owner_FK, imageUrl, group_view_FK) 
+            VALUES (input_title, input_startDateTime, input_endDateTime, input_price, input_location, input_ownerID, input_imageUrl, input_group);
 
             SET v_last_eventID = LAST_INSERT_ID();
 

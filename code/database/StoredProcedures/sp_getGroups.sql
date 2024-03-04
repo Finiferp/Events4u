@@ -44,7 +44,8 @@ BEGIN
             WHERE g.owner_FK = input_UserID
             OR g.code_PK IN (SELECT code_group_partOf_PKFK
                                 FROM PartOf
-                                WHERE code_user_partOf_PKFK = input_UserID));
+                                WHERE code_user_partOf_PKFK = input_UserID)
+            AND g.`code_PK`<>1);
 
             SET outputJSON = JSON_OBJECT(
                 'status_code', response_code,

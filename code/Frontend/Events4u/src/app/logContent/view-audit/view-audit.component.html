@@ -1,0 +1,16 @@
+<table>
+    <tr>
+        <th>idViewAudit</th>
+        <th>code_group_view_PKFK</th>
+        <th>code_event_view_PKFK</th>
+        <th>date_audit</th>
+        <th>action_audit</th>
+    </tr>
+    <tr *ngFor="let item of data">
+        <td>{{ item.idViewAudit }}</td>
+        <td>{{ item.code_group_view_PKFK }}</td>
+        <td>{{ item.code_event_view_PKFK }}</td>
+        <td>{{ item.date_audit }}</td>
+        <td>{{ item.action_audit }}</td>
+    </tr>
+</table>

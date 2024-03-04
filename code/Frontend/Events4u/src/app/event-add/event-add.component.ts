@@ -17,6 +17,7 @@ export class EventAddComponent implements OnInit {
   categories: string[] = [];
   options: any[] = [];
   locations: any[] = [];
+  groups: any[] = [];
 
   eventAddForm = new FormGroup({
     title: new FormControl(''),
@@ -25,6 +26,7 @@ export class EventAddComponent implements OnInit {
     price: new FormControl(''),
     location: new FormControl(''),
     categories: new FormControl(''),
+    group: new FormControl(''),
   });
   public file: any;
   public isDialogOpen: boolean = false;
@@ -32,8 +34,19 @@ export class EventAddComponent implements OnInit {
   ngOnInit() {
     this.fetchCategories();
     this.fetchLocations();
+    this.fetchGroups();
     this.locationSelect.nativeElement.selectedIndex = 0;
+  }
 
+  async fetchGroups() {
+    const response = await fetch(`http://127.0.0.1:3000/myGroups`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    const data = await response.json();
+    this.groups = data.data;
   }
 
   async fetchLocations() {
@@ -76,8 +89,9 @@ export class EventAddComponent implements OnInit {
     let price = this.eventAddForm.value.price;
     let location = this.eventAddForm.value.location;
     let categories = this.eventAddForm.value.categories;
+    let group = this.eventAddForm.value.group;
     
-        if (title && startDateTime && endDateTime && price && location && categories) {
+        if (title && startDateTime && endDateTime && price && location && categories && group) {
           const formData = new FormData();
           formData.append("title", title);
           formData.append("startDateTime", startDateTime)
@@ -86,6 +100,7 @@ export class EventAddComponent implements OnInit {
           formData.append("location", location)
           formData.append("categories", categories)
           formData.append("imageUrl", this.file);
+          formData.append("group", group);
           
           
     

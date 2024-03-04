@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { log } from 'console';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class EventUpdateComponent implements OnInit {
   options: any[] = [];
   locations: any[] = [];
   oldImageUrl: string = '';
+  groups: any[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router) { };
 
@@ -35,6 +37,7 @@ export class EventUpdateComponent implements OnInit {
     location: new FormControl(''),
     categories: new FormControl(''),
     isVisible: new FormControl(true),
+    group: new FormControl(''),
   });
   public file: any;
   public isDialogOpen: boolean = false;
@@ -43,6 +46,18 @@ export class EventUpdateComponent implements OnInit {
     this.loadEvent();
     this.fetchCategories();
     this.fetchLocations();
+    this.fetchGroups();
+  }
+
+  async fetchGroups() {
+    const response = await fetch(`http://127.0.0.1:3000/myGroups`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+    const data = await response.json();
+    this.groups = data.data;
   }
 
   async loadEvent() {
@@ -123,10 +138,12 @@ export class EventUpdateComponent implements OnInit {
     let location = this.eventUpdateForm.value.location;
     let categories = this.eventUpdateForm.value.categories;
     let isVisible = this.eventUpdateForm.value.isVisible;
+    let group = this.eventUpdateForm.value.group;
     //console.log(eventID,title,startDateTime,endDateTime,price,location,categories);
-
+    console.log(group);
+    
     // console.log(this.oldImageUrl);
-    if (eventID && title && startDateTime && endDateTime && price && location && categories) {
+    if (eventID && title && startDateTime && endDateTime && price && location && categories && group) {
       const formData = new FormData();
       formData.append("eventID", eventID);
       formData.append("title", title);
@@ -138,8 +155,9 @@ export class EventUpdateComponent implements OnInit {
       formData.append("imageUrl", this.file);
       formData.append("oldImageUrl", this.oldImageUrl);
       formData.append("isVisible", isVisible ? '1' : '0');
+      formData.append("group", group);
 
-
+      
 
       const response = await fetch(`http://127.0.0.1:3000/event/update`, {
         method: "POST",

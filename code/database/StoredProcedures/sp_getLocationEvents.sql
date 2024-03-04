@@ -57,6 +57,7 @@ BEGIN
                 JOIN User u ON e.owner_FK = u.code_PK
                 JOIN Location l ON e.location_FK = l.code_PK
                 WHERE l.code_PK = input_locationID
+                AND group_view_FK = 1
             );
         ELSE
             SET response_code = 404;

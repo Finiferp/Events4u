@@ -1,0 +1,16 @@
+<table>
+    <tr>
+        <th>idFavoriteAudit</th>
+        <th>user_code_favorite_PKFK</th>
+        <th>event_code_favorite_PKFK</th>
+        <th>date_audit</th>
+        <th>action_audit</th>
+    </tr>
+    <tr *ngFor="let item of data">
+        <td>{{ item.idFavoriteAudit }}</td>
+        <td>{{ item.user_code_favorite_PKFK }}</td>
+        <td>{{ item.event_code_favorite_PKFK }}</td>
+        <td>{{ item.date_audit }}</td>
+        <td>{{ item.action_audit }}</td>
+    </tr>
+</table>

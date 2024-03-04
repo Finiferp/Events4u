@@ -140,10 +140,11 @@ const create = async (req, res) => {
         const price = parseInt(req.body.price);
         const location_FK = parseInt(req.body.location);
         const categories = req.body.categories;
+        const group = parseInt(req.body.group);
 
         const ownerId = 1; //TODO IF NO ONE LOGGED IN SET TO -1 
         const imageUrl = `http://127.0.0.1:3000/assets/images/${title}/` + req.file.filename;
-        const inputData = { title, startDateTime, endDateTime, price, location_FK, categories, ownerId, imageUrl };
+        const inputData = { title, startDateTime, endDateTime, price, location_FK, categories, ownerId, imageUrl, group };
         const dbOutput = await db.createEvent(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
         // console.log(message);
@@ -166,13 +167,14 @@ const updateEvent = async (req, res) => {
         const location = parseInt(req.body.location);
         const categories = (req.body.categories).toString();
         const isVisible = parseInt(req.body.isVisible);
+        const group = parseInt(req.body.group);
         let imageUrl;
         if (req.file) {
             imageUrl = `http://127.0.0.1:3000/assets/images/${title}/` + req.file.filename;
         } else {
             imageUrl = (req.body.oldImageUrl).toString();
         }
-        const inputData = { eventID, title, startDateTime, endDateTime, price, location, categories, imageUrl, isVisible };
+        const inputData = { eventID, title, startDateTime, endDateTime, price, location, categories, imageUrl, isVisible, group };
         const dbOutput = await db.updateEvent(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
         res.status(status_code).json({

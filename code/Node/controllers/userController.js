@@ -154,6 +154,26 @@ const deleteUserFromGroup = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
+const getUsersGroups = async (req, res) => {
+    try {
+        const userID = 1; //TODO Change when LUXID
+
+        const inputData = { userID };
+
+        const dbOutput = await db.getUsersGroups(inputData);
+
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message,
+            data
+        })
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 module.exports = {
     createGroup,
     getGroups,
@@ -162,5 +182,6 @@ module.exports = {
     getGroupUsers,
     getUsers,
     addUserToGroup,
-    deleteUserFromGroup
+    deleteUserFromGroup,
+    getUsersGroups
 };

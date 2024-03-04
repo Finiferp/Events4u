@@ -14,6 +14,7 @@ BEGIN
     DECLARE input_location INT;
     DECLARE input_imageUrl VARCHAR(450);
     DECLARE input_isVisible TINYINT;
+    DECLARE input_group INT;
 
     DECLARE category_list VARCHAR(10000); 
     DECLARE category_name VARCHAR(450);
@@ -31,7 +32,8 @@ BEGIN
                                     "location": {"type": "number"},
                                     "categories": {"type": "string"},
                                     "imageUrl": {"type": "string"},
-                                    "isVisible": {"type": "number"}
+                                    "isVisible": {"type": "number"},
+                                    "group": {"type": "number"}
                                 }, 
                                 "required": ["eventID", "title", "startDateTime", "endDateTime", "price", "location", "categories", "imageUrl", "isVisible"] 
                         }';
@@ -51,6 +53,7 @@ BEGIN
         SET category_list = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.categories'));
         SET input_imageUrl = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.imageUrl'));
         SET input_isVisible = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.isVisible'));
+        SET input_group = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.group'));
 
         START TRANSACTION;
 
@@ -61,7 +64,8 @@ BEGIN
                 price = input_price, 
                 location_FK = input_location,
                 imageUrl = input_imageUrl,
-                isVisible = input_isVisible
+                isVisible = input_isVisible,
+                group_view_FK = input_group
             WHERE code_PK = input_eventID;
 
              DELETE FROM Belongs WHERE event_code_belongs_PKFK = input_eventID;

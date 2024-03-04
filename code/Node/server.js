@@ -14,6 +14,7 @@ app.use('/assets', express.static('assets'));
 require('./routes/eventRoutes')(app);
 require('./routes/locationRoutes')(app);
 require('./routes/userRoutes')(app);
+require('./routes/auditRoutes')(app);
 
 app.use((req, res) => {
     res.status(404).send('Please enter a valid endpoint.');

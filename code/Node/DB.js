@@ -157,6 +157,12 @@ const removeUserFromGroup = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const getUserGroups = async (JSON) => {
+  const sql = 'CALL sp_getUserGroups(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
 module.exports = {
     getEvents,
     getEvent,
@@ -179,5 +185,6 @@ module.exports = {
     getGroupUsers,
     getUsers,
     addUserToGroup,
-    removeUserFromGroup
+    removeUserFromGroup,
+    getUserGroups
 }

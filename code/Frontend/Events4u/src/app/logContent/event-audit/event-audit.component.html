@@ -1,0 +1,35 @@
+<table>
+    <tr>
+        <th>idEventAudit</th>
+        <th>code_PK</th>
+        <th>title</th>
+        <th>startDateTime</th>
+        <th>endDateTime</th>
+        <th>price</th>
+        <th>created</th>
+        <th>owner_FK</th>
+        <th>imageURL</th>
+        <th>isVisible</th>
+        <th>location_FK</th>
+        <th>group_view_FK</th>
+        <th>date_audit</th>
+        <th>action_audit</th>
+    </tr>
+    <tr *ngFor="let item of data">
+        <td>{{ data.idEventAudit }}</td>
+        <td>{{ data.code_PK }}</td>
+        <td>{{ data.title }}</td>
+        <td>{{ data.startDateTime }}</td>
+        <td>{{ data.endDateTime }}</td>
+        <td>{{ data.price }}</td>
+        <td>{{ data.created }}</td>
+        <td>{{ data.owner_FK }}</td>
+        <td>{{ data.imageURL }}</td>
+        <td>{{ data.isVisible }}</td>
+        <td>{{ data.location_FK }}</td>
+        <td>{{ data.group_view_FK }}</td>
+        <td>{{ data.date_audit }}</td>
+        <td>{{ data.action_audit }}</td>
+    </tr>
+
+</table>

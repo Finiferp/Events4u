@@ -1,0 +1,25 @@
+<table>
+    <tr>
+        <th>idReviewAudit</th>
+        <th>code_PK</th>
+        <th>stars</th>
+        <th>review</th>
+        <th>user_code_review_FK</th>
+        <th>event_code_describes_FK</th>
+        <th>creationDate</th>
+        <th>date_audit</th>
+        <th>action_audit</th>
+    </tr>
+    <tr *ngFor="let item of data">
+        <td>{{ item.idReviewAudit }}</td>
+        <td>{{ item.code_PK }}</td>
+        <td>{{ item.stars }}</td>
+        <td>{{ item.review }}</td>
+        <td>{{ item.user_code_review_FK }}</td>
+        <td>{{ item.event_code_describes_FK }}</td>
+        <td>{{ item.creationDate }}</td>
+        <td>{{ item.date_audit }}</td>
+        <td>{{ item.action_audit }}</td>
+    </tr>
+
+</table>
