@@ -1,0 +1,54 @@
+<div class="flex justify-center items-center h-screen">
+    <ng-container *ngIf="groupData.group_name">
+        <div class="w-1/2">
+            <div class="border border-gray-300 rounded-lg p-4 my-2 shadow-md bg-white min-width-20 text-center relative">
+                <p class="text-lg font-semibold text-gray-700 mb-2">Group Name:</p>
+                <div class="flex items-center">
+                    <input type="text" [value]="groupData.group_name"  #groupName (keyup.enter)="editGroup(groupName.value)"
+                    class="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500">
+                    <button (click)="editGroup(groupName.value)"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 ml-2 rounded focus:outline-none focus:shadow-outline">
+                        Change
+                    </button>
+                </div>
+            </div>
+            <div class="border border-gray-300 rounded-lg p-4 my-2 shadow-md bg-white min-width-20 text-center relative">
+                <p class="text-xl text-emerald-600 font-semibold mb-2 flex justify-between items-center">
+                    <span class="align-middle">{{ groupData.owner_name }}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-4 w-4 inline-block align-middle">
+                        <path fill="#FFD700" d="M10 0L13.09 7.14 20 8.12 15.46 13.02 16.59 20 10 16.67 3.41 20 4.54 13.02 0 8.12 6.91 7.14z"/>
+                    </svg>
+                </p>
+            </div>
+            <div *ngFor="let user of usersData" class="border border-gray-300 rounded-lg p-4 my-2 shadow-md bg-white min-width-20 text-center relative">
+                <p class="text-xl text-emerald-600 font-semibold mb-2 flex justify-between items-center">
+                    <span class="align-middle">{{ user.user_name }}</span>
+                    <span class="ml-auto">
+                        <button (click)="deleteUser(user.user_code_PK)"class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" class="h-4 w-4 fill-current inline-block align-middle" >
+                                <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/>
+                            </svg>
+                        </button>
+                    </span>
+                </p>
+            </div>
+            <div class="flex justify-end">
+                <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                 (click)="showAddUserForm()">
+                    {{ showAddUserFormFlag ? 'Cancel' : 'Add User' }}
+                </button>
+            </div>
+
+<div *ngIf="showAddUserFormFlag" class="border border-gray-300 rounded-lg p-4 my-2 shadow-md bg-white min-width-20 text-center relative">
+    <p class="text-lg font-semibold text-gray-700 mb-2">Add User:</p>
+    <select #userSelect class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500">
+        <option *ngFor="let user of users" [value]="user.user_code_PK">{{ user.user_name }}</option>
+    </select>
+    <button (click)="addUser(userSelect.value)" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-2 rounded focus:outline-none focus:shadow-outline">
+        Add
+    </button>
+</div>
+
+        </div>
+    </ng-container>
+</div>

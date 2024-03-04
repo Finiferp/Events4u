@@ -110,6 +110,52 @@ const getLocationEvents = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const createGroup = async (JSON) => {
+  const sql = 'CALL sp_createGroup(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getGroups = async (JSON) => {
+  const sql = 'CALL sp_getGroups(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const updateGroup = async (JSON) => {
+  const sql = 'CALL sp_updateGroup(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getGroup = async (JSON) => {
+  const sql = 'CALL sp_getGroup(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getGroupUsers = async (JSON) => {
+  const sql = 'CALL sp_getGroupUsers(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getUsers = async () => {
+  const sql = 'CALL sp_getUsers(@output)';
+  return await executeQuery(sql);
+}
+
+const addUserToGroup = async (JSON) => {
+  const sql = 'CALL sp_addUserToGroup(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const removeUserFromGroup = async (JSON) => {
+  const sql = 'CALL sp_removeUserFromGroup(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
 
 module.exports = {
     getEvents,
@@ -125,5 +171,13 @@ module.exports = {
     addEventReview,
     getReviews,
     getUserEvents,
-    getLocationEvents
+    getLocationEvents,
+    createGroup,
+    getGroups,
+    updateGroup,
+    getGroup,
+    getGroupUsers,
+    getUsers,
+    addUserToGroup,
+    removeUserFromGroup
 }
