@@ -192,6 +192,11 @@ const getAttendedEvents = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const getReminders = async () => {
+  const sql = 'CALL sp_reminderData(@output)';
+  return await executeQuery(sql);
+}
+
 module.exports = {
     getEvents,
     getEvent,
@@ -220,5 +225,6 @@ module.exports = {
     toggleAsAttending,
     toggleAsInterested,
     getList,
-    getAttendedEvents
+    getAttendedEvents,
+    getReminders
 }
