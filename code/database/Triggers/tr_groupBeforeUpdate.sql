@@ -6,7 +6,7 @@ CREATE TRIGGER tr_groupBeforeUpdate BEFORE UPDATE ON `Group` FOR EACH ROW
 BEGIN
     IF NOT(
         NEW.code_PK <=> OLD.code_PK AND
-        NEW.name <=> OLD.name,
+        NEW.name <=> OLD.name AND
         NEW.owner_FK <=> OLD.owner_FK
     ) THEN 
         INSERT INTO `Events4uAuditLogs`.`GroupAudit`

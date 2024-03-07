@@ -27,6 +27,40 @@ export class MyEventsComponent {
     
   }
 
+  async exportList(id: any) {
+    console.log(id);
+    
+    try {
+      const response = await fetch(`http://127.0.0.1:3000/event/exportList/${id}`, {
+        method: "GET"
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to download PDF');
+      }
+  
+      const blob = await response.blob();
+  
+      const url = window.URL.createObjectURL(blob);
+  
+      const a = document.createElement('a');
+  
+      a.href = url;
+  
+      a.download = 'exportList.pdf';
+  
+      document.body.appendChild(a);
+  
+      a.click();
+  
+      document.body.removeChild(a);
+  
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+    }
+  }
+
   goTo(url:string){
     this.router.navigateByUrl(url);
   }

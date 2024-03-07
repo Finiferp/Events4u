@@ -1,10 +1,45 @@
-<app-belongs-audit></app-belongs-audit>
-<app-category-audit></app-category-audit>
-<app-event-audit></app-event-audit>
-<app-favorite-audit></app-favorite-audit>
-<app-group-audit></app-group-audit>
-<app-location-audit></app-location-audit>
-<app-part-of-audit></app-part-of-audit>
-<app-review-audit></app-review-audit>
-<app-user-audit></app-user-audit>
-<app-view-audit></app-view-audit>
+<nav class="bg-emerald-600 p-4 p-1 rounded-lg shadow-md m-2">
+      <div class="flex items-stretch justify-between h-11">
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'belongs'">Belongs</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'category'">Category</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'event'">Event</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'favorite'">Favorite</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'group'">Group</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'location'">Location</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'partOf'">Part Of</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'review'">Review</button>
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'user'">User</button>
+            <button class="text-white hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'view'">View</button>
+      </div>
+</nav>
+
+
+<app-belongs-audit *ngIf="selectedView === 'belongs'"></app-belongs-audit>
+<app-category-audit *ngIf="selectedView === 'category'"></app-category-audit>
+<app-event-audit *ngIf="selectedView === 'event'"></app-event-audit>
+<app-favorite-audit *ngIf="selectedView === 'favorite'"></app-favorite-audit>
+<app-group-audit *ngIf="selectedView === 'group'"></app-group-audit>
+<app-location-audit *ngIf="selectedView === 'location'"></app-location-audit>
+<app-part-of-audit *ngIf="selectedView === 'partOf'"></app-part-of-audit>
+<app-review-audit *ngIf="selectedView === 'review'"></app-review-audit>
+<app-user-audit *ngIf="selectedView === 'user'"></app-user-audit>
+<app-view-audit *ngIf="selectedView === 'view'"></app-view-audit>

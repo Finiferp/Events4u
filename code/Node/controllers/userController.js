@@ -174,6 +174,49 @@ const getUsersGroups = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
+const toggleAsAttending = async (req, res) => {
+    try {
+        const userID = 1; //TODO Change when LUXID
+        const eventID = parseInt(req.body.eventID);
+        const isAttending = parseInt(req.body.isAttending);
+
+        const inputData = { userID, eventID, isAttending };
+
+        const dbOutput = await db.toggleAsAttending(inputData);
+
+        let { status_code, message } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+const toggleAsInterested = async (req, res) => {
+    try {
+        const userID = 1; //TODO Change when LUXID
+        const eventID = parseInt(req.body.eventID);
+        const isInterested = parseInt(req.body.isInterested);
+
+        const inputData = { userID, eventID, isInterested };
+
+        const dbOutput = await db.toggleAsInterested(inputData);
+
+        let { status_code, message } = JSON.parse(dbOutput.outputJSON);
+
+        console.log(message);
+        res.status(status_code).json({
+            message
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
 module.exports = {
     createGroup,
     getGroups,
@@ -183,5 +226,7 @@ module.exports = {
     getUsers,
     addUserToGroup,
     deleteUserFromGroup,
-    getUsersGroups
+    getUsersGroups,
+    toggleAsAttending,
+    toggleAsInterested
 };

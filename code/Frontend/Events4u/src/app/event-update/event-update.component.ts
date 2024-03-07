@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { log } from 'console';
 
 
 @Component({
@@ -82,8 +81,8 @@ export class EventUpdateComponent implements OnInit {
       this.eventUpdateForm.patchValue({ endDateTime: new Date(this.eventData.endDateTime).toISOString().slice(0, 16) });
       this.eventUpdateForm.patchValue({ price: this.eventData.eventPrice });
       this.eventUpdateForm.patchValue({ location: this.eventData.eventLocationCode });
-      this.eventUpdateForm.patchValue({ categories: this.eventData.categories });
-      // this.categories = this.eventData.categories.split(',');
+      this.eventUpdateForm.get('group')?.setValue('1');
+      this.categories = this.eventData.categories;
       this.eventUpdateForm.patchValue({ isVisible: this.eventData.isVisible === 1 ? true : false });
       this.oldImageUrl = this.eventData.eventImage;
     }

@@ -59,6 +59,37 @@ export class EventDetailsComponent implements OnInit {
     this.loadEvent();
   }
 
+  async toggleAsInterested(){
+    const eventID = this.eventData.eventCode;
+    const isInterested = this.eventData.isInterested === 0 ? 1 : 0;
+
+    const inputData = { eventID, isInterested };
+
+    const response = await fetch(`http://127.0.0.1:3000/event/interested`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData)
+    });
+    this.loadEvent();
+  }
+
+  async toggleAsAttending(){
+    const eventID = this.eventData.eventCode;
+    const isAttending = this.eventData.isAttending === 0 ? 1 : 0;
+
+    const inputData = { eventID, isAttending };
+
+    const response = await fetch(`http://127.0.0.1:3000/event/attending`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData)
+    });
+    this.loadEvent();
+  }
 
 
 }

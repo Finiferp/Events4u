@@ -50,7 +50,6 @@ const getCategories = async () => {
   return await executeQuery(sql);
 }
 
-
 const getEventsOnCategories = async (JSON) => {
   const sql = 'CALL sp_getEventsOnCategories(?, @output)';
   const values = [JSON];
@@ -163,6 +162,36 @@ const getUserGroups = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const getGroupEvents = async (JSON) => {
+  const sql = 'CALL sp_getGroupEvents(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const toggleAsAttending = async (JSON) => {
+  const sql = 'CALL sp_toggleAsAttending(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const toggleAsInterested = async (JSON) => {
+  const sql = 'CALL sp_toggleAsInterested(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getList = async (JSON) => {
+  const sql = 'CALL sp_exportList(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getAttendedEvents = async (JSON) => {
+  const sql = 'CALL sp_getAttendedEvents(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
 module.exports = {
     getEvents,
     getEvent,
@@ -186,5 +215,10 @@ module.exports = {
     getUsers,
     addUserToGroup,
     removeUserFromGroup,
-    getUserGroups
+    getUserGroups,
+    getGroupEvents,
+    toggleAsAttending,
+    toggleAsInterested,
+    getList,
+    getAttendedEvents
 }

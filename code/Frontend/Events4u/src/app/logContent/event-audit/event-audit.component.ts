@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-event-audit',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './event-audit.component.html',
   styleUrl: './event-audit.component.scss'
 })
@@ -20,6 +20,8 @@ export class EventAuditComponent implements OnInit {
       method: "GET",
     });
     const data = await response.json();
+    console.log(data.data);
+    
     this.data = data.data;
   }
 }

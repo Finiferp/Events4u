@@ -12,5 +12,6 @@ module.exports = function (app) {
     app.route("/group/user/add").post(user.addUserToGroup);
     app.route("/group/user/delete").delete(user.deleteUserFromGroup);
     app.route("/myGroups").get(user.getGroups);
-
-}
+    app.route("/event/interested").put(user.toggleAsInterested);
+    app.route("/event/attending").put(user.toggleAsAttending);
+};

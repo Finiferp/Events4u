@@ -6,10 +6,10 @@ CREATE TRIGGER tr_userBeforeUpdate BEFORE UPDATE ON User FOR EACH ROW
 BEGIN
     IF NOT(
         NEW.code_PK <=> OLD.code_PK AND
-        NEW.firstName <=> OLD.firstName,
-        NEW.lastName <=> OLD.lastName,
-        NEW.email <=> OLD.email,
-        NEW.phone <=> OLD.phone,
+        NEW.firstName <=> OLD.firstName AND
+        NEW.lastName <=> OLD.lastName AND
+        NEW.email <=> OLD.email AND
+        NEW.phone <=> OLD.phone AND
         NEW.isAdmin <=> OLD.isAdmin
     ) THEN 
         INSERT INTO `Events4uAuditLogs`.`UserAudit`

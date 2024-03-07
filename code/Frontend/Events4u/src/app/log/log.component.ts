@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BelongsAuditComponent } from '../logContent/belongs-audit/belongs-audit.component';
 import { CategoryAuditComponent } from '../logContent/category-audit/category-audit.component';
 import { EventAuditComponent } from '../logContent/event-audit/event-audit.component';
@@ -13,10 +14,10 @@ import { ViewAuditComponent } from '../logContent/view-audit/view-audit.componen
 @Component({
   selector: 'app-log',
   standalone: true,
-  imports: [BelongsAuditComponent, CategoryAuditComponent, EventAuditComponent, FavoriteAuditComponent, GroupAuditComponent, LocationAuditComponent, PartOfAuditComponent, ReviewAuditComponent, UserAuditComponent, ViewAuditComponent],
+  imports: [CommonModule, BelongsAuditComponent, CategoryAuditComponent, EventAuditComponent, FavoriteAuditComponent, GroupAuditComponent, LocationAuditComponent, PartOfAuditComponent, ReviewAuditComponent, UserAuditComponent, ViewAuditComponent],
   templateUrl: './log.component.html',
   styleUrl: './log.component.scss'
 })
 export class LogComponent {
-
+  selectedView: string = 'belongs';
 }

@@ -36,6 +36,8 @@ export class EventAddComponent implements OnInit {
     this.fetchLocations();
     this.fetchGroups();
     this.locationSelect.nativeElement.selectedIndex = 0;
+    this.eventAddForm.get('group')?.setValue('1');
+
   }
 
   async fetchGroups() {
@@ -90,25 +92,25 @@ export class EventAddComponent implements OnInit {
     let location = this.eventAddForm.value.location;
     let categories = this.eventAddForm.value.categories;
     let group = this.eventAddForm.value.group;
-    
-        if (title && startDateTime && endDateTime && price && location && categories && group) {
-          const formData = new FormData();
-          formData.append("title", title);
-          formData.append("startDateTime", startDateTime)
-          formData.append("endDateTime", endDateTime)
-          formData.append("price", price)
-          formData.append("location", location)
-          formData.append("categories", categories)
-          formData.append("imageUrl", this.file);
-          formData.append("group", group);
-          
-          
-    
-          const response = await fetch(`http://127.0.0.1:3000/event/create`, {
-            method: "POST",
-            body: formData,
-          });
-        }
+
+    if (title && startDateTime && endDateTime && price && location && categories && group) {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("startDateTime", startDateTime)
+      formData.append("endDateTime", endDateTime)
+      formData.append("price", price)
+      formData.append("location", location)
+      formData.append("categories", categories)
+      formData.append("imageUrl", this.file);
+      formData.append("group", group);
+
+
+
+      const response = await fetch(`http://127.0.0.1:3000/event/create`, {
+        method: "POST",
+        body: formData,
+      });
+    }
   }
 
   addCategory(category: string): void {
@@ -139,7 +141,7 @@ export class EventAddComponent implements OnInit {
   async createLocation(newLocation: any) {
 
     const inputData = { "adress": newLocation.value };
-    
+
     const response = await fetch(`http://127.0.0.1:3000/location/add`, {
       method: "POST",
       headers: {

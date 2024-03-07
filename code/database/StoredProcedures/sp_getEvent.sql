@@ -5,6 +5,8 @@ BEGIN
     DECLARE input_eventId INT;
     DECLARE input_activeUser INT;
     DECLARE isFavorited INT DEFAULT 0;
+    DECLARE isAttending INT DEFAULT 0;
+    DECLARE isInterested INT DEFAULT 0;
     DECLARE response_code INT;
     DECLARE response_message VARCHAR(255);
     DECLARE response_data TEXT;
@@ -34,6 +36,18 @@ BEGIN
             SET isFavorited = 0;
         END IF;
 
+        IF input_activeUser <> -1 AND EXISTS (SELECT 1 FROM Attends WHERE user_code_attends_PKFK = input_activeUser AND event_code_attends_PKFK = input_eventId) THEN
+            SET isAttending = 1;
+        ELSE
+            SET isAttending = 0;
+        END IF;
+
+        IF input_activeUser <> -1 AND EXISTS (SELECT 1 FROM Interested WHERE user_code_interested_PKFK = input_activeUser AND event_code_interested_PKFK = input_eventId) THEN
+            SET isInterested = 1;
+        ELSE
+            SET isInterested = 0;
+        END IF;
+
         SET outputJSON = (
             SELECT JSON_OBJECT(
                 'status_code', response_code,
@@ -50,6 +64,8 @@ BEGIN
                     'isVisible', e.isVisible,
                     'ownerName', CONCAT(u.firstName, ' ', u.lastName),
                     'isFavorited', isFavorited,
+                    'isAttending', isAttending,
+                    'isInterested', isInterested,
                     'categories', (
                         SELECT JSON_ARRAYAGG(c.label)
                         FROM Category c

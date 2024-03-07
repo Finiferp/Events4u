@@ -1,0 +1,16 @@
+<ul class="flex flex-wrap justify-center">
+      <ng-container *ngFor="let event of eventsData">
+            <li *ngIf="event.isVisible === 1"
+                  class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
+                  <a (click)="goTo('/event/' + event.code_PK)" class="block w-full h-full">
+                        <img src="{{ event.imageUrl }}" alt="{{ event.title }}"
+                              class="w-full h-56 object-cover object-center">
+                        <div class="p-6">
+                              <h3 class="text-xl font-semibold text-gray-800">{{ event.title }}</h3>
+                              <p class="mt-2 text-base text-gray-600"><strong>Owner:</strong> {{ event.owner_FK }}</p>
+                              <p class="text-base text-gray-600"><strong>Start Date & Time:</strong> {{ event.startDateTime | date:'short' }}</p>
+                        </div>
+                  </a>
+            </li>
+      </ng-container>
+</ul>

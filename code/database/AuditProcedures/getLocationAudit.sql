@@ -1,3 +1,4 @@
+-- Active: 1706868742750@@192.168.131.123@3306@Events4uAuditLogs
 DELIMITER //
 
 DROP PROCEDURE IF EXISTS sp_getLocationAudit;
@@ -14,7 +15,7 @@ BEGIN
         JSON_OBJECT(
             'idLocationAudit', idLocationAudit,
             'code_PK', code_PK,
-            'address', address,
+            'address', adress,
             'date_audit', date_audit,
             'action_audit', action_audit
         )

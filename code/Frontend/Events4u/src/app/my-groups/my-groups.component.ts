@@ -53,4 +53,8 @@ export class MyGroupsComponent implements OnInit {
   goTo(id: any) {
     this.router.navigateByUrl('/group/edit/'+ id);
   }
+
+  changeTo(id: any) {
+    this.router.navigateByUrl('/group/events/'+ id);
+  }
 }

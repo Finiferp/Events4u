@@ -1,6 +1,9 @@
 "use strict";
 
 const db = require("../DB");
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+
 
 const getEvent = async (req, res) => {
     try {
@@ -71,6 +74,7 @@ const toggleFavorite = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
 const getCategories = async (req, res) => {
     try {
         const dbOutput = await db.getCategories();
@@ -110,6 +114,7 @@ const getEventsOnCategories = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 };
+
 const search = async (req, res) => {
     try {
         const { category, title } = req.body;
@@ -236,12 +241,12 @@ const getReviews = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 const getUserEvents = async (req, res) => {
     try {
@@ -255,17 +260,17 @@ const getUserEvents = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 const getLocationEvents = async (req, res) => {
     try {
         const locationID = parseInt(req.params.id);
-        const userID = 1 //TODO Change when LUXID
+        const userID = 1; //TODO Change when LUXID
         const inputData = { locationID, userID };
         console.log(inputData);
         const dbOutput = await db.getLocationEvents(inputData);
@@ -274,7 +279,93 @@ const getLocationEvents = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+const getGroupEvents = async (req, res) => {
+    try {
+        const groupID = parseInt(req.params.id);
+
+        const inputData = { groupID };
+
+        const dbOutput = await db.getGroupEvents(inputData);
+
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message,
+            data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+const exportList = async (req, res) => {
+    try {
+        const doc = new PDFDocument();
+        const eventID = parseInt(req.params.id);
+
+        const inputData = { eventID };
+
+        const dbOutput = await db.getList(inputData);
+
+        let { status_code, message, attending_users, interested_users } = JSON.parse(dbOutput.outputJSON);
+
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', 'attachment; filename="exportList.pdf"');
+
+        doc.pipe(res);
+
+        doc.fontSize(20).text('Interested Users:', { align: 'center' });
+        doc.moveDown();
+
+        if (interested_users.interested_users === null) {
+            doc.fontSize(12).text('No interested users');
+        } else {
+            interested_users.interested_users.forEach(name => {
+                doc.fontSize(12).text(name.name);
+            });
+        }
+
+        doc.moveDown();
+        doc.fontSize(20).text('Attending Users:', { align: 'center' });
+        doc.moveDown();
+
+        if (attending_users.attending_users === null) {
+            doc.fontSize(12).text('No attending users');
+        } else {
+            attending_users.attending_users.forEach(name => {
+                doc.fontSize(12).text(name.name);
+            });
+        }
+
+        doc.end();
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+const getAttendedEvents = async (req, res) => {
+    try {
+        const userID = 1; //TODO Change when LUXID
+
+        const inputData = { userID };
+
+        const dbOutput = await db.getAttendedEvents(inputData);
+
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message,
+            data
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
@@ -294,5 +385,8 @@ module.exports = {
     addEventReview,
     getReviews,
     getUserEvents,
-    getLocationEvents
+    getLocationEvents,
+    getGroupEvents,
+    exportList,
+    getAttendedEvents
 };

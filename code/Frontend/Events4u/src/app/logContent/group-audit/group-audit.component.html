@@ -1,18 +1,22 @@
-<table>
-    <tr>
-        <th>idGroupAudit</th>
-        <th>code_PK</th>
-        <th>name</th>
-        <th>owner_FK</th>
-        <th>date_audit</th>
-        <th>action_audit</th>
-    </tr>
-    <tr *ngFor="let item of data">
-        <td>{{ item.idGroupAudit }}</td>
-        <td>{{ item.code_PK }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.owner_FK }}</td>
-        <td>{{ item.date_audit }}</td>
-        <td>{{ item.action_audit }}</td>
-    </tr>
+<table class="min-w-full divide-y divide-gray-200">
+    <thead>
+        <tr class="bg-gray-50">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">idGroupAudit</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">code_PK</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">name</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">owner_FK</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">date_audit</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">action_audit</th>
+        </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+        <tr *ngFor="let item of data" class="bg-white">
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.idGroupAudit }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.code_PK }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.name }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.owner_FK }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.date_audit | date:'short' }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">{{ item.action_audit }}</td>
+        </tr>
+    </tbody>
 </table>

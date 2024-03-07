@@ -8,6 +8,9 @@ import { EventsLocationComponent } from './events-location/events-location.compo
 import { MyGroupsComponent } from './my-groups/my-groups.component';
 import { GroupEditComponent } from './group-edit/group-edit.component';
 import { LogComponent } from './log/log.component';
+import { GroupEventsComponent } from './group-events/group-events.component';
+import { EventCopyComponent } from './event-copy/event-copy.component';
+import { AttendedEventsComponent } from './attended-events/attended-events.component';
 
 export const routes: Routes = [
     {path: 'event/add', component: EventAddComponent },
@@ -19,6 +22,9 @@ export const routes: Routes = [
     {path: 'myGroups', component: MyGroupsComponent },
     {path: 'group/edit/:id', component: GroupEditComponent },
     {path: 'log', component: LogComponent },
+    {path: 'group/events/:id', component: GroupEventsComponent },
+    {path: 'event/copy/:id', component: EventCopyComponent },
+    {path: 'events/attended', component: AttendedEventsComponent },
    
     { path: '', redirectTo: 'events', pathMatch: 'full' }
 ];
