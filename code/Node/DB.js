@@ -197,6 +197,36 @@ const getReminders = async () => {
   return await executeQuery(sql);
 }
 
+const updateMailer = async (JSON) => {
+  const sql = 'CALL sp_updateMailer(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+} 
+
+const register = async (JSON) => {
+  const sql = 'CALL sp_register(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const login = async (JSON) => {
+  const sql = 'CALL sp_login(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getSalt = async (JSON) => {
+  const sql = 'CALL sp_getSalt(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const checkTokenExists = async (JSON) => {
+  const sql = 'CALL sp_checkToken(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}  
+
 module.exports = {
     getEvents,
     getEvent,
@@ -226,5 +256,10 @@ module.exports = {
     toggleAsInterested,
     getList,
     getAttendedEvents,
-    getReminders
+    getReminders,
+    updateMailer,
+    register,
+    login,
+    getSalt,
+    checkTokenExists
 }

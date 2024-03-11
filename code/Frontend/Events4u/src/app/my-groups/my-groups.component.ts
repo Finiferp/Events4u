@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { LocalService } from '../local.service';
 @Component({
   selector: 'app-my-groups',
   standalone: true,
@@ -11,8 +12,9 @@ import { Router } from '@angular/router';
 export class MyGroupsComponent implements OnInit {
   public groupsData: any[] = [];
   public isDialogOpen: boolean = false;
+  token = this.localService.getItem("token")
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private localService: LocalService) {}
   ngOnInit(): void {
     this.loadGroups();
   }
@@ -22,8 +24,13 @@ export class MyGroupsComponent implements OnInit {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
     });
+
+    if(response.status === 401 || response.status === 403){
+      this.router.navigateByUrl("/login");
+    }
 
     const data = await response.json();
     this.groupsData = data.data;

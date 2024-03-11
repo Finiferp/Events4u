@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { LocalService } from '../local.service';
 @Component({
   selector: 'app-group-events',
   standalone: true,
@@ -11,7 +12,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class GroupEventsComponent implements OnInit {
   public eventsData: any[] = [];
   id: any;
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  token = this.localService.getItem("token")
+
+  constructor(private router: Router, private route: ActivatedRoute, private localService: LocalService) {}
   
 
   async ngOnInit() {
@@ -20,12 +23,15 @@ export class GroupEventsComponent implements OnInit {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
     });
+
+    if(response.status === 401 || response.status === 403){
+      this.router.navigateByUrl("/login");
+    }
     const data = await response.json();
-    this.eventsData = data.data;
-    console.log(this.eventsData);
-    
+    this.eventsData = data.data;    
   }
 
   goTo(url:string){

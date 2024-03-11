@@ -9,7 +9,6 @@ BEGIN
         NEW.firstName <=> OLD.firstName AND
         NEW.lastName <=> OLD.lastName AND
         NEW.email <=> OLD.email AND
-        NEW.phone <=> OLD.phone AND
         NEW.isAdmin <=> OLD.isAdmin
     ) THEN 
         INSERT INTO `Events4uAuditLogs`.`UserAudit`
@@ -19,7 +18,6 @@ BEGIN
             OLD.firstName,
             OLD.lastName,
             OLD.email,
-            OLD.phone,
             OLD.isAdmin,
             CURRENT_TIMESTAMP,
             "UPDATE"

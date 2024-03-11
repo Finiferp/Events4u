@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
+import { LocalService } from '../local.service';
+
 
 
 @Component({
@@ -13,12 +15,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class EventsLocationComponent {
   public eventData: any[] = [];
   public id: any;
-
+  token = this.localService.getItem("token");
   ngOnInit() {
     this.loadEvent();
   }
 
-  constructor(private route: ActivatedRoute, private router: Router) { };
+  constructor(private route: ActivatedRoute, private router: Router, private localService: LocalService) {}
 
 
   async loadEvent() {
@@ -27,6 +29,7 @@ export class EventsLocationComponent {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
     });
     const data = await response.json();
@@ -35,7 +38,8 @@ export class EventsLocationComponent {
   getIdFromUrl(): void {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');
-    });
+      
+    });    
   }
   goTo(url:string){
     this.router.navigateByUrl(url);

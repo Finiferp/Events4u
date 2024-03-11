@@ -10,7 +10,6 @@ BEGIN
         OLD.firstName,
         OLD.lastName,
         OLD.email,
-        OLD.phone,
         OLD.isAdmin,
         CURRENT_TIMESTAMP,
         "DELETE"

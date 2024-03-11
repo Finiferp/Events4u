@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { LocalService } from '../local.service';
 
 @Component({
   selector: 'app-my-events',
@@ -11,19 +12,26 @@ import { Router } from '@angular/router';
 })
 export class MyEventsComponent {
   public eventsData: any[] = [];
+  token = this.localService.getItem("token");
 
-  constructor(private router: Router) { }
+
+  constructor(private router: Router, private localService: LocalService) { }
 
   async ngOnInit() {
     const response = await fetch(`http://127.0.0.1:3000/myEvents`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
     });
+
+    if(response.status === 401 || response.status === 403){
+      this.router.navigateByUrl("/login");
+    }
+
     const data = await response.json();
     this.eventsData = data.data;
-    console.log(this.eventsData);
     
   }
 

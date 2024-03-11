@@ -1,21 +1,61 @@
-<nav class="flex items-center justify-between flex-wrap bg-emerald-600 p-1 rounded-lg shadow-md m-2">
-  <div class="flex items-center flex-shrink-0 text-white mr-6">
+<nav class="flex flex-row items-center justify-between flex-wrap bg-emerald-600 p-1 rounded-lg shadow-md m-2">
+  <div class="flex items-center flex-shrink-0 text-white mr-6 cursor-pointer" (click)="goTo('/events')">
     <img src="../assets/logo.png" alt="Logo" class="h-32 w-auto">
   </div>
-  <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-    <div class="text-sm lg:flex-grow">
-      <a (click)="toHome()" class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
-        Home
-      </a>
-      <a routerLink="/events" routerLinkActive="active" class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
-        About
-      </a>
-      <a   (click)="scrollToFooter()"  class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white text-lg	">
-        Contact
-      </a>
-    </div>
-    <div class="relative">
+  <div class="flex flex-row items-center justify-between flex-wrap   w-full flex-grow lg:flex lg:items-center lg:w-auto">
+
+    <button (click)="goTo('/events')"
+      class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
+      Home
+    </button>
+
+    <button *ngIf="isLoggedIn" (click)="goTo('/myEvents')"
+      class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
+      My Events
+    </button>
+
+    <button *ngIf="isLoggedIn" (click)="goTo('/myGroups')"
+      class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
+      My Groups
+    </button>
+    <button (click)="scrollToFooter()"
+      class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white text-lg	">
+      Contact
+    </button>
+
+    <div class="basis-1/2">
       <app-category-dropdown></app-category-dropdown>
     </div>
+
+    <button *ngIf="isLoggedIn" (click)="goTo('/events/attended')"
+      class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
+      Attending Events
+    </button>
+
+    <select (change)="changeLocation(locationSelect.value)" #locationSelect
+      class="cursor-pointer block mt-4 lg:inline-block lg:mt-0 text-black mr-4 text-lg w-48 bg-transparent hover:text-white text-green-200">
+      <option disabled selected value="-1">Location of Events</option>
+      <option value="-1" class="text-black">All</option>
+      <option *ngFor="let location of locations" class="text-black" [value]="location.id">{{location.adress}}</option>
+    </select>
+
+
+    <div>
+      <button *ngIf="!isLoggedIn" (click)="goTo('/login')"
+        class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
+        Login
+      </button>
+
+      <button *ngIf="!isLoggedIn" (click)="goTo('/register')"
+        class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
+        Register
+      </button>
+
+      <button *ngIf="isLoggedIn" (click)="logout()"
+        class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg">
+        Logout
+      </button>
+    </div>
+
   </div>
 </nav>

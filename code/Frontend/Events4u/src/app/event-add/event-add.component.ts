@@ -1,7 +1,9 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
-
+import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+import { LocalService } from '../local.service';
 
 @Component({
   selector: 'app-event-add',
@@ -18,6 +20,7 @@ export class EventAddComponent implements OnInit {
   options: any[] = [];
   locations: any[] = [];
   groups: any[] = [];
+  token = this.localService.getItem("token");
 
   eventAddForm = new FormGroup({
     title: new FormControl(''),
@@ -30,6 +33,8 @@ export class EventAddComponent implements OnInit {
   });
   public file: any;
   public isDialogOpen: boolean = false;
+
+  constructor(private router: Router, private localService: LocalService) { }
 
   ngOnInit() {
     this.fetchCategories();
@@ -45,8 +50,14 @@ export class EventAddComponent implements OnInit {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       }
     });
+
+    if(response.status === 401 || response.status === 403){
+      this.router.navigateByUrl("/login");
+    }
+
     const data = await response.json();
     this.groups = data.data;
   }
@@ -110,6 +121,18 @@ export class EventAddComponent implements OnInit {
         method: "POST",
         body: formData,
       });
+
+      if(response.ok){
+        Swal.fire({
+          title: 'Created!',
+          text: 'Your event has been created.',
+          icon: 'success'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigateByUrl('/myEvents');  
+          }
+        });
+      }
     }
   }
 
@@ -155,5 +178,6 @@ export class EventAddComponent implements OnInit {
     }
   }
 
+  
 }
 

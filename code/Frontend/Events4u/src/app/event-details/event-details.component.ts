@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReviewsComponent } from '../reviews/reviews.component';
 import { Router } from '@angular/router';
+import { LocalService } from '../local.service';
 
 
 @Component({
@@ -15,8 +16,9 @@ import { Router } from '@angular/router';
 export class EventDetailsComponent implements OnInit {
   public eventData: any = {};
   public id: any = -1;
+  token = this.localService.getItem("token")
 
-  constructor(private route: ActivatedRoute, private router: Router) { };
+  constructor(private route: ActivatedRoute, private router: Router, private localService: LocalService) { };
 
   async ngOnInit() {
     this.loadEvent()
@@ -28,6 +30,7 @@ export class EventDetailsComponent implements OnInit {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
     });
     const data = await response.json();
@@ -53,6 +56,7 @@ export class EventDetailsComponent implements OnInit {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
       body: JSON.stringify(inputData)
     }); 
@@ -69,6 +73,7 @@ export class EventDetailsComponent implements OnInit {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
       body: JSON.stringify(inputData)
     });
@@ -85,6 +90,7 @@ export class EventDetailsComponent implements OnInit {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
       body: JSON.stringify(inputData)
     });

@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors');
 const port = 3000;
 const bodyParser = require('body-parser');
+const cronDemon = require('./controllers/mailer');
 
 
 
@@ -16,7 +17,7 @@ require('./routes/eventRoutes')(app);
 require('./routes/locationRoutes')(app);
 require('./routes/userRoutes')(app);
 require('./routes/auditRoutes')(app);
-require('./controllers/mailer')(app);
+cronDemon.startCron(app)
 
 app.use((req, res) => {
     res.status(404).send('Please enter a valid endpoint.');

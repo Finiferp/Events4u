@@ -19,9 +19,7 @@ export class EventAuditComponent implements OnInit {
     const response = await fetch(`http://127.0.0.1:3000/audit/event`, {
       method: "GET",
     });
-    const data = await response.json();
-    console.log(data.data);
-    
+    const data = await response.json();    
     this.data = data.data;
   }
 }

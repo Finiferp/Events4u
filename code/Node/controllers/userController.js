@@ -1,11 +1,13 @@
 "use strict";
 
 const db = require("../DB");
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 
 const createGroup = async (req, res) => {
     try {
         const name = req.body.name;
-        const userID = 1; //TODO Change when LUXID
+        const userID = parseInt(req.body.userID);
         
         const inputData = { name, userID };
 
@@ -23,7 +25,7 @@ const createGroup = async (req, res) => {
 
 const getGroups = async (req, res) => {
     try {
-        const userID = 1; //TODO Change when LUXID
+        const userID = parseInt(req.body.userID);
 
         const inputData = { userID };
 
@@ -157,7 +159,7 @@ const deleteUserFromGroup = async (req, res) => {
 
 const getUsersGroups = async (req, res) => {
     try {
-        const userID = 1; //TODO Change when LUXID
+        const userID = parseInt(req.body.userID);
 
         const inputData = { userID };
 
@@ -177,7 +179,7 @@ const getUsersGroups = async (req, res) => {
 
 const toggleAsAttending = async (req, res) => {
     try {
-        const userID = 1; //TODO Change when LUXID
+        const userID = parseInt(req.body.userID);
         const eventID = parseInt(req.body.eventID);
         const isAttending = parseInt(req.body.isAttending);
 
@@ -198,7 +200,7 @@ const toggleAsAttending = async (req, res) => {
 
 const toggleAsInterested = async (req, res) => {
     try {
-        const userID = 1; //TODO Change when LUXID
+        const userID = parseInt(req.body.userID);
         const eventID = parseInt(req.body.eventID);
         const isInterested = parseInt(req.body.isInterested);
 
@@ -217,6 +219,106 @@ const toggleAsInterested = async (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 }
+
+const register = async (req, res) => {
+    try {
+        const firstName= req.body.firstName;
+        const lastName = req.body.lastName;
+        const email = req.body.email;
+        const password = req.body.password;
+        const salt = generateSalt();
+        const hashedPassword = hashPassword(password, salt);
+
+        const inputData = { firstName, lastName, email, password: hashedPassword, salt };
+
+        const dbOutput = await db.register(inputData);
+
+        let { status_code, message } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+const login = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
+
+        const inputDataSalt = { email };
+        const dbSaltOutput = await db.getSalt(inputDataSalt);
+
+        let { salt, userID } = JSON.parse(dbSaltOutput.outputJSON);
+
+        if(!email || !password || !salt || !userID) {
+            return res.status(400).send('Missing required fields');
+        } else {
+            const hashedPassword = hashPassword(password, salt);
+            const token = generateAuthToken(email, userID);
+            const inputData = { email, password: hashedPassword, token };
+
+            const dbOutput = await db.login(inputData);
+
+            let { status_code, message, user, token_out } = JSON.parse(dbOutput.outputJSON);
+
+            res.status(status_code).json({
+                message,
+                user,
+                token: token_out
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+const checkLoginStatus = async (req, res) => {
+    try {
+        const activeUser = req.body.activeUser;
+
+        let isLoggedIn;
+
+        if(activeUser !== -1) {
+            isLoggedIn = true;
+        } else {
+            isLoggedIn = false;
+        }
+
+        res.status(200).json({
+            isLoggedIn
+        })
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+function generateSalt(){
+    return crypto.randomBytes(32).toString('hex');
+}
+
+function hashPassword(password, salt){
+    return crypto.pbkdf2Sync(password, salt, 1000, 128, 'sha512').toString('hex');
+}
+
+function generateAuthToken(email, userID) {
+    const payload = {
+        email: email,
+        userID: userID,
+        exp: Math.floor(Date.now() / 1000) + 12 * 3600,
+    };
+    const token = jwt.sign(payload, 'Events4USecretKey');
+ 
+    return token;
+};
+
+
 module.exports = {
     createGroup,
     getGroups,
@@ -228,5 +330,8 @@ module.exports = {
     deleteUserFromGroup,
     getUsersGroups,
     toggleAsAttending,
-    toggleAsInterested
+    toggleAsInterested,
+    register,
+    login,
+    checkLoginStatus
 };

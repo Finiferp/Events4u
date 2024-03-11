@@ -94,7 +94,8 @@ BEGIN
     END IF;
         SET outputJSON = JSON_OBJECT(
             'status_code', response_code,
-            'message', response_message
+            'message', response_message,
+            'updated_eventID', input_eventID
         ); 
 
 END //

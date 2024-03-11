@@ -1,16 +1,26 @@
 <ul class="flex flex-wrap justify-center">
   <li *ngFor="let event of eventsData"
     class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
-          
+
     <div class="relative" title="List of attendees and interested people" (click)="exportList(event.eventCode)">
       <div class="w-fit h-fit top-0 right-0 m-2 absolute">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white hover:text-emerald-600" viewBox="0 0 576 512">
-          <path fill="currentColor" d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384V288H216c-13.3 0-24 10.7-24 24s10.7 24 24 24H384V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM384 336V288H494.1l-39-39c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39H384zm0-208H256V0L384 128z"/>
+          <path fill="currentColor"
+            d="M0 64C0 28.7 28.7 0 64 0H224V128c0 17.7 14.3 32 32 32H384V288H216c-13.3 0-24 10.7-24 24s10.7 24 24 24H384V448c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM384 336V288H494.1l-39-39c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39H384zm0-208H256V0L384 128z" />
         </svg>
       </div>
     </div>
-    
-    
+
+    <div class="relative" title="Copy this event." (click)="goTo('/event/copy/' + event.eventCode)">
+      <div class="w-fit h-fit top-0 left-0 m-2 absolute">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white hover:text-emerald-600" viewBox="0 0 576 512">
+          <path fill="currentColor"
+          d="M208 0H332.1c12.7 0 24.9 5.1 33.9 14.1l67.9 67.9c9 9 14.1 21.2 14.1 33.9V336c0 26.5-21.5 48-48 48H208c-26.5 0-48-21.5-48-48V48c0-26.5 21.5-48 48-48zM48 128h80v64H64V448H256V416h64v48c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V176c0-26.5 21.5-48 48-48z" />
+        </svg>
+      </div>
+    </div>
+
+
 
     <a (click)="goTo('/event/update/' + event.eventCode)" class="block w-full h-full">
       <img src="{{ event.eventImage }}" alt="{{ event.eventTitle }}" class="w-full h-56 object-cover object-center">
@@ -22,4 +32,16 @@
       </div>
     </a>
   </li>
+
+  <li  class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
+    <a (click)="goTo('/event/add')" class="block w-full h-full">
+      <img src="./assets/images/bannerPlaceholder.png" alt="Placeholder Banner"
+        class="w-full h-56 object-cover object-center">
+      <div class="p-6">
+        <h2 class="text-xl font-semibold text-gray-800 text-center">Add a new Event</h2> 
+      </div>
+    </a>
+  </li>
+
+
 </ul>

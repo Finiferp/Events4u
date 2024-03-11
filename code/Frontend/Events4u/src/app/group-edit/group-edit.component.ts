@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
+import { LocalService } from '../local.service';
 
 @Component({
   selector: 'app-group-edit',
@@ -17,8 +17,9 @@ export class GroupEditComponent implements OnInit {
   public users: any[] = [];
   public showAddUserFormFlag: boolean = false;
   id: any = -1;
+  token = this.localService.getItem("token");
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private localService: LocalService, private router: Router) { }
 
   ngOnInit(): void {
     this.getIdFromUrl();
@@ -31,8 +32,12 @@ export class GroupEditComponent implements OnInit {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       }
     });
+    if(response.status === 401 || response.status === 403){
+      this.router.navigateByUrl("/login");
+    }
     const data = await response.json();
     this.groupData = data.data;
   }

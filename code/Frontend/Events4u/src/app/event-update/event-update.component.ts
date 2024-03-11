@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
+import { LocalService } from '../local.service';
 
 @Component({
   selector: 'app-event-update',
@@ -24,8 +24,9 @@ export class EventUpdateComponent implements OnInit {
   locations: any[] = [];
   oldImageUrl: string = '';
   groups: any[] = [];
+  token = this.localService.getItem("token");
 
-  constructor(private route: ActivatedRoute, private router: Router) { };
+  constructor(private route: ActivatedRoute, private router: Router, private localService: LocalService) { };
 
 
   eventUpdateForm = new FormGroup({
@@ -53,8 +54,14 @@ export class EventUpdateComponent implements OnInit {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       }
     });
+
+    if(response.status === 401 || response.status === 403){
+      this.router.navigateByUrl("/login");
+    }
+
     const data = await response.json();
     this.groups = data.data;
   }
@@ -68,10 +75,10 @@ export class EventUpdateComponent implements OnInit {
       },
     });
     const data = await response.json();
-        
+
     if (data.redirect !== undefined) {
       const redirectedUrl = data.redirect;
-      this.router.navigateByUrl(redirectedUrl); // TODO go back to myevents
+      this.router.navigateByUrl("/myEvents"); 
     } else {
       this.eventData = data.data;
       this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
@@ -83,6 +90,7 @@ export class EventUpdateComponent implements OnInit {
       this.eventUpdateForm.patchValue({ location: this.eventData.eventLocationCode });
       this.eventUpdateForm.get('group')?.setValue('1');
       this.categories = this.eventData.categories;
+      this.eventUpdateForm.patchValue({ categories: this.categories.join(',') });
       this.eventUpdateForm.patchValue({ isVisible: this.eventData.isVisible === 1 ? true : false });
       this.oldImageUrl = this.eventData.eventImage;
     }
@@ -126,9 +134,9 @@ export class EventUpdateComponent implements OnInit {
     }
   }
 
-
-
   async onSubmit() {
+    console.log("submit");
+
     let eventID = this.eventData.eventCode;
     let title = this.eventUpdateForm.value.title;
     let startDateTime = this.eventUpdateForm.value.startDateTime;
@@ -138,10 +146,7 @@ export class EventUpdateComponent implements OnInit {
     let categories = this.eventUpdateForm.value.categories;
     let isVisible = this.eventUpdateForm.value.isVisible;
     let group = this.eventUpdateForm.value.group;
-    //console.log(eventID,title,startDateTime,endDateTime,price,location,categories);
-    console.log(group);
-    
-    // console.log(this.oldImageUrl);
+
     if (eventID && title && startDateTime && endDateTime && price && location && categories && group) {
       const formData = new FormData();
       formData.append("eventID", eventID);
@@ -156,7 +161,7 @@ export class EventUpdateComponent implements OnInit {
       formData.append("isVisible", isVisible ? '1' : '0');
       formData.append("group", group);
 
-      
+
 
       const response = await fetch(`http://127.0.0.1:3000/event/update`, {
         method: "POST",
@@ -164,7 +169,16 @@ export class EventUpdateComponent implements OnInit {
       });
 
       if (response.ok) {
-        this.ngOnInit();
+        Swal.fire({
+          title: 'Updated!',
+          text: 'Your event has been updated.',
+          icon: 'success'
+        }).then((result) => {
+          if (result.isConfirmed) {
+             this.ngOnInit();
+          }
+        });
+       
       }
     }
   }
@@ -240,10 +254,10 @@ export class EventUpdateComponent implements OnInit {
           title: 'Deleted!',
           text: 'Your event has been deleted.',
           icon: 'success'
-        }).then((result)=>{
-            if(result.isConfirmed){
-              this.router.navigateByUrl('/events');  // TODO use location of MYEVENTS
-            }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigateByUrl('/myEvents');
+          }
         });
       } else {
         Swal.fire(

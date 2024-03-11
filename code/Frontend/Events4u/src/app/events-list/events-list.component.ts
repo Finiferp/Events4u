@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { SearchServiceService } from '../search-service.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-
+import { LocalService } from '../local.service';
 
 @Component({
   selector: 'app-events-list',
@@ -15,8 +15,10 @@ import { Router } from '@angular/router';
 export class EventsListComponent implements OnInit {
   public eventsData: any[] = [];
   clickEventsubscription: Subscription;
+  token = this.localService.getItem("token");
 
-  constructor(private searchEvent: SearchServiceService, private router: Router) {
+
+  constructor(private searchEvent: SearchServiceService, private router: Router, private localService: LocalService) {
     this.clickEventsubscription = this.searchEvent.getSearchEvent().subscribe((data)=>{      
       this.search(data);
     });
@@ -27,15 +29,14 @@ export class EventsListComponent implements OnInit {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
     });
     const data = await response.json();
     this.eventsData = data.data;
   }
 
-  async search(inputData: any){
-    console.log(inputData);
-    
+  async search(inputData: any){    
     const response = await fetch(`http://127.0.0.1:3000/event/search`, {
       method: "POST",
       headers: {

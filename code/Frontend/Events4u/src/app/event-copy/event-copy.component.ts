@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-
+import { LocalService } from '../local.service';
 
 
 @Component({
@@ -25,8 +25,9 @@ export class EventCopyComponent {
   options: any[] = [];
   locations: any[] = [];
   groups: any[] = [];
+  token = this.localService.getItem("token");
 
-  constructor(private route: ActivatedRoute, private router: Router) { };
+  constructor(private route: ActivatedRoute, private router: Router, private localService: LocalService) { };
 
 
   eventAddForm = new FormGroup({
@@ -54,8 +55,14 @@ export class EventCopyComponent {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       }
     });
+
+    if(response.status === 401 || response.status === 403){
+      this.router.navigateByUrl("/login");
+    }
+
     const data = await response.json();
     this.groups = data.data;
   }
@@ -71,8 +78,7 @@ export class EventCopyComponent {
     const data = await response.json();
 
     if (data.redirect !== undefined) {
-      const redirectedUrl = data.redirect;
-      this.router.navigateByUrl(redirectedUrl); // TODO go back to myevents
+      this.router.navigateByUrl("/myEvents");
     } else {
       this.eventData = data.data;
       this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
@@ -180,29 +186,37 @@ export class EventCopyComponent {
     let price = this.eventAddForm.value.price;
     let location = this.eventAddForm.value.location;
     let categories = this.eventAddForm.value.categories;
-    let group = this.eventAddForm.value.group;
+    let group = this.eventAddForm.value.group;    
 
-    console.log(group);
-    
-
-    
-    // if (title && startDateTime && endDateTime && price && location && categories && group) {
-    //   const formData = new FormData();
-    //   formData.append("title", title);
-    //   formData.append("startDateTime", startDateTime)
-    //   formData.append("endDateTime", endDateTime)
-    //   formData.append("price", price)
-    //   formData.append("location", location)
-    //   formData.append("categories", categories)
-    //   formData.append("imageUrl", this.file);
-    //   formData.append("group", group);
+    if (title && startDateTime && endDateTime && price && location && categories && group) {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("startDateTime", startDateTime)
+      formData.append("endDateTime", endDateTime)
+      formData.append("price", price)
+      formData.append("location", location)
+      formData.append("categories", categories)
+      formData.append("imageUrl", this.file);
+      formData.append("group", group+"");
 
 
 
-    //   const response = await fetch(`http://127.0.0.1:3000/event/create`, {
-    //     method: "POST",
-    //     body: formData,
-    //   });
-    // }
+      const response = await fetch(`http://127.0.0.1:3000/event/create`, {
+        method: "POST",
+        body: formData,
+      });
+
+      if(response.ok){
+        Swal.fire({
+          title: 'Created!',
+          text: 'Your event has been created.',
+          icon: 'success'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.router.navigateByUrl('/myEvents');  
+          }
+        });
+      }
+    }
   }
 }
