@@ -1,4 +1,4 @@
-import { Component, OnInit, input } from '@angular/core';
+import { Component, OnInit, ViewChild,  ElementRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import { SearchServiceService } from '../search-service.service';
@@ -14,6 +14,8 @@ import { Router } from '@angular/router';
 })
 export class CategoryDropdownComponent implements OnInit  {
   options: any[] = [];
+  @ViewChild('searchInput') searchInput!: ElementRef;
+
 
   constructor(private searchService: SearchServiceService, private router: Router) {}
 
@@ -33,9 +35,15 @@ export class CategoryDropdownComponent implements OnInit  {
   }
 
   search(selectedCategory: string, searchInputValue: string) {
-    this.router.navigateByUrl("/events");
-    const inputData = {"category": selectedCategory, "title": searchInputValue}
-    this.searchService.sendSearchParam(inputData);
+    this.router.navigate(["/events"]).then(() => {
+      const inputData = {"category": selectedCategory, "title": searchInputValue}
+      this.searchService.sendSearchParam(inputData);
+    });  
+
+  }
+
+  onInput(selectedCategory: string, searchInputValue: string) {
+      this.search(selectedCategory, searchInputValue);
   }
 
   onEnter(event: KeyboardEvent, selectedCategory: string, searchInputValue: string) {
@@ -44,5 +52,10 @@ export class CategoryDropdownComponent implements OnInit  {
     }
   }
 
+  public emptyTheSearch(){
+    if (this.searchInput) {
+      this.searchInput.nativeElement.value = ''; 
+    }
+  }
   
 }

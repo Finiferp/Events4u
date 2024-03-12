@@ -9,12 +9,13 @@ import { LocationAuditComponent } from '../logContent/location-audit/location-au
 import { PartOfAuditComponent } from '../logContent/part-of-audit/part-of-audit.component';
 import { ReviewAuditComponent } from '../logContent/review-audit/review-audit.component';
 import { UserAuditComponent } from '../logContent/user-audit/user-audit.component';
-import { ViewAuditComponent } from '../logContent/view-audit/view-audit.component';
-
+import { InterestedAuditComponent } from '../logContent/interested-audit/interested-audit.component';
+import { AttendingAuditComponent } from '../logContent/attending-audit/attending-audit.component';
 @Component({
   selector: 'app-log',
   standalone: true,
-  imports: [CommonModule, BelongsAuditComponent, CategoryAuditComponent, EventAuditComponent, FavoriteAuditComponent, GroupAuditComponent, LocationAuditComponent, PartOfAuditComponent, ReviewAuditComponent, UserAuditComponent, ViewAuditComponent],
+  imports: [CommonModule, BelongsAuditComponent, CategoryAuditComponent, EventAuditComponent, FavoriteAuditComponent, AttendingAuditComponent,
+     GroupAuditComponent, LocationAuditComponent, PartOfAuditComponent, ReviewAuditComponent, UserAuditComponent, InterestedAuditComponent],
   templateUrl: './log.component.html',
   styleUrl: './log.component.scss'
 })

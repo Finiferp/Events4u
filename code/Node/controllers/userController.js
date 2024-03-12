@@ -318,6 +318,25 @@ function generateAuthToken(email, userID) {
     return token;
 };
 
+const checkAdminStatus = async (req, res) => {
+    try {
+        const activeUser = parseInt(req.body.activeUser);
+        const inputData = { activeUser };
+
+        const dbOutput = await db.checkAdminStatus(inputData);
+
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message,
+            data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 
 module.exports = {
     createGroup,
@@ -333,5 +352,6 @@ module.exports = {
     toggleAsInterested,
     register,
     login,
-    checkLoginStatus
+    checkLoginStatus,
+    checkAdminStatus
 };

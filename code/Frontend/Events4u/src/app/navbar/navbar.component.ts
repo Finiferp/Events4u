@@ -1,4 +1,4 @@
-import { Component, Renderer2, OnInit } from '@angular/core';
+import { Component, Renderer2, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CategoryDropdownComponent } from '../category-dropdown/category-dropdown.component';
 import { Router } from '@angular/router';
@@ -12,13 +12,16 @@ import { LoginStatusService } from '../login-status.service';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent implements OnInit {
+  @ViewChild('dropdown') dropdown!: CategoryDropdownComponent;
 
   public isLoggedIn: boolean = false;
   token = this.localService.getItem("token");
   locations: any[] = [];
+  public isAdmin: boolean = false;
 
 
-  constructor(private renderer: Renderer2, private router: Router, private localService: LocalService, private loginStatusService: LoginStatusService) {
+  constructor(private renderer: Renderer2, private router: Router, private localService: LocalService,
+     private loginStatusService: LoginStatusService) {
     this.loginStatusService.getLoginStatus().subscribe((data) => {
       this.isLoggedIn = data;
     });
@@ -38,6 +41,9 @@ export class NavbarComponent implements OnInit {
     });
     const data = await response.json();
     this.isLoggedIn = data.isLoggedIn;
+    if(this.isLoggedIn){
+      this.checkAdmin();
+    }
   }
 
   scrollToFooter() {
@@ -46,6 +52,7 @@ export class NavbarComponent implements OnInit {
 
   goTo(route: string) {
     this.router.navigateByUrl(route);
+    this.dropdown.emptyTheSearch();
   }
 
   async logout() {
@@ -66,6 +73,18 @@ export class NavbarComponent implements OnInit {
     this.locations = data.data;
   }
 
+  async checkAdmin() {
+    const response = await fetch(`http://127.0.0.1:3000/user/adminStatus`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `${this.token}`
+      },
+    });
+    const data = await response.json();
+    this.isAdmin = data.data.isAdmin;
+  }
+
   changeLocation(locationId: string) {
     if (locationId !== "-1") {
       this.router.navigateByUrl(`/events`, { skipLocationChange: true }).then(() =>
@@ -74,7 +93,5 @@ export class NavbarComponent implements OnInit {
     } else {
       this.router.navigateByUrl(`/events`);
     }
-
-
   }
 }

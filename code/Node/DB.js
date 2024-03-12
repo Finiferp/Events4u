@@ -225,7 +225,24 @@ const checkTokenExists = async (JSON) => {
   const sql = 'CALL sp_checkToken(?, @output)';
   const values = [JSON];
   return await executeQuery(sql, values);
-}  
+} 
+
+const checkAdminStatus = async (JSON) => {
+  const sql = 'CALL sp_checkIfAdmin(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const deleteToken = async (JSON) => {
+  const sql = 'CALL sp_deleteToken(?)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getTokens = async () => {
+  const sql = 'CALL sp_getTokens(@output)';
+  return await executeQuery(sql);
+}
 
 module.exports = {
     getEvents,
@@ -261,5 +278,8 @@ module.exports = {
     register,
     login,
     getSalt,
-    checkTokenExists
+    checkTokenExists,
+    checkAdminStatus,
+    deleteToken,
+    getTokens
 }

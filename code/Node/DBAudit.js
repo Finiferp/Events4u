@@ -73,11 +73,16 @@ const getUserAudit = async () => {
     return await executeQuery(sql);
 }
 
-const getViewAudit = async () => {
-    const sql = 'CALL sp_getViewAudit(@output)';
+
+const getInterestedAudit = async () => {
+    const sql = 'CALL sp_getInterestedAudit(@output)';
     return await executeQuery(sql);
 }
 
+const getAttendsAudit = async () => {
+    const sql = 'CALL sp_getAttendsAudit(@output)';
+    return await executeQuery(sql);
+}
 
 
 
@@ -92,5 +97,6 @@ module.exports = {
     getPartOfAudit,
     getReviewAudit,
     getUserAudit,
-    getViewAudit
+    getInterestedAudit,
+    getAttendsAudit
 }

@@ -1,8 +1,8 @@
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS sp_getViewAudit;
+DROP PROCEDURE IF EXISTS sp_getAttendsAudit;
 
-CREATE PROCEDURE sp_getViewAudit(OUT outputJSON JSON)
+CREATE PROCEDURE sp_getAttendsAudit(OUT outputJSON JSON)
 BEGIN
     DECLARE response_code INT;
     DECLARE response_message VARCHAR(255);
@@ -12,13 +12,13 @@ BEGIN
     SET response_message = 'Successfully retrieved';
     SET response_data = (SELECT JSON_ARRAYAGG(
         JSON_OBJECT(
-            'idViewAudit', idViewAudit,
-            'code_group_view_PKFK', code_group_view_PKFK,
-            'code_event_view_PKFK', code_event_view_PKFK,
+            'idAttendsAudit', idAttendsAudit,
+            'event_code_attends_PKFK', event_code_attends_PKFK,
+            'user_code_attends_PKFK', user_code_attends_PKFK,
             'date_audit', date_audit,
             'action_audit', action_audit
         )
-    ) FROM ViewAudit);
+    ) FROM AttendsAudit);
 
     SET outputJSON = JSON_OBJECT(
         'status_code', response_code,

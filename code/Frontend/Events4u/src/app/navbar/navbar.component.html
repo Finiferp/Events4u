@@ -24,12 +24,16 @@
     </button>
 
     <div class="basis-1/2">
-      <app-category-dropdown></app-category-dropdown>
+      <app-category-dropdown #dropdown></app-category-dropdown>
     </div>
 
     <button *ngIf="isLoggedIn" (click)="goTo('/events/attended')"
       class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
       Attending Events
+    </button>
+    <button *ngIf="isAdmin" (click)="goTo('/log')"
+      class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg	">
+      Logs
     </button>
 
     <select (change)="changeLocation(locationSelect.value)" #locationSelect

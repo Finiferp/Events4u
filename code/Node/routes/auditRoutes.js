@@ -12,5 +12,6 @@ module.exports = (app) => {
     app.route("/audit/partOf").get(audit.getPartOfAudit);
     app.route("/audit/review").get(audit.getReviewAudit);
     app.route("/audit/user").get(audit.getUserAudit);
-    app.route("/audit/view").get(audit.getViewAudit);
+    app.route("/audit/interested").get(audit.getInterestedAudit);
+    app.route("/audit/attending").get(audit.getAttendsAudit);
 }

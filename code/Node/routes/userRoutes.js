@@ -18,4 +18,5 @@ module.exports = function (app) {
     app.route("/user/register").post(user.register);
     app.route("/user/login").post(user.login);
     app.route("/user/loginStatus").get(checkLoginStatus, user.checkLoginStatus);
+    app.route("/user/adminStatus").get(checkLoginStatus, user.checkAdminStatus);
 };

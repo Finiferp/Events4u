@@ -153,9 +153,9 @@ const getUserAudit = async (req, res) => {
     }
 }
 
-const getViewAudit = async (req, res) => {
+const getInterestedAudit = async (req, res) => {
     try {
-        const dbOutput = await db.getViewAudit();
+        const dbOutput = await db.getInterestedAudit();
 
         let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
 
@@ -163,12 +163,29 @@ const getViewAudit = async (req, res) => {
             message,
             data
         });
-
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
 }
+
+const getAttendsAudit = async (req, res) => {
+    try {
+        const dbOutput = await db.getAttendsAudit();
+
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+
+        res.status(status_code).json({
+            message,
+            data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+
 
 
 module.exports = {
@@ -181,5 +198,6 @@ module.exports = {
     getPartOfAudit,
     getReviewAudit,
     getUserAudit,
-    getViewAudit
+    getInterestedAudit,
+    getAttendsAudit
 }

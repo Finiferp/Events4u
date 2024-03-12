@@ -27,8 +27,14 @@
             <button
                   class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
                   (click)="selectedView = 'user'">User</button>
-            <button class="text-white hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
-                  (click)="selectedView = 'view'">View</button>
+
+           <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'interested'">Interested</button>
+            
+            <button
+                  class="text-white mr-4 hover:bg-emerald-700 hover:text-white transition duration-300 ease-in-out flex-1"
+                  (click)="selectedView = 'attending'">Attending</button>
       </div>
 </nav>
 
@@ -42,4 +48,5 @@
 <app-part-of-audit *ngIf="selectedView === 'partOf'"></app-part-of-audit>
 <app-review-audit *ngIf="selectedView === 'review'"></app-review-audit>
 <app-user-audit *ngIf="selectedView === 'user'"></app-user-audit>
-<app-view-audit *ngIf="selectedView === 'view'"></app-view-audit>
+<app-interested-audit *ngIf="selectedView === 'interested'"></app-interested-audit>
+<app-attending-audit *ngIf="selectedView === 'attending'"></app-attending-audit>

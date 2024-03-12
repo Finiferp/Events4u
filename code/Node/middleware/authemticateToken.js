@@ -9,7 +9,7 @@ async function authenticateToken(req, res, next) {
       }
       try {
           const tokenExistsResult = await db.checkTokenExists(token);
-          const { result } = JSON.parse(tokenExistsResult.outputJSON);
+          const { result, id } = JSON.parse(tokenExistsResult.outputJSON);
           if (!result) {
               return res.status(401).json({ error: 'Unauthorized: Invalid token' });
           }
@@ -17,7 +17,8 @@ async function authenticateToken(req, res, next) {
           jwt.verify(token,'Events4USecretKey', (err, decoded) => {
               if (err) {
                   if (err.name === 'TokenExpiredError') {
-                        //TODO delete TOKEN
+                        const inputData = { id };
+                        db.deleteToken(inputData);
                         return res.status(401).json({ error: 'Unauthorized: Token expired' });
                   } else {
                       return res.status(403).json({ error: 'Forbidden: Invalid token' });

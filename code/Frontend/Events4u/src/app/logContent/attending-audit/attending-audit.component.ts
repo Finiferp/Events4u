@@ -1,23 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 @Component({
-  selector: 'app-view-audit',
+  selector: 'app-attending-audit',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './view-audit.component.html',
-  styleUrl: './view-audit.component.scss'
+  templateUrl: './attending-audit.component.html',
+  styleUrl: './attending-audit.component.scss'
 })
-export class ViewAuditComponent implements OnInit {
+export class AttendingAuditComponent {
   public data: any[] = [];
 
   ngOnInit(): void {
-    this.fetchInfo();
+      this.fetchInfo();
   }
 
   async fetchInfo() {
-    const response = await fetch('http://127.0.0.1:3000/audit/view', {
-      method: 'GET',
-    })
+    const response = await fetch(`http://127.0.0.1:3000/audit/attending`, {
+      method: "GET",
+    });
     const data = await response.json();
     this.data = data.data;
   }

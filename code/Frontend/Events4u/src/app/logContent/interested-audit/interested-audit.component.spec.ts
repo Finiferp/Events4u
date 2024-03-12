@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ViewAuditComponent } from './view-audit.component';
+import { InterestedAuditComponent } from './interested-audit.component';
 
-describe('ViewAuditComponent', () => {
-  let component: ViewAuditComponent;
-  let fixture: ComponentFixture<ViewAuditComponent>;
+describe('InterestedAuditComponent', () => {
+  let component: InterestedAuditComponent;
+  let fixture: ComponentFixture<InterestedAuditComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ViewAuditComponent]
+      imports: [InterestedAuditComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ViewAuditComponent);
+    fixture = TestBed.createComponent(InterestedAuditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

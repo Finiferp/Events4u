@@ -7,12 +7,13 @@ async function checkLoginStatus(req, res, next) {
       if (token) {
             try {
                   const tokenExistsResult = await db.checkTokenExists(token);
-                  const { result } = JSON.parse(tokenExistsResult.outputJSON);
+                  const { result, id } = JSON.parse(tokenExistsResult.outputJSON);
                   if (result) {
                         jwt.verify(token, 'Events4USecretKey', (err, decoded) => {
                               if (err) {
                                     if (err.name === 'TokenExpiredError') {
-                                          //TODO delete TOKEN
+                                          const inputData = { id };
+                                          db.deleteToken(inputData);
                                     }
                               } else {
                                     const { userID } = decoded;
