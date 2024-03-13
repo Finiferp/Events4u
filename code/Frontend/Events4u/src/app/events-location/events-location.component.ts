@@ -25,7 +25,7 @@ export class EventsLocationComponent {
 
   async loadEvent() {
     this.getIdFromUrl();
-    const response = await fetch(`http://127.0.0.1:3000/events/location/${this.id}`, {
+    const response = await fetch(`http://192.168.129.237:3000/events/location/${this.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

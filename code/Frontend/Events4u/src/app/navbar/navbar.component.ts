@@ -4,10 +4,14 @@ import { CategoryDropdownComponent } from '../category-dropdown/category-dropdow
 import { Router } from '@angular/router';
 import { LocalService } from '../local.service';
 import { LoginStatusService } from '../login-status.service';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+
+
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, CategoryDropdownComponent],
+  imports: [CommonModule, CategoryDropdownComponent, SidebarModule, ButtonModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss'
 })
@@ -18,6 +22,7 @@ export class NavbarComponent implements OnInit {
   token = this.localService.getItem("token");
   locations: any[] = [];
   public isAdmin: boolean = false;
+  sidebarVisible: boolean = false;
 
 
   constructor(private renderer: Renderer2, private router: Router, private localService: LocalService,
@@ -25,14 +30,18 @@ export class NavbarComponent implements OnInit {
     this.loginStatusService.getLoginStatus().subscribe((data) => {
       this.isLoggedIn = data;
     });
+  }
 
-
+  toggleSideBar(){
+    this.sidebarVisible = !this.sidebarVisible;
+    console.log(this.sidebarVisible);
+    
   }
 
   async ngOnInit() {
     this.fetchLocations();
 
-    const response = await fetch(`http://127.0.0.1:3000/user/loginStatus`, {
+    const response = await fetch(`http://192.168.129.237:3000/user/loginStatus`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -57,13 +66,12 @@ export class NavbarComponent implements OnInit {
 
   async logout() {
     this.localService.removeItem("token");
-    //TODO delete token from DB
     this.router.navigateByUrl("/events");
     this.isLoggedIn = false;
   }
 
   async fetchLocations() {
-    const response = await fetch(`http://127.0.0.1:3000/location/all`, {
+    const response = await fetch(`http://192.168.129.237:3000/location/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +82,7 @@ export class NavbarComponent implements OnInit {
   }
 
   async checkAdmin() {
-    const response = await fetch(`http://127.0.0.1:3000/user/adminStatus`, {
+    const response = await fetch(`http://192.168.129.237:3000/user/adminStatus`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

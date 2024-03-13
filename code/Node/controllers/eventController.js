@@ -26,7 +26,8 @@ const getEvent = async (req, res) => {
             let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
             res.status(status_code).json({
                 message,
-                data: data,
+                data,
+                activeUser
             });
         }
 
@@ -150,7 +151,7 @@ const create = async (req, res) => {
         const group = parseInt(req.body.group);
 
         const ownerId = parseInt(req.body.userID); 
-        const imageUrl = `http://127.0.0.1:3000/assets/images/${title}/` + req.file.filename;
+        const imageUrl = `http://192.168.129.237:3000/assets/images/${title}/` + req.file.filename;
         const inputData = { title, startDateTime, endDateTime, price, location_FK, categories, ownerId, imageUrl, group };
         const dbOutput = await db.createEvent(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
@@ -176,7 +177,7 @@ const updateEvent = async (req, res) => {
         const group = parseInt(req.body.group);
         let imageUrl;
         if (req.file) {
-            imageUrl = `http://127.0.0.1:3000/assets/images/${title}/` + req.file.filename;
+            imageUrl = `http://192.168.129.237/assets/images/${title}/` + req.file.filename;
         } else {
             imageUrl = (req.body.oldImageUrl).toString();
         }
@@ -291,6 +292,7 @@ const getLocationEvents = async (req, res) => {
 const getGroupEvents = async (req, res) => {
     try {
         const groupID = parseInt(req.params.id);
+        const userID = parseInt(req.body.userID);
 
         const inputData = { groupID };
 
@@ -300,7 +302,8 @@ const getGroupEvents = async (req, res) => {
 
         res.status(status_code).json({
             message,
-            data
+            data,
+            userID
         });
     } catch (error) {
         console.error(error);

@@ -4,7 +4,7 @@ CREATE PROCEDURE sp_getGroupEvents(IN inputJSON JSON, OUT outputJSON JSON)
 BEGIN
     DECLARE response_code INT;
     DECLARE response_message VARCHAR(255);
-    DECLARE response_data JSON;
+    DECLARE response_data JSON DEFAULT NULL;
     DECLARE inputGroupID INT;
     DECLARE v_JSONSchema JSON;
 
@@ -37,6 +37,7 @@ BEGIN
                            'price', e.price,
                            'created', e.created,
                            'owner_FK', e.owner_FK,
+                           'ownerName', CONCAT(u.firstName, ' ', u.lastName),
                            'imageUrl', e.imageUrl,
                            'isVisible', e.isVisible,
                            'location_FK', e.location_FK,
@@ -44,6 +45,7 @@ BEGIN
                        )
                    ) INTO response_data
             FROM `Event` e
+            JOIN `User` u ON e.owner_FK = u.code_PK
             WHERE e.group_view_FK = inputGroupID;
         END IF;
     END IF;

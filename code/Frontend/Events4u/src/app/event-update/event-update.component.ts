@@ -50,28 +50,24 @@ export class EventUpdateComponent implements OnInit {
   }
 
   async fetchGroups() {
-    const response = await fetch(`http://127.0.0.1:3000/myGroups`, {
+    const response = await fetch(`http://192.168.129.237:3000/myGroups`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `${this.token}`
       }
     });
-
-    if(response.status === 401 || response.status === 403){
-      this.router.navigateByUrl("/login");
-    }
-
     const data = await response.json();
     this.groups = data.data;
   }
 
   async loadEvent() {
     this.getIdFromUrl();
-    const response = await fetch(`http://127.0.0.1:3000/event/${this.id}`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/${this.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
     });
     const data = await response.json();
@@ -81,6 +77,12 @@ export class EventUpdateComponent implements OnInit {
       this.router.navigateByUrl("/myEvents"); 
     } else {
       this.eventData = data.data;
+      const activeUser =data.activeUser;
+      const ownerID = data.data.ownerCode;
+      if(activeUser !== ownerID){
+        this.router.navigateByUrl("/myEvents");
+      }
+      
       this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
 
       this.eventUpdateForm.patchValue({ title: this.eventData.eventTitle });
@@ -104,7 +106,7 @@ export class EventUpdateComponent implements OnInit {
   }
 
   async fetchLocations() {
-    const response = await fetch(`http://127.0.0.1:3000/location/all`, {
+    const response = await fetch(`http://192.168.129.237:3000/location/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -115,7 +117,7 @@ export class EventUpdateComponent implements OnInit {
   }
 
   async fetchCategories() {
-    const response = await fetch(`http://127.0.0.1:3000/categories`, {
+    const response = await fetch(`http://192.168.129.237:3000/categories`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -163,7 +165,7 @@ export class EventUpdateComponent implements OnInit {
 
 
 
-      const response = await fetch(`http://127.0.0.1:3000/event/update`, {
+      const response = await fetch(`http://192.168.129.237:3000/event/update`, {
         method: "POST",
         body: formData,
       });
@@ -212,7 +214,7 @@ export class EventUpdateComponent implements OnInit {
 
     const inputData = { "adress": newLocation.value };
 
-    const response = await fetch(`http://127.0.0.1:3000/location/add`, {
+    const response = await fetch(`http://192.168.129.237:3000/location/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -241,7 +243,7 @@ export class EventUpdateComponent implements OnInit {
       const eventID = this.eventData.eventCode;
       const inputData = { eventID };
 
-      const response = await fetch(`http://127.0.0.1:3000/event/delete`, {
+      const response = await fetch(`http://192.168.129.237:3000/event/delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",

@@ -26,7 +26,7 @@ export class EventDetailsComponent implements OnInit {
 
   async loadEvent(){
     this.getIdFromUrl();
-    const response = await fetch(`http://127.0.0.1:3000/event/${this.id}`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/${this.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -52,7 +52,7 @@ export class EventDetailsComponent implements OnInit {
     let isFavorited = isFav === 0 ? 1 : 0;
     const inputData = { isFavorited, eventID };
     
-    const response = await fetch(`http://127.0.0.1:3000/event/favorite`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/favorite`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +69,7 @@ export class EventDetailsComponent implements OnInit {
 
     const inputData = { eventID, isInterested };
 
-    const response = await fetch(`http://127.0.0.1:3000/event/interested`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/interested`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export class EventDetailsComponent implements OnInit {
 
     const inputData = { eventID, isAttending };
 
-    const response = await fetch(`http://127.0.0.1:3000/event/attending`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/attending`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

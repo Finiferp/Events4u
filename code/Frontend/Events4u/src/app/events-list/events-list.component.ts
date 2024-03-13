@@ -25,7 +25,7 @@ export class EventsListComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const response = await fetch(`http://127.0.0.1:3000/event/all`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ export class EventsListComponent implements OnInit {
   }
 
   async search(inputData: any){    
-    const response = await fetch(`http://127.0.0.1:3000/event/search`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/search`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -31,7 +31,7 @@ export class LoginComponentComponent {
 
     if (email && password) {
       const inputData = { email, password }
-      const response = await fetch('http://localhost:3000/user/login', {
+      const response = await fetch('http://192.168.129.237:3000/user/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

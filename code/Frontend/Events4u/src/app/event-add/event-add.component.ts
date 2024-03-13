@@ -46,7 +46,7 @@ export class EventAddComponent implements OnInit {
   }
 
   async fetchGroups() {
-    const response = await fetch(`http://127.0.0.1:3000/myGroups`, {
+    const response = await fetch(`http://192.168.129.237:3000/myGroups`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export class EventAddComponent implements OnInit {
   }
 
   async fetchLocations() {
-    const response = await fetch(`http://127.0.0.1:3000/location/all`, {
+    const response = await fetch(`http://192.168.129.237:3000/location/all`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export class EventAddComponent implements OnInit {
   }
 
   async fetchCategories() {
-    const response = await fetch(`http://127.0.0.1:3000/categories`, {
+    const response = await fetch(`http://192.168.129.237:3000/categories`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -117,7 +117,7 @@ export class EventAddComponent implements OnInit {
 
 
 
-      const response = await fetch(`http://127.0.0.1:3000/event/create`, {
+      const response = await fetch(`http://192.168.129.237:3000/event/create`, {
         method: "POST",
         body: formData,
       });
@@ -165,7 +165,7 @@ export class EventAddComponent implements OnInit {
 
     const inputData = { "adress": newLocation.value };
 
-    const response = await fetch(`http://127.0.0.1:3000/location/add`, {
+    const response = await fetch(`http://192.168.129.237:3000/location/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

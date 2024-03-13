@@ -31,7 +31,7 @@ export class ReviewsComponent implements OnChanges {
   async fetchReviews() {
     console.log(await this.eventID);
     
-    const response = await fetch(`http://127.0.0.1:3000/event/getReviews/${this.eventID}`, {
+    const response = await fetch(`http://192.168.129.237:3000/event/getReviews/${this.eventID}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ export class ReviewsComponent implements OnChanges {
         date: format(rawDAte, 'yyyy-MM-dd'),
       };
       const inputData = { eventID: this.eventID, review: newReview.text, stars: newReview.stars, date: newReview.date };
-      const response = await fetch(`http://127.0.0.1:3000/event/addReview`, {
+      const response = await fetch(`http://192.168.129.237:3000/event/addReview`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

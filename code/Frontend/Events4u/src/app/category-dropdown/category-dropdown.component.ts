@@ -24,7 +24,7 @@ export class CategoryDropdownComponent implements OnInit  {
   }
 
   async fetchCategories() {
-    const response = await fetch(`http://127.0.0.1:3000/categories`, {
+    const response = await fetch(`http://192.168.129.237:3000/categories`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

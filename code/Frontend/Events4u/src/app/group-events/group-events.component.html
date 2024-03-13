@@ -7,10 +7,15 @@
                               class="w-full h-56 object-cover object-center">
                         <div class="p-6">
                               <h3 class="text-xl font-semibold text-gray-800">{{ event.title }}</h3>
-                              <p class="mt-2 text-base text-gray-600"><strong>Owner:</strong> {{ event.owner_FK }}</p>
+                              <p class="mt-2 text-base text-gray-600"><strong>Owner:</strong> {{ event.ownerName }}</p>
                               <p class="text-base text-gray-600"><strong>Start Date & Time:</strong> {{ event.startDateTime | date:'short' }}</p>
                         </div>
                   </a>
             </li>
       </ng-container>
 </ul>
+
+<h1 *ngIf="eventsData.length === 0"
+class="text-3xl font-bold text-center mt-8 text-gray-500 italic">
+    No event has been added to for this group yet.
+</h1>

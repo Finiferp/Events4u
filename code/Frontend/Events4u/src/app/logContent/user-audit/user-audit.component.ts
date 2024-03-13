@@ -15,7 +15,7 @@ export class UserAuditComponent implements OnInit {
   }
 
   async fetchInfo() {
-    const response = await fetch(`http://127.0.0.1:3000/audit/user`, {
+    const response = await fetch(`http://192.168.129.237:3000/audit/user`, {
       method: "GET",
     })
     const data = await response.json();

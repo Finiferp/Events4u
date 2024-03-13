@@ -20,7 +20,7 @@ export class MyGroupsComponent implements OnInit {
   }
 
   async loadGroups() {
-    const response = await fetch(`http://127.0.0.1:3000/myGroups`, {
+    const response = await fetch(`http://192.168.129.237:3000/myGroups`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export class MyGroupsComponent implements OnInit {
   async createGroup(newGroup: any) {
     console.log(newGroup.value);
     const inputData = { "name": newGroup.value };
-    const response = await fetch(`http://127.0.0.1:3000/group/create`, {
+    const response = await fetch(`http://192.168.129.237:3000/group/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

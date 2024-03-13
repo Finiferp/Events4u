@@ -18,7 +18,7 @@ export class MyEventsComponent {
   constructor(private router: Router, private localService: LocalService) { }
 
   async ngOnInit() {
-    const response = await fetch(`http://127.0.0.1:3000/myEvents`, {
+    const response = await fetch(`http://192.168.129.237:3000/myEvents`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ export class MyEventsComponent {
     console.log(id);
     
     try {
-      const response = await fetch(`http://127.0.0.1:3000/event/exportList/${id}`, {
+      const response = await fetch(`http://192.168.129.237:3000/event/exportList/${id}`, {
         method: "GET"
       });
   

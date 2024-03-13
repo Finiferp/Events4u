@@ -63,6 +63,7 @@ BEGIN
                     'eventImage', e.imageUrl,
                     'isVisible', e.isVisible,
                     'ownerName', CONCAT(u.firstName, ' ', u.lastName),
+                    'ownerCode', u.code_PK,
                     'isFavorited', isFavorited,
                     'isAttending', isAttending,
                     'isInterested', isInterested,

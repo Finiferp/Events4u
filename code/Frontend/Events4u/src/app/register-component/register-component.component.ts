@@ -30,7 +30,7 @@ export class RegisterComponentComponent {
 
     if(firstName && lastName && email && password) {
       const inputData = { firstName, lastName, email, password }
-      const response = await fetch('http://localhost:3000/user/register', {
+      const response = await fetch('http://192.168.129.237:3000/user/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

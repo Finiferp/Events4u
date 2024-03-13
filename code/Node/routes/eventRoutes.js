@@ -36,7 +36,7 @@ module.exports = function (app) {
     app.route("/event/getReviews/:id").get(event.getReviews);
     app.route("/myEvents").get(authenticateToken, event.getUserEvents);
     app.route("/events/location/:id").get(authenticateToken, event.getLocationEvents);
-    app.route("/group/events/:id").get(event.getGroupEvents);
+    app.route("/group/events/:id").get(authenticateToken, event.getGroupEvents);
     app.route("/event/exportList/:id").get(event.exportList);
     app.route("/events/attended").get(authenticateToken, event.getAttendedEvents);
     app.route("/event/create").post(authenticateToken,

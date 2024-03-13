@@ -17,7 +17,7 @@ export class AttendedEventsComponent implements OnInit {
   constructor( private router: Router, private localService: LocalService) { }
 
   async ngOnInit() {
-    const response = await fetch(`http://127.0.0.1:3000/events/attended`, {
+    const response = await fetch(`http://192.168.129.237:3000/events/attended`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

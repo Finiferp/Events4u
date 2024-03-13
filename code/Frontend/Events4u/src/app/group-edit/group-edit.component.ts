@@ -28,7 +28,7 @@ export class GroupEditComponent implements OnInit {
   }
 
   async loadGroup() {
-    const response = await fetch(`http://127.0.0.1:3000/group/${this.id}`, {
+    const response = await fetch(`http://192.168.129.237:3000/group/${this.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -49,7 +49,7 @@ export class GroupEditComponent implements OnInit {
   }
 
   async loadGroupUsers() {
-    const response = await fetch(`http://127.0.0.1:3000/group/users/${this.id}`, {
+    const response = await fetch(`http://192.168.129.237:3000/group/users/${this.id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export class GroupEditComponent implements OnInit {
 
   async editGroup(name: any) {
     const inputData = { name, groupID: this.id };
-    const response = await fetch(`http://127.0.0.1:3000/group/update`, {
+    const response = await fetch(`http://192.168.129.237:3000/group/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export class GroupEditComponent implements OnInit {
   }
 
   async loadUsers() {
-    const response = await fetch(`http://127.0.0.1:3000/users`, {
+    const response = await fetch(`http://192.168.129.237:3000/users`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -98,7 +98,7 @@ export class GroupEditComponent implements OnInit {
 
   async addUser(userID: any) {
     const inputData = { userID: userID, groupID: this.id };
-    const response = await fetch(`http://127.0.0.1:3000/group/user/add`, {
+    const response = await fetch(`http://192.168.129.237:3000/group/user/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export class GroupEditComponent implements OnInit {
 
     if (!result.isConfirmed) {
       const inputData = { userID: userID, groupID: this.id };
-      const response = await fetch(`http://127.0.0.1:3000/group/user/delete`, {
+      const response = await fetch(`http://192.168.129.237:3000/group/user/delete`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
