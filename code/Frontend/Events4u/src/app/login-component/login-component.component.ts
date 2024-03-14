@@ -18,6 +18,7 @@ import { LoginStatusService } from '../login-status.service';
 })
 export class LoginComponentComponent {
 
+  // Initialize login form with email and password fields
   loginForm = new FormGroup({
     email: new FormControl(''),
     password: new FormControl(''),
@@ -26,10 +27,13 @@ export class LoginComponentComponent {
   constructor(private router: Router, private localService: LocalService, private loginStatusService: LoginStatusService) { }
 
 
+  /**
+   * A function for user login.
+   */
   async login() {
     const { email, password } = this.loginForm.value;
 
-    if (email && password) {
+    if (email && password) {      // Check if email and password are provided
       const inputData = { email, password }
       const response = await fetch('http://192.168.129.237:3000/user/login', {
         method: 'POST',
@@ -39,7 +43,7 @@ export class LoginComponentComponent {
         body: JSON.stringify(inputData)
       });
 
-
+      // If login is successful, store token in local storage and navigate to myEvents page
       if (response.ok) {
         const data = await response.json();
         const token = data.token;
@@ -47,6 +51,7 @@ export class LoginComponentComponent {
         this.router.navigateByUrl('/myEvents');
         this.loginStatusService.sendLoginStatus(true);
       } else {
+        // If response status is 400, show email not found error, otherwise display error message from the backend
         if (response.status === 400) {
           Swal.fire({
             title: 'Error!',
@@ -64,6 +69,7 @@ export class LoginComponentComponent {
         }
       }
     } else {
+      // If email or password is not provided, show error message
       Swal.fire({
         title: 'Error!',
         text: 'You must fill out all the fields, in order to login!',

@@ -16,6 +16,7 @@ import Swal from 'sweetalert2'
 })
 export class RegisterComponentComponent {
 
+  // Creating a FormGroup to manage form controls
   registerForm = new FormGroup({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
@@ -25,6 +26,10 @@ export class RegisterComponentComponent {
 
   constructor (private router: Router) { }
 
+  /**
+   * A description of the entire function.
+   *
+   */
   async register() {
     const { firstName, lastName, email, password } = this.registerForm.value;
 
@@ -38,18 +43,20 @@ export class RegisterComponentComponent {
         body: JSON.stringify(inputData)
       });
       
-      if(response.ok){
+      if(response.ok){  // If registration is successful
+        // Displaying success alert using SweetAlert2
         Swal.fire({
           title: 'Registered!',
           text: 'You have been registered.',
           icon: 'success'
         }).then((result) => {
           if (result.isConfirmed) {
-            this.router.navigateByUrl('/login');  // TODO maybe auto login
+            this.router.navigateByUrl('/login');  // Navigating to the login page after successful registration
           }
         });
       }
-    } else {
+    } else {  // If any field is empty
+      // Displaying error alert using SweetAlert2
       Swal.fire({
         title: 'Error!',
         text: 'You must fill out all the fields, in order to register.',

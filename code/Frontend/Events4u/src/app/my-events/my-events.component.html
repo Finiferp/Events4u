@@ -1,7 +1,9 @@
 <ul class="flex flex-wrap justify-center">
+  <!-- Iterate over each event in the eventsData array -->
   <li *ngFor="let event of eventsData"
     class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
 
+    <!-- Clickable area to export the list of attendees and interested people -->
     <div class="relative" title="List of attendees and interested people" (click)="exportList(event.eventCode)">
       <div class="w-fit h-fit top-0 right-0 m-2 absolute">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white hover:text-emerald-600" viewBox="0 0 576 512">
@@ -11,6 +13,7 @@
       </div>
     </div>
 
+    <!-- Clickable area to copy the event -->
     <div class="relative" title="Copy this event." (click)="goTo('/event/copy/' + event.eventCode)">
       <div class="w-fit h-fit top-0 left-0 m-2 absolute">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white hover:text-emerald-600" viewBox="0 0 576 512">
@@ -21,7 +24,7 @@
     </div>
 
 
-
+    <!-- Clickable area to navigate to update event page -->
     <a (click)="goTo('/event/update/' + event.eventCode)" class="block w-full h-full">
       <img src="{{ event.eventImage }}" alt="{{ event.eventTitle }}" class="w-full h-56 object-cover object-center">
       <div class="p-6">
@@ -33,6 +36,7 @@
     </a>
   </li>
 
+  <!-- Add a new event -->
   <li class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
     <a (click)="goTo('/event/add')" class="block w-full h-full">
       <img src="./assets/images/bannerPlaceholder.png" alt="Placeholder Banner"

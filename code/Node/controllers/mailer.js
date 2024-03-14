@@ -3,7 +3,7 @@ const cron = require('node-cron');
 const nodemailer = require('nodemailer');
 const db = require("../DB");
 
-
+// Configuration of the email transport
 const transporter = nodemailer.createTransport({
     host: 'david-nerdspace.net',
 
@@ -15,12 +15,21 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+
+/**
+ * Starts a cron job that sends reminders to attending users for upcoming events.
+ *
+ * @param {Object} app - the application object
+ * @return {Promise<void>} A promise that resolves when the cron job is started
+ */
 const startCron = async (app) => {
+    // Sends reminders at 1am every day for upcoming events
     cron.schedule('* 1 * * *', async () => {
         const dbOutput = await db.getReminders();
         const events = (JSON.parse(dbOutput.outputJSON)).events;
         console.log("cron");
         events.forEach(event => {
+            // check if the event is attended by the users, if so send a reminder to the user, 1 day before the event
             if (event.attending_users !== null) {
                 event.attending_users.forEach(user => {
                     console.log(user);
@@ -41,7 +50,12 @@ const startCron = async (app) => {
     });
 };
 
-
+/**
+ * Sends an email if an event got updated to attending users when the event is edited.
+ *
+ * @param {string} eventID - The ID of the event to update
+ * @return {Promise<void>} This function does not return anything explicitly
+ */
 const updateEventMessage = async (eventID) => {
     const inputData = { eventID };
 
@@ -50,6 +64,7 @@ const updateEventMessage = async (eventID) => {
     const { events } = JSON.parse(dbOutput.outputJSON);
 
     events.forEach(event => {
+        // check if the event is attended by the users, if so send a mail to the user that the event was updated
         if (event.attending_users !== null) {
             event.attending_users.forEach(user => {
                 console.log(user);

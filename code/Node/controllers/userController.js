@@ -4,6 +4,13 @@ const db = require("../DB");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
+/**
+ * Asynchronously creates a group using the data provided in the request body.
+ *
+ * @param {Object} req - the request object containing the group information
+ * @param {Object} res - the response object used to send a response
+ * @return {Promise<void>} Promise that resolves once the group is created or rejects on error
+ */
 const createGroup = async (req, res) => {
     try {
         const name = req.body.name;
@@ -23,6 +30,14 @@ const createGroup = async (req, res) => {
     }
 }
 
+
+/**
+ * Retrieves groups data for a specific user from the database and sends it as a response.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {void} 
+ */
 const getGroups = async (req, res) => {
     try {
         const userID = parseInt(req.body.userID);
@@ -42,13 +57,20 @@ const getGroups = async (req, res) => {
     }
 }
 
+
+/**
+ * Updates a group in the database based on the provided request body data.
+ *
+ * @param {Object} req - The request object containing the data to update the group.
+ * @param {Object} res - The response object to send back the result.
+ * @return {Promise<void>} - No return value, updates the group in the database and sends a response.
+ */
 const updateGroup = async (req, res) => {
     try {
         const name = req.body.name;
         const groupID = parseInt(req.body.groupID);
 
         const inputData = { name, groupID };
-        console.log(inputData);
         const dbOutput = await db.updateGroup(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
 
@@ -61,6 +83,13 @@ const updateGroup = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves a group by its ID from the database and sends the response.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise} - the response with the group data or an error message
+ */
 const getGroup = async (req, res) => {
     try {
         const groupID = parseInt(req.params.id);
@@ -81,6 +110,14 @@ const getGroup = async (req, res) => {
     }
 }
 
+
+/**
+ * Retrieves group users from the database based on the provided group ID.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise<void>} sends a JSON response with group users or an error message
+ */
 const getGroupUsers = async (req, res) => {
     try {
         const groupID = parseInt(req.params.id);
@@ -101,6 +138,14 @@ const getGroupUsers = async (req, res) => {
     }
 }
 
+
+/**
+ * Asynchronous function to retrieve users from the database and send the response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise} A promise that resolves to the JSON response
+ */
 const getUsers = async (req, res) => {
     try {
         const dbOutput = await db.getUsers();
@@ -117,6 +162,14 @@ const getUsers = async (req, res) => {
     }
 }
 
+
+/**
+ * Asynchronous function to add a user to a group.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise} a Promise that resolves to the result of adding the user to the group
+ */
 const addUserToGroup = async (req, res) => {
     try {
         const groupID = parseInt(req.body.groupID);
@@ -137,6 +190,14 @@ const addUserToGroup = async (req, res) => {
     }
 }
 
+
+/**
+ * Deletes a user from a group.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise} - a Promise that resolves when the user is successfully removed from the group
+ */
 const deleteUserFromGroup = async (req, res) => {
     try {
         const groupID = parseInt(req.body.groupID);
@@ -157,6 +218,14 @@ const deleteUserFromGroup = async (req, res) => {
     }
 }
 
+
+/**
+ * Retrieves user groups based on the provided userID from the request body.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} - Returns a promise that resolves when the function completes
+ */
 const getUsersGroups = async (req, res) => {
     try {
         const userID = parseInt(req.body.userID);
@@ -177,6 +246,14 @@ const getUsersGroups = async (req, res) => {
     }
 }
 
+
+/**
+ * Toggles a user's attendance status for a specific event.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise} Promise object representing the completion of the function
+ */
 const toggleAsAttending = async (req, res) => {
     try {
         const userID = parseInt(req.body.userID);
@@ -198,6 +275,14 @@ const toggleAsAttending = async (req, res) => {
     }
 }
 
+
+/**
+ * Function to toggle a user's interest in a specific event.
+ *
+ * @param {object} req - the request object containing userID, eventID, and isInterested
+ * @param {object} res - the response object
+ * @return {Promise} resolves with a JSON response containing a message
+ */
 const toggleAsInterested = async (req, res) => {
     try {
         const userID = parseInt(req.body.userID);
@@ -220,12 +305,21 @@ const toggleAsInterested = async (req, res) => {
     }
 }
 
+
+/**
+ * Register a user with the provided information in the request body.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise} Promise that resolves when the registration is complete
+ */
 const register = async (req, res) => {
     try {
         const firstName= req.body.firstName;
         const lastName = req.body.lastName;
         const email = req.body.email;
         const password = req.body.password;
+        // Generate salt and hash password using the functions
         const salt = generateSalt();
         const hashedPassword = hashPassword(password, salt);
 
@@ -244,6 +338,14 @@ const register = async (req, res) => {
     }
 }
 
+
+/**
+ * Function to handle user login.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Object} response with status and user details
+ */
 const login = async (req, res) => {
     try {
         const email = req.body.email;
@@ -254,10 +356,13 @@ const login = async (req, res) => {
 
         let { salt, userID } = JSON.parse(dbSaltOutput.outputJSON);
 
+        // If no email, password, salt, or userID is found, return an error
         if(!email || !password || !salt || !userID) {
             return res.status(400).send('Missing required fields');
         } else {
+            // Hash password using the salt
             const hashedPassword = hashPassword(password, salt);
+            // Generate a jwt token
             const token = generateAuthToken(email, userID);
             const inputData = { email, password: hashedPassword, token };
 
@@ -277,12 +382,20 @@ const login = async (req, res) => {
     }
 }
 
+/**
+ * Asynchronous function to check the login status of the active user.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise} A promise that resolves to the JSON response with the login status
+ */
 const checkLoginStatus = async (req, res) => {
     try {
         const activeUser = req.body.activeUser;
 
         let isLoggedIn;
 
+        // If activeUser is -1, the user is not logged in else the user has a positive value which means the user is logged in
         if(activeUser !== -1) {
             isLoggedIn = true;
         } else {
@@ -299,14 +412,33 @@ const checkLoginStatus = async (req, res) => {
     }
 }
 
+/**
+ * Generate a salt using crypto.randomBytes and convert it to a hexadecimal string.
+ *
+ * @return {string} The generated salt as a hexadecimal string.
+ */
 function generateSalt(){
     return crypto.randomBytes(32).toString('hex');
 }
 
+/**
+ * Generates a hashed password using the PBKDF2 algorithm with the provided salt.
+ *
+ * @param {string} password - The password to be hashed
+ * @param {string} salt - The salt to be used in the hashing process
+ * @return {string} The hashed password
+ */
 function hashPassword(password, salt){
     return crypto.pbkdf2Sync(password, salt, 1000, 128, 'sha512').toString('hex');
 }
 
+/**
+ * Generate an authentication token based on the provided email and userID.
+ *
+ * @param {string} email - The email address of the user.
+ * @param {string} userID - The ID of the user.
+ * @return {string} The generated authentication token.
+ */
 function generateAuthToken(email, userID) {
     const payload = {
         email: email,
@@ -318,6 +450,13 @@ function generateAuthToken(email, userID) {
     return token;
 };
 
+/**
+ * Check the admin status based on the active user in the request body.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} A Promise that resolves when the admin status is checked
+ */
 const checkAdminStatus = async (req, res) => {
     try {
         const activeUser = parseInt(req.body.activeUser);

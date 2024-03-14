@@ -1,7 +1,14 @@
 "use strict";
 
+/**
+ * Initializes routes for various user and group related functionalities.
+ *
+ * @param {Object} app - The Express app object
+ * @return {void}
+ */
 module.exports = function (app) {
     const user = require("../controllers/userController.js");
+    // import of middlewares
     const authenticateToken = require("../middleware/authemticateToken.js");
     const checkLoginStatus = require("../middleware/checkLoginStatus.js");
 

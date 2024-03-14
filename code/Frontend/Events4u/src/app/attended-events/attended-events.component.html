@@ -1,7 +1,10 @@
 <ul class="flex flex-wrap justify-center">
+    <!-- Loop through each event in eventsData -->
     <ng-container *ngFor="let event of eventsData">
+        <!-- Check if the event is visible -->
         <li *ngIf="event.eventIsVisible === 1"
             class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
+            <!-- Clicking on the event navigates to its details -->
             <a (click)="goTo('/event/' + event.eventCode)" class="block w-full h-full">
                 <img src="{{ event.eventImage }}" alt="{{ event.eventTitle }}"
                     class="w-full h-56 object-cover object-center">
@@ -12,12 +15,14 @@
                         date:'short' }}</p>
                 </div>
                 <div class="flex justify-center mt-2">
+                    <!-- Show favorite icon if event is favorited -->
                     <svg *ngIf="event.isFavorited === 1" xmlns="http://www.w3.org/2000/svg"
                         class="h-14 w-14 cursor-pointer text-yellow-500" viewBox="0 0 20 20" fill="#00b300 ">
                         <path fill-rule="evenodd"
                             d="M10 3l1.68 3.37 3.75.55-2.72 2.65.64 3.74-3.34-1.76-3.34 1.76.64-3.74-2.72-2.65 3.75-.55L10 3z"
                             clip-rule="evenodd" />
                     </svg>
+                    <!-- Show empty favorite icon if event is not favorited -->
                     <svg *ngIf="event.isFavorited === 0" xmlns="http://www.w3.org/2000/svg"
                         class="h-14 w-14 cursor-pointer text-gray-400" viewBox="0 0 20 20" fill="#d3d3d3">
                         <path fill-rule="evenodd"
@@ -30,7 +35,8 @@
     </ng-container>
 </ul>
 
+<!-- Show a message if there are no events marked as attended -->
 <h1 *ngIf="eventsData.length === 0"
-class="text-3xl font-bold text-center mt-8 text-gray-500 italic">
+    class="text-3xl font-bold text-center mt-8 text-gray-500 italic">
     You haven't marked any events as attended yet.
 </h1>

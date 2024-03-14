@@ -1,4 +1,5 @@
 <ul class="flex flex-wrap justify-center">
+  <!-- Loop through each event in the eventData array -->
   <ng-container *ngFor="let event of eventData">
     <li *ngIf="event.eventIsVisible === 1"
       class="event-item bg-emerald-200 rounded-lg shadow-md overflow-hidden m-4 cursor-pointer hover:bg-gray-100 w-80">
@@ -29,6 +30,7 @@
   </ng-container>
 </ul>
 
+<!-- Display a message when no events are available -->
 <h1 *ngIf="eventData.length === 0"
 class="text-3xl font-bold text-center mt-8 text-gray-500 italic">
     No event has been added to for this location yet. Be the first one.

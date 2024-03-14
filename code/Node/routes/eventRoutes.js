@@ -2,25 +2,36 @@
 const multer = require('multer');
 const fs = require('fs');
 
+/**
+ * Initializes routes for handling events and related functionalities.
+ *
+ * @param {Object} app - The Express application object
+ * @return {void}
+ */
 module.exports = function (app) {
     const event = require("../controllers/eventController.js");
+    // import of middlewares
     const authenticateToken = require("../middleware/authemticateToken.js");
     const checkLoginStatus = require("../middleware/checkLoginStatus.js");
 
+    // configuration of multer
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
+            // create directory if it doesn't exist
             const userdir = `./assets/images/${req.body.title}`;
             if (!fs.existsSync(userdir)) {
                 fs.mkdirSync(userdir, { recursive: true });
             }
             cb(null, userdir);
         },
+        // generate a unique filename
         filename: (req, file, cb) => {
             const name = `${req.body.title}.png`;
             cb(null, Date.now() + "-" + name);
         }
     });
 
+    // multer middleware
     const upload = multer({
         storage: storage
     }).single("imageUrl");
@@ -40,6 +51,7 @@ module.exports = function (app) {
     app.route("/event/exportList/:id").get(event.exportList);
     app.route("/events/attended").get(authenticateToken, event.getAttendedEvents);
     app.route("/event/create").post(authenticateToken,
+        // multer middleware
         (req, res, next) => {
             upload(req, res, (err) => {
                 if (err) {
@@ -52,6 +64,7 @@ module.exports = function (app) {
         },
         event.create);
     app.route("/event/update").post(
+        // multer middleware
         (req, res, next) => {
             upload(req, res, (err) => {
                 if (err) {

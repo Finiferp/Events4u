@@ -10,15 +10,15 @@ import { LocalService } from '../local.service';
   styleUrl: './group-events.component.scss'
 })
 export class GroupEventsComponent implements OnInit {
-  public eventsData: any[] = [];
-  id: any;
-  token = this.localService.getItem("token")
+  public eventsData: any[] = [];                // Array to store events data
+  id: any;                                      // ID of the group
+  token = this.localService.getItem("token");   // Get token from LocalService
 
   constructor(private router: Router, private route: ActivatedRoute, private localService: LocalService) { }
 
 
   async ngOnInit() {
-    this.getIdFromUrl();
+    this.getIdFromUrl();        // Get group ID from the URL
     const response = await fetch(`http://192.168.129.237:3000/group/events/${this.id}`, {
       method: "GET",
       headers: {
@@ -27,11 +27,14 @@ export class GroupEventsComponent implements OnInit {
       },
     });
 
+    // Redirect to login page if unauthorized or forbidden
     if (response.status === 401 || response.status === 403) {
       this.router.navigateByUrl("/login");
     }
     const data = await response.json();
     this.eventsData = data.data;
+
+    // Check if the current user is the owner of any events in the group
     if (this.eventsData) {
       let contains = false;
       this.eventsData.forEach((event: any) => {
@@ -39,6 +42,8 @@ export class GroupEventsComponent implements OnInit {
           contains = true;
         }
       });
+
+      // If the user is not the owner of any events, check if they are an active user in the group
       if (!contains) {
         this.checkActiveUser(data.userID);
       }
@@ -47,6 +52,12 @@ export class GroupEventsComponent implements OnInit {
     }
   }
 
+  /**
+   * Asynchronously checks if the user is active.
+   *
+   * @param {number} userID - the ID of the user to check
+   * @return {void} 
+   */
   async checkActiveUser(userID: number) {
     const response = await fetch(`http://192.168.129.237:3000/group/users/${this.id}`, {
       method: "GET",
@@ -55,6 +66,7 @@ export class GroupEventsComponent implements OnInit {
       },
     });
 
+    // If the user is not an group user, redirect to myEvents page
     const data = await response.json();
     const userArray = data.data;
     if (userArray) {
@@ -73,10 +85,19 @@ export class GroupEventsComponent implements OnInit {
 
   }
 
+  /**
+   * A description of the entire function.
+   *
+   * @param {string} url - description of parameter
+   * @return {void} description of return value
+   */
   goTo(url: string) {
     this.router.navigateByUrl(url);
   }
 
+  /**
+   * Gets the ID from the URL and assigns it to the 'id' property.
+   */
   getIdFromUrl(): void {
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');

@@ -2,6 +2,13 @@
 
 const db = require("../DB");
 
+/**
+ * Retrieves locations from the database and sends the response to the client.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise} the response sent to the client
+ */
 const getLocations = async (req, res) => {
     try {
         const dbOutput = await db.getLocations();
@@ -17,6 +24,13 @@ const getLocations = async (req, res) => {
 }
 
 
+/**
+ * Asynchronous function for adding a location.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise} a promise that resolves to the result of adding a location
+ */
 const addLocation = async (req, res) => {
     try {
         const adress = req.body.adress;

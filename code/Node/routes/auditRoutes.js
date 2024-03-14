@@ -1,5 +1,10 @@
 "use strict";
 
+/**
+ * Initializes the audit routes on the provided Express app.
+ *
+ * @param {Object} app - The Express app to initialize the routes on
+ */
 module.exports = (app) => {
     const audit = require("../controllers/auditController.js");
 

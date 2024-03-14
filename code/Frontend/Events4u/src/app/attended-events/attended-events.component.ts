@@ -11,12 +11,18 @@ import { LocalService } from '../local.service';
   styleUrl: './attended-events.component.scss'
 })
 export class AttendedEventsComponent implements OnInit {
-  public eventsData: any[] = [];
-  token = this.localService.getItem("token")
+  public eventsData: any[] = [];                // Initialize eventsData as an empty array
+  token = this.localService.getItem("token")    // Get token from local storage
 
   constructor( private router: Router, private localService: LocalService) { }
 
+  /**
+   * Fetch attended events data from the backend
+   * 
+   * @return {void} 
+   */
   async ngOnInit() {
+    // Fetch attended events data from the backend
     const response = await fetch(`http://192.168.129.237:3000/events/attended`, {
       method: "GET",
       headers: {
@@ -25,16 +31,25 @@ export class AttendedEventsComponent implements OnInit {
       },
     });
 
+    // Redirect to login page if unauthorized or forbidden
     if(response.status === 401 || response.status === 403){
       this.router.navigateByUrl("/login");
     }
+
+    // Parse response data and assign it to eventsData
     const data = await response.json();
     this.eventsData = data.data;
 
   }
 
 
-  goTo(url:string){
+  /**
+   * goTo method navigates to the specified URL.
+   *
+   * @param {string} url - the URL to navigate to
+   * @return {void} 
+   */
+    goTo(url:string){
     this.router.navigateByUrl(url);
   }
 }

@@ -1,19 +1,58 @@
-<div class="flex relative max-w-full">
+<!-- Desktop version -->
+<div class="hidden lg:flex flex relative">
+  <!-- Dropdown for selecting category -->
   <select #categorySelect
-    class="appearance-none bg-white border border-gray-300 rounded-l-lg px-2 py-2 pr-8 focus:outline-none focus:border-teal-500 text-sm sm:text-base">
+    class="appearance-none bg-white border border-gray-300 rounded-l-lg px-2 py-2 pr-8 focus:outline-none focus:border-teal-500 text-sm sm:text-base flex-grow">
     <option disabled value="-1" selected>Category</option>
     <option value="-1">All</option>
+    <!-- Iterate through options and display them -->
     <option *ngFor="let option of options" [value]="option.id">{{ option.name }}</option>
   </select>
+  <!-- Input field for search -->
   <input #searchInput type="text" placeholder="Search"
-    class="bg-white text-black rounded-r-lg px-4 py-2 focus:outline-none focus:bg-teal-100 flex-grow text-sm sm:text-base"
+    class="bg-white text-black rounded-r-lg px-4 py-2 focus:outline-none focus:bg-teal-100 text-sm sm:text-base flex-grow md:w-48 lg:w-64"
     (input)="onInput(categorySelect.value, searchInput.value)"
     (keypress)="onEnter($event, categorySelect.value, searchInput.value)">
+  <!-- Button to trigger search -->
   <button (click)="search(categorySelect.value, searchInput.value)"
-    class="absolute right-0 top-0 mt-2 mr-2 focus:outline-none" onclick="">
+    class="absolute right-0 top-0 mt-2 mr-2 focus:outline-none">
+    <!-- Search icon -->
     <svg class="fill-current text-emerald-600 h-4 w-4 sm:h-6 sm:w-6" viewBox="0 0 24 24">
       <path
         d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
     </svg>
   </button>
+</div>
+
+<!-- Phone version -->
+<div class="lg:hidden">
+  <div class="flex relative">
+    <!-- Dropdown for selecting category (mobile) -->
+    <select #categorySelectMobile
+    class="appearance-none bg-white border border-gray-300 rounded-l-lg px-2 py-2 focus:outline-none focus:border-teal-500 text-sm sm:text-base flex-grow">
+    <option disabled value="-1" selected>Category</option>
+    <option value="-1">All</option>
+    <!-- Iterate through options and display them -->
+    <option *ngFor="let option of options" [value]="option.id">{{ option.name }}</option>
+  </select>
+  <!-- Input field for search (mobile) -->
+  <input #searchInputMobile type="text" placeholder="Search"
+    class="bg-white text-black rounded-r-lg focus:outline-none focus:bg-teal-100 text-sm sm:text-base flex-grow "
+    (input)="onInput(categorySelectMobile.value, searchInputMobile.value)"
+    (keypress)="onEnter($event, categorySelectMobile.value, searchInputMobile.value)"
+    (keyup.enter)="search(categorySelectMobile.value, searchInputMobile.value)"
+    (blur)="search(categorySelectMobile.value, searchInputMobile.value)">
+    <!-- Button to trigger search (mobile) -->
+    <button (click)="search(categorySelectMobile.value, searchInputMobile.value)"
+    class="absolute right-0 top-0 mt-2 mr-2 focus:outline-none">
+    <!-- Search icon -->
+    <svg class="fill-current text-emerald-600 h-4 w-4 sm:h-6 sm:w-6" viewBox="0 0 24 24">
+      <path
+        d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+    </svg>
+  </button>
+
+
+
+  </div>
 </div>

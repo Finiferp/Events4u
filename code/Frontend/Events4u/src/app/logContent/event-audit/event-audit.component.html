@@ -1,38 +1,55 @@
-<table class="min-w-full divide-y divide-gray-200">
-    <thead>
-        <tr class="bg-gray-50">
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">idEventAudit</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">code_PK</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">title</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">startDateTime</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">endDateTime</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">price</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">created</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">owner_FK</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">imageURL</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">isVisible</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">location_FK</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">group_view_FK</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">date_audit</th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">action_audit</th>
-        </tr>
-    </thead>
-    <tbody class="bg-white divide-y divide-gray-200">
-        <tr *ngFor="let item of data" class="bg-white">
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.idEventAudit }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.code_PK }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.title }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.startDateTime | date:'short' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.endDateTime | date:'short' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.price }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.created | date:'short' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.owner_FK }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.imageURL }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.isVisible }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.location_FK }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.group_view_FK }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.date_audit | date:'short' }}</td>
-            <td class="px-6 py-4 whitespace-nowrap">{{ item.action_audit }}</td>
-        </tr>
-    </tbody>
-</table>
+<div class="overflow-x-auto">
+
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+            <tr class="bg-gray-50">
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    idEventAudit</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    code_PK</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    title</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    startDateTime</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    endDateTime</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    price</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    created</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    owner_FK</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    imageURL</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    isVisible</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    location_FK</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    group_view_FK</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    date_audit</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    action_audit</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            <tr *ngFor="let item of data" class="bg-white">
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.idEventAudit }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.code_PK }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.title }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.startDateTime | date:'short' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.endDateTime | date:'short' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.price }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.created | date:'short' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.owner_FK }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.imageURL }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.isVisible }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.location_FK }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.group_view_FK }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.date_audit | date:'short' }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ item.action_audit }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

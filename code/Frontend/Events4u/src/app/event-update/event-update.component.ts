@@ -14,22 +14,24 @@ import { LocalService } from '../local.service';
   styleUrl: './event-update.component.scss'
 })
 export class EventUpdateComponent implements OnInit {
-  @ViewChild('categoryDiv', { static: true }) categoryDiv!: ElementRef;
-  @ViewChild('locationSelect', { static: true }) locationSelect!: ElementRef;
+  @ViewChild('categoryDiv', { static: true }) categoryDiv!: ElementRef;         // ViewChild for category div
+  @ViewChild('locationSelect', { static: true }) locationSelect!: ElementRef;   // ViewChild for location select
 
-  public eventData: any = {};
-  public id: any = -1;
-  categories: string[] = [];
-  options: any[] = [];
-  locations: any[] = [];
-  oldImageUrl: string = '';
-  groups: any[] = [];
-  token = this.localService.getItem("token");
+  public eventData: any = {};                   // Event data object
+  public id: any = -1;                          // Event ID
+  categories: string[] = [];                    // Array to hold categories
+  options: any[] = [];                          // Options array       
+  locations: any[] = [];                        // Array to hold locations
+  oldImageUrl: string = '';                     // Old image URL
+  groups: any[] = [];                           // Array to hold groups
+  token = this.localService.getItem("token");   // Token for authentication
+  public file: any;                             // File object
+  public isDialogOpen: boolean = false;         // Flag for dialog visibility
 
   constructor(private route: ActivatedRoute, private router: Router, private localService: LocalService) { };
 
 
-  eventUpdateForm = new FormGroup({
+  eventUpdateForm = new FormGroup({   // Form group for event update form
     title: new FormControl(''),
     startDateTime: new FormControl(''),
     endDateTime: new FormControl(''),
@@ -39,16 +41,18 @@ export class EventUpdateComponent implements OnInit {
     isVisible: new FormControl(true),
     group: new FormControl(''),
   });
-  public file: any;
-  public isDialogOpen: boolean = false;
+ 
 
   ngOnInit() {
-    this.loadEvent();
-    this.fetchCategories();
-    this.fetchLocations();
-    this.fetchGroups();
+    this.loadEvent();         // Load event data
+    this.fetchCategories();   // Fetch categories
+    this.fetchLocations();    // Fetch locations
+    this.fetchGroups();       // Fetch groups
   }
 
+  /**
+   * Fetches groups data from a specified URL using a GET request.
+   */
   async fetchGroups() {
     const response = await fetch(`http://192.168.129.237:3000/myGroups`, {
       method: "GET",
@@ -58,9 +62,14 @@ export class EventUpdateComponent implements OnInit {
       }
     });
     const data = await response.json();
-    this.groups = data.data;
+    this.groups = data.data;  // Assign fetched locations to the component property
   }
 
+  /**
+   * Loads an event from the server and updates the UI based on the retrieved data.
+   *
+   * @return {Promise<void>} a promise that resolves when the event is loaded and UI is updated
+   */
   async loadEvent() {
     this.getIdFromUrl();
     const response = await fetch(`http://192.168.129.237:3000/event/${this.id}`, {
@@ -72,19 +81,22 @@ export class EventUpdateComponent implements OnInit {
     });
     const data = await response.json();
 
+    // Check if the response contains a redirect URL
     if (data.redirect !== undefined) {
       const redirectedUrl = data.redirect;
-      this.router.navigateByUrl("/myEvents"); 
+      this.router.navigateByUrl("/myEvents"); // Redirect to the specified URL
     } else {
       this.eventData = data.data;
-      const activeUser =data.activeUser;
+      const activeUser = data.activeUser;
       const ownerID = data.data.ownerCode;
+      // Redirect if the active user is not the owner of the event
       if(activeUser !== ownerID){
         this.router.navigateByUrl("/myEvents");
       }
-      
-      this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
 
+      // Set selected location in the location select dropdown
+      this.locationSelect.nativeElement.selectedIndex = this.eventData.eventLocationCode;
+      // Patch form controls with event data
       this.eventUpdateForm.patchValue({ title: this.eventData.eventTitle });
       this.eventUpdateForm.patchValue({ startDateTime: new Date(this.eventData.startDateTime).toISOString().slice(0, 16) });
       this.eventUpdateForm.patchValue({ endDateTime: new Date(this.eventData.endDateTime).toISOString().slice(0, 16) });
@@ -99,12 +111,20 @@ export class EventUpdateComponent implements OnInit {
 
   }
 
+  /**
+   * Get the ID from the URL.
+   *
+   */
   getIdFromUrl(): void {
+    // Subscribe to route parameters and extract the ID
     this.route.paramMap.subscribe((params) => {
       this.id = params.get('id');
     });
   }
 
+  /**
+   * Fetches locations from the specified URL and updates the locations property with the retrieved data.
+   */
   async fetchLocations() {
     const response = await fetch(`http://192.168.129.237:3000/location/all`, {
       method: "GET",
@@ -113,9 +133,13 @@ export class EventUpdateComponent implements OnInit {
       },
     });
     const data = await response.json();
-    this.locations = data.data;
+    this.locations = data.data;  // Assign fetched locations to the component property
   }
 
+  /**
+   * Fetches categories data from a specified URL using a GET request,
+   * stores the retrieved data in the 'options' property.
+   */
   async fetchCategories() {
     const response = await fetch(`http://192.168.129.237:3000/categories`, {
       method: "GET",
@@ -124,21 +148,32 @@ export class EventUpdateComponent implements OnInit {
       },
     });
     const data = await response.json();
-    this.options = data.data;
+    this.options = data.data; // Assign fetched categories to the component property
   }
 
+  /**
+   * A function that handles the change event for the option selection.
+   *
+   * @param {any} selectedValue - the selected value triggering the change event
+   * @return {void} 
+   */
   onOptionChange(selectedValue: any) {
-    if (selectedValue === 'addLocation') {
+
+    if (selectedValue === 'addLocation') {  // Open dialog for adding location
       this.isDialogOpen = true;
       this.locationSelect.nativeElement.selectedIndex = 0;
     } else {
-      this.isDialogOpen = false;
+      this.isDialogOpen = false;            // Close dialog
     }
   }
 
+  /**
+   * Submit the form data to update the event information.
+   *
+   * @return {Promise<void>} Promise that resolves when the event has been updated
+   */
   async onSubmit() {
-    console.log("submit");
-
+    // Check if all required fields are filled
     let eventID = this.eventData.eventCode;
     let title = this.eventUpdateForm.value.title;
     let startDateTime = this.eventUpdateForm.value.startDateTime;
@@ -150,7 +185,8 @@ export class EventUpdateComponent implements OnInit {
     let group = this.eventUpdateForm.value.group;
 
     if (eventID && title && startDateTime && endDateTime && price && location && categories && group) {
-      const formData = new FormData();
+      const formData = new FormData();  // Create new FormData object
+      // Append form data to FormData object
       formData.append("eventID", eventID);
       formData.append("title", title);
       formData.append("startDateTime", startDateTime)
@@ -171,6 +207,7 @@ export class EventUpdateComponent implements OnInit {
       });
 
       if (response.ok) {
+        // Display success message
         Swal.fire({
           title: 'Updated!',
           text: 'Your event has been updated.',
@@ -185,31 +222,62 @@ export class EventUpdateComponent implements OnInit {
     }
   }
 
+  /**
+   * Adds a category to the list of categories if it is not already included, then updates the input field.
+   *
+   * @param {string} category - the category to add
+   * @return {void} 
+   */
   addCategory(category: string): void {
+    // If the category is not already present in the array, add it
     if (category && !this.categories.includes(category)) {
       this.categories.push(category);
       this.updateInputField();
     }
   }
 
+  /**
+   * Deletes the last category from the list and updates the input field.
+   *
+   * @return {void} 
+   */
   deleteLastCategory(): void {
+    // If there are categories in the array, remove the last one
     if (this.categories.length > 0) {
       this.categories.pop();
       this.updateInputField();
     }
   }
 
+  /**
+   * Updates the input field with the joined categories and patches the form with updated categories.
+   *
+   * @return {void} 
+   */
   updateInputField(): void {
+    // Find the input field in the DOM and update its value with the current list of categories
     const inputField = this.categoryDiv.nativeElement.querySelector('input');
     inputField.value = this.categories.join(',');
-    this.eventUpdateForm.patchValue({ categories: this.categories.join(',') });
+    this.eventUpdateForm.patchValue({ categories: this.categories.join(',') }); // Patch the form control with the updated categories
   }
 
+  /**
+   * A method to handle file change event.
+   *
+   * @param {any} event - the event object
+   * @return {void} 
+   */
   onFileChange(event: any) {
     // console.log(event.target.files[0]);
     this.file = event.target.files[0];
   }
 
+  /**
+   * Create a new location using the provided data.
+   *
+   * @param {any} newLocation - the data for the new location
+   * @return {Promise<void>} a Promise that resolves when the location is successfully created
+   */
   async createLocation(newLocation: any) {
 
     const inputData = { "adress": newLocation.value };
@@ -222,13 +290,20 @@ export class EventUpdateComponent implements OnInit {
       body: JSON.stringify(inputData),
     });
     if (await response.ok) {
+      // Fetch updated locations
       this.fetchLocations();
       this.isDialogOpen = false;
     }
   }
 
 
+  /**
+   * Delete a specific event after confirming with the user, and handle the API response accordingly.
+   *
+   * @return {void} 
+   */
   async onDelete() {
+    // Display a confirmation dialog using SweetAlert2
     const result = await Swal.fire({
       title: 'Are you sure?',
       text: 'You will not be able to recover this event!',
@@ -239,6 +314,7 @@ export class EventUpdateComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!'
     });
 
+    // Check if the user confirmed the deletion
     if (result.isConfirmed) {
       const eventID = this.eventData.eventCode;
       const inputData = { eventID };
@@ -251,17 +327,21 @@ export class EventUpdateComponent implements OnInit {
         body: JSON.stringify(inputData)
       });
 
+      // Check if the request was successful
       if (response.ok) {
+        // Display a success message using SweetAlert2
         Swal.fire({
           title: 'Deleted!',
           text: 'Your event has been deleted.',
           icon: 'success'
         }).then((result) => {
+          // Redirect the user to the 'myEvents' page after the success message is closed
           if (result.isConfirmed) {
             this.router.navigateByUrl('/myEvents');
           }
         });
       } else {
+        // Display an error message using SweetAlert2 if the deletion fails
         Swal.fire(
           'Error!',
           'Failed to delete the event.',

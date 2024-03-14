@@ -2,6 +2,13 @@
 
 const db = require("../DBAudit");
 
+/**
+ * Asynchronous function to retrieve belongs audit information from the database and send the response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} Promise that resolves with the retrieval and sending of audit information
+ */
 const getBelongsAudit = async (req, res) => {
     try {
         const dbOutput = await db.getBelongsAudit();
@@ -18,6 +25,14 @@ const getBelongsAudit = async (req, res) => {
     }
 } 
 
+
+/**
+ * Retrieves category audit information from the database and sends it as a response.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise<void>} - a Promise that resolves once the response is sent
+ */
 const getCategoryAudit = async (req, res) => {
     try {
         const dbOutput = await db.getCategoryAudit();
@@ -34,6 +49,13 @@ const getCategoryAudit = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves event audit information from the database and sends a JSON response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} - A promise that resolves after sending the JSON response
+ */
 const getEventAudit = async (req, res) => {
     try {
         const dbOutput = await db.getEventAudit();
@@ -50,6 +72,13 @@ const getEventAudit = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves the favorite audit from the database and sends it as a JSON response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} A promise that resolves when the favorite audit is successfully retrieved and sent as a JSON response
+ */
 const getFavoriteAudit = async (req, res) => {
     try {
         const dbOutput = await db.getFavoriteAudit();
@@ -67,6 +96,13 @@ const getFavoriteAudit = async (req, res) => {
 }
 
 
+/**
+ * Retrieves the group audit from the database and sends it as a response.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Object} The group audit data as a JSON response.
+ */
 const getGroupAudit = async (req, res) => {
     try {
         const dbOutput = await db.getGroupAudit();
@@ -85,6 +121,13 @@ const getGroupAudit = async (req, res) => {
 }
 
 
+/**
+ * Retrieves location audit information from the database and sends it as a JSON response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} Sends a JSON response with location audit information or an error message
+ */
 const getLocationAudit = async (req, res) => {
     try {
         const dbOutput = await db.getLocationAudit();
@@ -102,6 +145,13 @@ const getLocationAudit = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves a part of the audit from the database and sends it as a JSON response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} Promise that resolves when the response is sent
+ */
 const getPartOfAudit = async (req, res) => {
     try {
         const dbOutput = await db.getPartOfAudit();
@@ -119,6 +169,13 @@ const getPartOfAudit = async (req, res) => {
     }
 }
 
+/**
+ * Asynchronous function to retrieve review audit data from the database and send it as a JSON response.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise<void>} - returns a promise that resolves when the response is sent
+ */
 const getReviewAudit = async (req, res) => {
     try {
         const dbOutput = await db.getReviewAudit();
@@ -136,6 +193,13 @@ const getReviewAudit = async (req, res) => {
     }
 }
 
+/**
+ * Retrieves user audit information from the database and sends it as a JSON response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} Promise that resolves when the function completes
+ */
 const getUserAudit = async (req, res) => {
     try {
         const dbOutput = await db.getUserAudit();
@@ -153,6 +217,13 @@ const getUserAudit = async (req, res) => {
     }
 }
 
+/**
+ * Retrieve interested audit information from the database and send it as a JSON response.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise<void>} - A Promise that resolves when the function completes
+ */
 const getInterestedAudit = async (req, res) => {
     try {
         const dbOutput = await db.getInterestedAudit();
@@ -169,6 +240,14 @@ const getInterestedAudit = async (req, res) => {
     }
 }
 
+
+/**
+ * Asynchronous function to retrieve attendance audit data from the database and send it as a JSON response.
+ *
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @return {Promise<void>} Promise that resolves when the data is sent as a response or rejects if an error occurs
+ */
 const getAttendsAudit = async (req, res) => {
     try {
         const dbOutput = await db.getAttendsAudit();

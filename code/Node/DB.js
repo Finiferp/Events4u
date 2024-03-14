@@ -1,6 +1,7 @@
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
+// Database connection options
 const DBConnectOpts = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
@@ -9,11 +10,19 @@ const DBConnectOpts = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
 };
+
+// Create a connection pool
 const pool = mysql.createPool(DBConnectOpts);
 
+/**
+ * Asynchronously executes the given SQL query with the provided values and returns the resulting row.
+ *
+ * @param {string} sql - The SQL query to be executed
+ * @param {Array} values - The values to be used in the SQL query
+ * @return {Object} The resulting row from the executed SQL query
+ */
 const executeQuery = async (sql, values) => {
     const conn = await pool.getConnection();
-
     try {
         conn.execute(sql, values);
         const row = await conn.query("Select @output as outputJSON");
@@ -26,6 +35,7 @@ const executeQuery = async (sql, values) => {
       }
     
 };
+
 
 const getEvents = async (JSON) => {
     const sql = 'CALL sp_getEvents(?, @output)';

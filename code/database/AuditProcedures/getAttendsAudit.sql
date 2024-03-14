@@ -1,7 +1,5 @@
 DELIMITER //
-
 DROP PROCEDURE IF EXISTS sp_getAttendsAudit;
-
 CREATE PROCEDURE sp_getAttendsAudit(OUT outputJSON JSON)
 BEGIN
     DECLARE response_code INT;
@@ -27,5 +25,4 @@ BEGIN
     );
 
 END //
-
 DELIMITER ;
