@@ -13,6 +13,7 @@ import { EventCopyComponent } from './event-copy/event-copy.component';
 import { AttendedEventsComponent } from './attended-events/attended-events.component';
 import { LoginComponentComponent } from './login-component/login-component.component';
 import { RegisterComponentComponent } from './register-component/register-component.component';
+import { UserFavoritesComponent } from './user-favorites/user-favorites.component';
 
 export const routes: Routes = [
     {path: 'event/add', component: EventAddComponent },                     
@@ -28,7 +29,8 @@ export const routes: Routes = [
     {path: 'event/copy/:id', component: EventCopyComponent },               
     {path: 'events/attended', component: AttendedEventsComponent },         
     {path: 'login', component: LoginComponentComponent },                   
-    {path: 'register', component: RegisterComponentComponent },             
+    {path: 'register', component: RegisterComponentComponent },
+    {path: 'favorites', component: UserFavoritesComponent },             
    
     { path: '', redirectTo: 'events', pathMatch: 'full' },
 

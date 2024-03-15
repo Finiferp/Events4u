@@ -254,6 +254,12 @@ const getTokens = async () => {
   return await executeQuery(sql);
 }
 
+const getUserFavorites = async (JSON) => {
+  const sql = 'CALL sp_getUserFavorites(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
 module.exports = {
     getEvents,
     getEvent,
@@ -291,5 +297,6 @@ module.exports = {
     checkTokenExists,
     checkAdminStatus,
     deleteToken,
-    getTokens
+    getTokens,
+    getUserFavorites
 }

@@ -476,6 +476,29 @@ const checkAdminStatus = async (req, res) => {
     }
 }
 
+/**
+ * Function to retrieve user favorites asynchronously.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise} Promise that resolves when favorites are retrieved
+ */
+const getUserFavorites = async (req, res) => {
+    try {
+        const userID = parseInt(req.body.userID);
+        const inputData = { userID };
+        const dbOutput = await db.getUserFavorites(inputData);
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({
+            message,
+            data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
 
 module.exports = {
     createGroup,
@@ -492,5 +515,6 @@ module.exports = {
     register,
     login,
     checkLoginStatus,
-    checkAdminStatus
+    checkAdminStatus,
+    getUserFavorites
 };

@@ -26,4 +26,5 @@ module.exports = function (app) {
     app.route("/user/login").post(user.login);
     app.route("/user/loginStatus").get(checkLoginStatus, user.checkLoginStatus);
     app.route("/user/adminStatus").get(checkLoginStatus, user.checkAdminStatus);
+    app.route("/user/favorites").get(authenticateToken, user.getUserFavorites);
 };
