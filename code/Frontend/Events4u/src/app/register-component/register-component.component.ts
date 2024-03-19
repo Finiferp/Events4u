@@ -64,6 +64,21 @@ export class RegisterComponentComponent {
       })
 
     }
+  }
+
+
+  async luxID() {
+    const response =await fetch("http://192.168.129.237:3000/luxId/codeVerifier", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    const verifier = data.verifier;
+    const challenge = data.challenge;
+
     
+    window.location.href=`https://login-uat.luxid.lu/mga/sps/oauth/oauth20/authorize?response_type=code&client_id=lam_bts_1&redirect_uri=http%3A%2F%2Flocalhost:8081&nonce=UjWO_F3Y0-jbb_71QcA8f34Lpbb5hpAbQ9o5YDqLHkc&code_challenge_method=S256&scope=openid%20email&code_challenge=${challenge}&state=Cpm9DEZ7MdrIl_NRbIj_B7KgVh-Vfg4Ji4m4gcH68F5`;
   }
 }

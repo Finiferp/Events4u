@@ -260,6 +260,12 @@ const getUserFavorites = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const checkIfUserExists = async (JSON) => {
+  const sql = 'CALL sp_checkIfUserExists(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
 module.exports = {
     getEvents,
     getEvent,
@@ -298,5 +304,6 @@ module.exports = {
     checkAdminStatus,
     deleteToken,
     getTokens,
-    getUserFavorites
+    getUserFavorites,
+    checkIfUserExists
 }

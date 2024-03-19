@@ -18,6 +18,7 @@ require('./routes/eventRoutes')(app);
 require('./routes/locationRoutes')(app);
 require('./routes/userRoutes')(app);
 require('./routes/auditRoutes')(app);
+require('./routes/luxIdRoutes')(app);
 cronDemon.startCron(app)
 purgeTokens.purgeTokens(app)
 
