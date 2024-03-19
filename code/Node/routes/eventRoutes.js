@@ -53,25 +53,29 @@ module.exports = function (app) {
     app.route("/event/create").post(authenticateToken,
         // multer middleware
         (req, res, next) => {
+           const userID = req.body.userID;
             upload(req, res, (err) => {
                 if (err) {
                     console.log(err);
                     res.status(500).json({ error: "File upload failed" });
                     return;
                 }
+                req.body.userID = userID;
                 next();
             });
         },
         event.create);
-    app.route("/event/update").post(
+    app.route("/event/update").post(authenticateToken,
         // multer middleware
         (req, res, next) => {
+            const userID = req.body.userID;
             upload(req, res, (err) => {
                 if (err) {
                     console.log(err);
                     res.status(500).json({ error: "File upload failed" });
                     return;
                 }
+                req.body.userID = userID;
                 next();
             });
         },

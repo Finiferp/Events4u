@@ -35,10 +35,10 @@ const addLocation = async (req, res) => {
     try {
         const adress = req.body.adress;
         const inputData = { adress };
-        console.log(inputData);
+        //console.log(inputData);
         const dbOutput = await db.addLocation(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
-        console.log(message);
+        //console.log(message);
         res.status(parseInt(status_code)).json({
             message        });
     } catch (error) {

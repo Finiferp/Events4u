@@ -5,6 +5,7 @@ const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const mailer = require('./mailer');
 const { parse } = require("path");
+const { log } = require("console");
 
 
 /**
@@ -204,12 +205,15 @@ const create = async (req, res) => {
         const categories = req.body.categories;
         const group = parseInt(req.body.group);
         const ownerId = parseInt(req.body.userID); 
+        // console.log(req.body);
 
         // Set the image path to be saved in the database
         const imageUrl = `http://192.168.129.237:3000/assets/images/${title}/` + req.file.filename;
         const inputData = { title, startDateTime, endDateTime, price, location_FK, categories, ownerId, imageUrl, group };
+        // console.log(inputData);
         const dbOutput = await db.createEvent(inputData);
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
+        // console.log(message);
         res.status(status_code).json({
             message
         });

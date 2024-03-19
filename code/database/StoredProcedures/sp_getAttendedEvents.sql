@@ -37,7 +37,8 @@ BEGIN
             LEAVE eventLoop;
         END IF;
 
-         IF input_activeUser <> -1 AND EXISTS (SELECT 1 FROM Favorite WHERE user_code_favorite_PKFK = input_activeUser AND event_code_favorite_PKFK = currentEventID) THEN
+        -- Check if event is favorited
+        IF input_activeUser <> -1 AND EXISTS (SELECT 1 FROM Favorite WHERE user_code_favorite_PKFK = input_activeUser AND event_code_favorite_PKFK = currentEventID) THEN
             SET isFavorited = 1;
         ELSE
             SET isFavorited = 0;

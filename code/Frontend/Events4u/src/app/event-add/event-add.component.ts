@@ -127,6 +127,7 @@ export class EventAddComponent implements OnInit {
     let location = this.eventAddForm.value.location;
     let categories = this.eventAddForm.value.categories;
     let group = this.eventAddForm.value.group;
+    
 
     // Check if all required fields are filled
     if (title && startDateTime && endDateTime && price && location && categories && group) {
@@ -145,6 +146,9 @@ export class EventAddComponent implements OnInit {
 
       const response = await fetch(`http://192.168.129.237:3000/event/create`, {
         method: "POST",
+        headers: {
+          "Authorization": `${this.token}`
+        },
         body: formData,
       });
 

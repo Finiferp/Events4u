@@ -1,5 +1,6 @@
 DELIMITER //
 
+-- At later stages turned into the search function
 DROP PROCEDURE IF EXISTS sp_getEventsOnCategories;
 
 CREATE PROCEDURE sp_getEventsOnCategories(IN inputJSON JSON, OUT outputJSON JSON)
@@ -30,6 +31,7 @@ BEGIN
                                 "required": ["activeUser"] 
                         }';
 
+    -- Open cursor to fetch event IDs
     OPEN cur;
     FETCH cur INTO currentEventID;
 
@@ -41,18 +43,23 @@ BEGIN
     SET response_message = 'Success';
     SET response_data = JSON_ARRAY();
 
+    -- Loop through event IDs
     eventLoop: LOOP
+        -- Exit loop if no more rows
         IF done THEN
             LEAVE eventLoop;
         END IF;
+        -- Check filters and retrieve event data
         IF (input_category = -1 OR EXISTS (SELECT 1 FROM Belongs WHERE category_code_belongs_PKFK = input_category AND event_code_belongs_PKFK = currentEventID))
             AND (input_title = '' OR EXISTS (SELECT 1 FROM Event WHERE title LIKE CONCAT('%', input_title, '%') AND code_PK = currentEventID)) THEN
 
+            -- Check if event is favorited
             IF input_activeUser <> -1 AND EXISTS (SELECT 1 FROM Favorite WHERE user_code_favorite_PKFK = input_activeUser AND event_code_favorite_PKFK = currentEventID) THEN
                   SET isFavorited = 1;
             ELSE
                   SET isFavorited = 0;
             END IF;
+
 
             SET response_data = JSON_ARRAY_APPEND(response_data, '$', JSON_OBJECT(
                   'eventCode', currentEventID,
@@ -67,8 +74,10 @@ BEGIN
                   'isFavorited', isFavorited
             ));
         END IF;
+        -- Fetch next event ID
         FETCH cur INTO currentEventID;
     END LOOP eventLoop;
+    -- Close cursor
     CLOSE cur;
 
     SET outputJSON = JSON_OBJECT(

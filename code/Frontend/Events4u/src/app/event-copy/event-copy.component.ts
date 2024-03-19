@@ -39,7 +39,6 @@ export class EventCopyComponent {
     price: new FormControl(''),
     location: new FormControl(''),
     categories: new FormControl(''),
-    isVisible: new FormControl(true),
     group: new FormControl(0),
   });
 
@@ -101,9 +100,7 @@ export class EventCopyComponent {
       this.eventAddForm.patchValue({ location: this.eventData.eventLocationCode });
       this.eventAddForm.get('group')?.setValue(1);
       this.eventAddForm.patchValue({ categories: this.eventData.categories });
-      this.categories = this.eventData.categories;
-      this.eventAddForm.patchValue({ isVisible: this.eventData.isVisible === 1 ? true : false });
-      
+      this.categories = this.eventData.categories;      
     }
 
   }

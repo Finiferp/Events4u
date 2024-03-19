@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { format } from 'date-fns';
 import Swal from 'sweetalert2';
+import { LocalService } from '../local.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -17,6 +19,10 @@ export class ReviewsComponent implements OnChanges {
   reviewText: string = '';        // Text of the review
   reviews: Review[] = [];         // Array to store fetched reviews
   @Input() eventID!: number;      // Input property to receive the event ID from the parent component
+  token = this.localService.getItem("token"); // Token retrieved from LocalService
+
+
+  constructor(private localService: LocalService, private router: Router) { }
 
   /**
    * Set the rating to the specified star value.
@@ -46,17 +52,21 @@ export class ReviewsComponent implements OnChanges {
    *
    * @return {Promise<void>} The function does not return anything.
    */
-  async fetchReviews() {
-    console.log(await this.eventID);
-    
+  async fetchReviews() {    
     const response = await fetch(`http://192.168.129.237:3000/event/getReviews/${this.eventID}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "Authorization": `${this.token}`
+
       }
     });
     const data = await response.json();
-    this.reviews = data.data;
+    if(data.data === null){
+      this.reviews = [];
+    } else {
+      this.reviews = data.data;
+    }
   }
 
 
@@ -80,14 +90,19 @@ export class ReviewsComponent implements OnChanges {
       const response = await fetch(`http://192.168.129.237:3000/event/addReview`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          "Authorization": `${this.token}`
         },
         body: JSON.stringify(inputData)
       });
+      if(response.ok){
+        // Reset the form after submitting the review
+        this.resetForm();
+        this.fetchReviews();
+      } else {
+        this.router.navigateByUrl("/login");
+      }
 
-      // Reset the form after submitting the review
-      this.resetForm();
-      this.fetchReviews
     } else {
       // Alert if rating or review text is missing
       Swal.fire({

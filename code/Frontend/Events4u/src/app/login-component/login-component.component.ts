@@ -9,10 +9,14 @@ import { LocalService } from '../local.service';
 import { LoginStatusService } from '../login-status.service';
 
 
+
+
+
+
 @Component({
   selector: 'app-login-component',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, PasswordModule,],
+  imports: [CommonModule, ReactiveFormsModule, InputTextModule, PasswordModule],
   templateUrl: './login-component.component.html',
   styleUrl: './login-component.component.scss'
 })
@@ -24,7 +28,8 @@ export class LoginComponentComponent {
     password: new FormControl(''),
   });
 
-  constructor(private router: Router, private localService: LocalService, private loginStatusService: LoginStatusService) { }
+  constructor(private router: Router, private localService: LocalService, private loginStatusService: LoginStatusService) {  }
+
 
 
   /**
@@ -76,7 +81,12 @@ export class LoginComponentComponent {
         icon: 'error'
       });
     }
+  }
 
+  luxID() {
+    window.open('https://login-uat.luxid.lu/mga/sps/oauth/oauth20/authorize?response_type=code&client_id=lam_bts_1&redirect_uri=http%3A%2F%2F172.24.80.1:4200/events&nonce=UjWO_F3Y0-jbb_71QcA8f34Lpbb5hpAbQ9o5YDqLHkc&code_challenge_method=S256&scope=openid%20email&code_challenge=Yd-iFBYiHbLaARz9IhcOZDrB4DpooAo-H7RF78drBQY&state=Cpm9DEZ7MdrIl_NRbIj_B7KgVh-Vfg4Ji4m4gcH68F0');
   }
 
 }
+
+

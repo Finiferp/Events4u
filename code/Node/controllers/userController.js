@@ -180,7 +180,7 @@ const addUserToGroup = async (req, res) => {
         const dbOutput = await db.addUserToGroup(inputData);
 
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
-        console.log(message);
+        //console.log(message);
         res.status(status_code).json({
             message
         });
@@ -295,7 +295,7 @@ const toggleAsInterested = async (req, res) => {
 
         let { status_code, message } = JSON.parse(dbOutput.outputJSON);
 
-        console.log(message);
+        //console.log(message);
         res.status(status_code).json({
             message
         });

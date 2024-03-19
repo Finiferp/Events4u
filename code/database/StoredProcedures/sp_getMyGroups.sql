@@ -20,6 +20,7 @@ BEGIN
         SET response_message = 'Invalid JSON format or structure';
     ELSE
         SET input_UserID = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.userID'));
+        -- Check if user exists
         IF NOT EXISTS (SELECT 1 FROM `User` WHERE code_PK = input_UserID) THEN
             SET response_code = 404;
             SET response_message = 'User does not exist';

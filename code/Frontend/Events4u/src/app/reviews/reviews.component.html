@@ -33,7 +33,11 @@
         </div>
         <div class="text-sm text-gray-500">From: {{ review.user }}</div>
         <span>{{ review.text }}</span>
-       
+    </div>
+
+    <div *ngIf = "reviews.length === 0"
+    class="text-xl font-bold text-center mt-8 text-gray-500 italic">
+        No reviews yet.
     </div>
 </div>
 

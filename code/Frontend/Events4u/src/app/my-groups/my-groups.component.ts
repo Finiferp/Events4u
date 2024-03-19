@@ -55,7 +55,7 @@ export class MyGroupsComponent implements OnInit {
    * @return {Promise<void>} a Promise that resolves with no value
    */
   async createGroup(newGroup: any) {
-    console.log(newGroup.value);
+    // console.log(newGroup.value);
     const inputData = { "name": newGroup.value };
     const response = await fetch(`http://192.168.129.237:3000/group/create`, {
       method: "POST",

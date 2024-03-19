@@ -107,6 +107,16 @@ export class GroupEditComponent implements OnInit {
     } else {
       this.users = this.removeItemsWithSamePK(this.usersData, data.data);
     }
+
+    const ownerName = this.groupData.owner_name;
+    console.log(this.users);
+    
+    let indexToRemove = this.users.findIndex(user => user.user_name === ownerName);
+    console.log(indexToRemove);
+    
+    if (indexToRemove !== -1) {
+      this.users.splice(indexToRemove,1);
+    }
   }
 
   /**

@@ -41,7 +41,10 @@ export class NavbarComponent implements OnInit {
   constructor(private renderer: Renderer2, private router: Router, private localService: LocalService,
     private loginStatusService: LoginStatusService) {
     this.loginStatusService.getLoginStatus().subscribe((data) => {
-      this.isLoggedIn = data;
+      this.isLoggedIn = data;      
+      if(this.isLoggedIn ){
+        this.checkAdmin();
+      }
     });
   }
 
@@ -108,6 +111,8 @@ export class NavbarComponent implements OnInit {
    * Asynchronously checks the admin status of the user.
    */
   async checkAdmin() {
+    this.token = this.localService.getItem("token");   // Retrieving the new token from local storage
+    
     const response = await fetch(`http://192.168.129.237:3000/user/adminStatus`, {
       method: "GET",
       headers: {
@@ -116,7 +121,10 @@ export class NavbarComponent implements OnInit {
       },
     });
     const data = await response.json();
-    this.isAdmin = data.data.isAdmin;
+    const admin = data.data.isAdmin;
+    this.isAdmin = admin === 1 ? true : false; 
+    console.log(this.isAdmin);
+    
   }
 
   /**

@@ -1,5 +1,5 @@
 <div class="flex flex-col items-center justify-center h-screen">
-    <div class="w-1/2">
+    <div class="w-full md:w-1/2 px-4">
         <!-- Iterate over each group in groupsData array -->
         <div *ngFor="let group of groupsData"
             class="border border-gray-300 rounded-lg p-4 my-2 shadow-md bg-white min-width-20 text-center relative hover:bg-emerald-100 cursor-pointer"
@@ -23,12 +23,12 @@
 
 <!-- Create Group Dialog -->
 <dialog [open]="isDialogOpen"
-    class="fixed top-1/2 left-1/3 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-8 w-1/3 z-10">
+    class=" top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-8 w-full md:w-1/2 z-10">
     <h1 class="text-xl font-bold mb-4">Create a new Group</h1>
     <input type="text"
         class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-teal-500 mb-4"
         placeholder="Enter the group name" #newGroup>
-    <div class="flex justify-end">
+    <div class="flex justify-end ">
         <button
             class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mr-2 focus:outline-none focus:shadow-outline"
             (click)="toggleDialog()">

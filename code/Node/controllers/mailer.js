@@ -32,7 +32,7 @@ const startCron = async (app) => {
             // check if the event is attended by the users, if so send a reminder to the user, 1 day before the event
             if (event.attending_users !== null) {
                 event.attending_users.forEach(user => {
-                    console.log(user);
+                    //console.log(user);
                     let mailOptions = {
                         from: 'event4u@david-nerdspace.net',
                         to: user.email,
@@ -67,7 +67,7 @@ const updateEventMessage = async (eventID) => {
         // check if the event is attended by the users, if so send a mail to the user that the event was updated
         if (event.attending_users !== null) {
             event.attending_users.forEach(user => {
-                console.log(user);
+                //console.log(user);
                 let mailOptions = {
                     from: 'event4u@david-nerdspace.net',
                     to: user.email,

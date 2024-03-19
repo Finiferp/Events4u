@@ -20,6 +20,8 @@ BEGIN
         SET response_message = 'Invalid JSON format or structure';
     ELSE
         SET input_GroupID = JSON_UNQUOTE(JSON_EXTRACT(inputJSON, '$.groupID'));
+
+        -- Check if group exists
         IF NOT EXISTS (SELECT 1 FROM `Group` WHERE code_PK = input_GroupID) THEN
             SET response_code = 404;
             SET response_message = 'Group does not exist';

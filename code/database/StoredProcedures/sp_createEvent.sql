@@ -59,21 +59,27 @@ BEGIN
 
             SET v_last_eventID = LAST_INSERT_ID();
 
+            -- Loop through category list
+
             category_loop: LOOP
                 SET category_name = TRIM(SUBSTRING_INDEX(category_list, ',', 1));
                 IF category_name = '' THEN
                     LEAVE category_loop;
                 END IF;
                 
+                -- Open cursor to fetch category ID
                 OPEN category_cursor;
                 FETCH category_cursor INTO category_id;
                 CLOSE category_cursor;
                 
+                -- Insert into Belongs table if category ID is not NULL
                 IF category_id IS NOT NULL THEN
                     INSERT INTO Belongs (event_code_belongs_PKFK, category_code_belongs_PKFK)
                     VALUES (v_last_eventID, category_id);
                 END IF;
                 
+                -- Update category list
+
                 SET category_list = TRIM(BOTH ',' FROM SUBSTRING(category_list, LENGTH(category_name) + 2));
             END LOOP category_loop;
         
