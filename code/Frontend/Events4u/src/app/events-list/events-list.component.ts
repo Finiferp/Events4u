@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchServiceService } from '../search-service.service';
 import { Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { LocalService } from '../local.service';
 import { LoginStatusService } from '../login-status.service';
 
@@ -15,19 +15,23 @@ import { LoginStatusService } from '../login-status.service';
   styleUrl: './events-list.component.scss'
 })
 export class EventsListComponent implements OnInit {
-  public eventsData: any[] = [];              // Array to store the fetched events
-  clickEventsubscription: Subscription;       // Subscription to listen for search events
-  token = this.localService.getItem("token"); // Retrieve token from local storage
+  public eventsData: any[] = [];                      // Array to store the fetched events
+  clickEventsubscription: Subscription;               // Subscription to listen for search events
+  token = this.localService.getItem("token");         // Retrieve token from local storage
+  verifier = this.localService.getItem("verifier");   // Retrieve verifier from local storage
 
 
-  constructor(private searchEvent: SearchServiceService, private router: Router, private localService: LocalService, private route: ActivatedRoute, private loginStatusService: LoginStatusService) {
+  constructor(private searchEvent: SearchServiceService,
+    private router: Router,
+    private localService: LocalService,
+    private route: ActivatedRoute,
+    private loginStatusService: LoginStatusService) {
     this.clickEventsubscription = this.searchEvent.getSearchEvent().subscribe((data) => {
       this.search(data);
     });
   }
 
   async ngOnInit() {
-    this.authenticate();
     // Fetch all events when the component initializes
     const response = await fetch(`http://192.168.129.237:3000/event/all`, {
       method: "GET",
@@ -38,6 +42,11 @@ export class EventsListComponent implements OnInit {
     });
     const data = await response.json();
     this.eventsData = data.data;  // Store fetched events in the eventsData array
+
+    if (this.verifier !== "") {
+      this.authenticate(this.verifier);
+    }
+
   }
 
   /**
@@ -69,16 +78,13 @@ export class EventsListComponent implements OnInit {
   }
 
 
-  async authenticate() {
-    console.log("TRying");
-    
+  async authenticate(verifier: any) {
     // Subscribe to route parameters to get the 'code' value
     this.route.queryParams.subscribe(async params => {
       const code = params['code'];
-      if(code){
-        console.log("yess");
-        
-        const inputData = { "code": code };
+      if (code !== undefined) {
+        const inputData = { "code": code, verifier };
+
 
         const response = await fetch(`http://192.168.129.237:3000/luxId/authenticate`, {
           method: "POST",
@@ -87,21 +93,20 @@ export class EventsListComponent implements OnInit {
           },
           body: JSON.stringify(inputData)
         });
-        const data = await response.json();
-        const { email, firstName, lastName, password, login } = data;
-        console.log(email, firstName, lastName, password, login);
-        
+        if (response.ok) {
 
-        if(!login) {
-          const inputData = { firstName, lastName, email, password }
-          const response = await fetch('http://192.168.129.237:3000/user/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(inputData)
-          });
-        }
+          const data = await response.json();
+          const { email, firstName, lastName, password, login } = data;
+          if (!login) {
+            const inputData1 = { firstName, lastName, email, password }
+            const response1 = await fetch('http://192.168.129.237:3000/user/register', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(inputData1)
+            });
+          }
 
           const inputData2 = { email, password };
           const response2 = await fetch('http://192.168.129.237:3000/user/login', {
@@ -118,8 +123,10 @@ export class EventsListComponent implements OnInit {
             this.localService.setItem('token', token);
             this.router.navigateByUrl('/myEvents');
             this.loginStatusService.sendLoginStatus(true);
+            this.localService.removeItem('verifier');
           }
         }
+      }
     });
 
   }

@@ -122,9 +122,7 @@ export class NavbarComponent implements OnInit {
     });
     const data = await response.json();
     const admin = data.data.isAdmin;
-    this.isAdmin = admin === 1 ? true : false; 
-    console.log(this.isAdmin);
-    
+    this.isAdmin = admin === 1 ? true : false;     
   }
 
   /**

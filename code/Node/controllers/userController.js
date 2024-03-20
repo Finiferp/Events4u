@@ -350,7 +350,7 @@ const login = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
-        console.log(email, password);
+        // console.log(email, password);
 
         const inputDataSalt = { email };
         const dbSaltOutput = await db.getSalt(inputDataSalt);
@@ -371,8 +371,8 @@ const login = async (req, res) => {
 
             let { status_code, message, user, token_out } = JSON.parse(dbOutput.outputJSON);
 
-            console.log(message);
-            console.log(status_code);
+            // console.log(message);
+            // console.log(status_code);
 
             res.status(status_code).json({
                 message,
