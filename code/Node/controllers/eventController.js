@@ -19,7 +19,6 @@ const getEvent = async (req, res) => {
     try {
         const eventId = parseInt(req.params.id);
         const activeUser = parseInt(req.body.activeUser);
-        // console.log(activeUser);
         const inputData = { eventId, activeUser };
         const dbOutput = await db.getEvent(inputData);
         // If the event doesn't exist, return an error message and redirect to the events page

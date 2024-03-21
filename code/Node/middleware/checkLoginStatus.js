@@ -17,25 +17,42 @@ async function checkLoginStatus(req, res, next) {
                   const tokenExistsResult = await db.checkTokenExists(token);
                   const { result, id } = JSON.parse(tokenExistsResult.outputJSON);
                   // If token exists, verify the token
-                  if (result) {
-                        jwt.verify(token, 'Events4USecretKey', (err, decoded) => {
-                              // If token is invalid, delete the token else set activeUser to the userID
-                              if (err) {
-                                    if (err.name === 'TokenExpiredError') {
-                                          const inputData = { id };
-                                          db.deleteToken(inputData);
-                                    }
+                  // if (result) {
+                  jwt.verify(token, 'Events4USecretKey', (err, decoded) => {
+                        // If token is invalid, delete the token else set activeUser to the userID
+                        if (err) {
+                              if (err.name === 'TokenExpiredError') {
+                                    const inputData = { id };
+                                    db.deleteToken(inputData);
                               } else {
-                                    const { userID } = decoded;
-                                    activeUser = userID;
+
                               }
-                        });
-                  }
+                        } else {
+                              const { userID } = decoded;
+                              activeUser = userID;
+                        }
+                  });
+                  // }
             } catch (error) {
                   console.error(error);
             }
       }
       // append activeUser to the request body and call the next function
+      if (activeUser === -1) {
+            try {
+                  if (token !== null) {
+                        const information = jwt.decode(token);
+                        const sub = information.sub;
+                        const inputData = { sub };
+                        const dbOutput = await db.checkIfLuxIdExists(inputData);
+                        const { userId } = JSON.parse(dbOutput.outputJSON).data;
+                        activeUser = userId;
+                  }
+            } catch (error) {
+                  console.error(error);
+            }
+      }
+
       req.body.activeUser = activeUser;
       next();
 }

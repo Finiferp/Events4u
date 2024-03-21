@@ -396,7 +396,6 @@ const login = async (req, res) => {
 const checkLoginStatus = async (req, res) => {
     try {
         const activeUser = req.body.activeUser;
-
         let isLoggedIn;
 
         // If activeUser is -1, the user is not logged in else the user has a positive value which means the user is logged in

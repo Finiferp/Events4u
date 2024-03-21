@@ -266,6 +266,19 @@ const checkIfUserExists = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const checkIfLuxIdExists = async (JSON) => {
+  const sql = 'CALL sp_checkIfLuxIdExists(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+
+const addUserAndMapping = async (JSON) => {
+  const sql = 'CALL sp_addUserAndMapping(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
 module.exports = {
     getEvents,
     getEvent,
@@ -305,5 +318,7 @@ module.exports = {
     deleteToken,
     getTokens,
     getUserFavorites,
-    checkIfUserExists
+    checkIfUserExists,
+    checkIfLuxIdExists,
+    addUserAndMapping
 }

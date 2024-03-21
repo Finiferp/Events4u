@@ -1,7 +1,7 @@
 DELIMITER //
 DROP PROCEDURE IF EXISTS sp_checkToken;
 
-CREATE PROCEDURE sp_checkToken(IN p_token VARCHAR(255), OUT outputJSON JSON)
+CREATE PROCEDURE sp_checkToken(IN p_token VARCHAR(1000), OUT outputJSON JSON)
 BEGIN
     DECLARE token_exists INT;
     DECLARE token_ID INT;

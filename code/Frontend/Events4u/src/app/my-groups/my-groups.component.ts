@@ -35,7 +35,6 @@ export class MyGroupsComponent implements OnInit {
     if(response.status === 401 || response.status === 403){
       this.router.navigateByUrl("/login");
     }
-
     const data = await response.json();
     this.groupsData = data.data;
   }
