@@ -1,46 +1,54 @@
 <div class="flex justify-center items-center min-h-screen">
-    <div class=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-      <h1 class="text-2xl font-bold mb-4 text-center">Register</h1>
-      <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-6">
-  
-        <div class="mb-4 flex justify-center items-center">
-          <span class="p-float-label">
-            <input class="shadow-md p-3" pInputText formControlName="firstName" required>
-            <label>First Name*</label>
-          </span>
-        </div>
-  
-        <div class="mb-4 flex justify-center items-center">
-          <span class="p-float-label">
-            <input class="shadow-md p-3"  pInputText formControlName="lastName" required>
-            <label>Last Name*</label>
-          </span>
-        </div>
-  
-        <div class="mb-4 flex justify-center items-center">
-          <span class="p-float-label">
-            <input class="shadow-md p-3" pInputText formControlName="email" type="email" required>
-            <label>Email*</label>
-          </span>
-        </div>
-  
-        <div class="mb-4 flex justify-center items-center">
-          <span class="p-float-label">
-            <p-password class="shadow-md p-3" formControlName="password" id="password" [toggleMask]="true"  [feedback]="false" required></p-password>
-            <label>Password*</label>
-          </span>
-        </div>
-  
-        <div class="flex items-center justify-center">
-          <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Register</button>
-          <p>OR</p> <!-- TODO: design this -->
-          <button 
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+  <div class=" bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <h1 class="text-2xl font-bold mb-4 text-center">Register</h1>
+    <form [formGroup]="registerForm" (ngSubmit)="register()" class="space-y-6">
+
+      <div class="mb-4 flex justify-center items-center">
+        <span class="p-float-label">
+          <input class="shadow-md p-3" pInputText formControlName="firstName" required>
+          <label>First Name*</label>
+        </span>
+      </div>
+
+      <div class="mb-4 flex justify-center items-center">
+        <span class="p-float-label">
+          <input class="shadow-md p-3" pInputText formControlName="lastName" required>
+          <label>Last Name*</label>
+        </span>
+      </div>
+
+      <div class="mb-4 flex justify-center items-center">
+        <span class="p-float-label">
+          <input class="shadow-md p-3" pInputText formControlName="email" type="email" required>
+          <label>Email*</label>
+        </span>
+      </div>
+
+      <div class="mb-4 flex justify-center items-center">
+        <span class="p-float-label">
+          <p-password class="shadow-md p-3" formControlName="password" id="password" [toggleMask]="true"
+            [feedback]="false" required></p-password>
+          <label>Password*</label>
+        </span>
+      </div>
+
+
+
+      <div class="flex items-center justify-center space-x-4">
+        <button 
+          class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline" 
+          type="submit">Register</button>
+        <span 
+          class="text-gray-600 font-semibold">
+          or
+        </span>
+        <button 
+          class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline" 
           (click)="luxID(); $event.preventDefault();">
-            LuxID
-          </button>
-        </div>
-      </form>
-    </div>
+          LuxID
+        </button>
+      </div>
+
+    </form>
   </div>
-  
+</div>

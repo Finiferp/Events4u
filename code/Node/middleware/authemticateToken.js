@@ -29,6 +29,7 @@ async function authenticateToken(req, res, next) {
                 // If token is expired, delete the token and return an error else return an error that the token is invalid
                 if (err.name === 'TokenExpiredError') {
                     const inputData = { id };
+                    console.log(inputData);
                     db.deleteToken(inputData);
                     return res.status(401).json({ error: 'Unauthorized: Token expired' });
                 } else {
@@ -38,17 +39,14 @@ async function authenticateToken(req, res, next) {
                         const inputData = { sub };
                         const dbOutput = await db.checkIfLuxIdExists(inputData);
                         const { userId, exists } = JSON.parse(dbOutput.outputJSON).data;
-                        // console.log(userId, exists);
                         if (exists) {
                             req.body.userID = userId;
-                            // console.log(userId);
                         } else {
                             const { given_name, family_name, email } = information;
                             const inputData2 = { "firstName": given_name, "lastName": family_name, email, sub };
                             const dbOutput2 = await db.addUserAndMapping(inputData2);
                             const { userId } = JSON.parse(dbOutput2.outputJSON).data;
                             req.body.userID = userId;
-                            // console.log(userId);
                         }
 
                     } catch (error) {

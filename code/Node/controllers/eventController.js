@@ -243,11 +243,12 @@ const updateEvent = async (req, res) => {
         let imageUrl;
         // If an image is uploaded, save the image path in the database else use the old image path
         if (req.file) {
-            imageUrl = `http://192.168.129.237/assets/images/${title}/` + req.file.filename;
+            imageUrl = `http://192.168.129.237:3000/assets/images/${title}/` + req.file.filename;
         } else {
             imageUrl = (req.body.oldImageUrl).toString();
         }
         const inputData = { eventID, title, startDateTime, endDateTime, price, location, categories, imageUrl, isVisible, group };
+        // console.log(inputData);
         const dbOutput = await db.updateEvent(inputData);
         let { status_code, message, updated_eventID } = JSON.parse(dbOutput.outputJSON);
 

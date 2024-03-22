@@ -204,6 +204,9 @@ export class EventUpdateComponent implements OnInit {
       const response = await fetch(`http://192.168.129.237:3000/event/update`, {
         method: "POST",
         body: formData,
+        headers: {
+          "Authorization": `${this.token}`
+        }
       });
 
       if (response.ok) {

@@ -106,7 +106,7 @@ export class EventsListComponent implements OnInit {
     if (response.ok) {
 
       const data = await response.json();
-      const { email, firstName, lastName, password, login, information } = data;
+      const { information } = data;
 
       this.localService.setItem('token', information);
       this.router.navigateByUrl('/myEvents');

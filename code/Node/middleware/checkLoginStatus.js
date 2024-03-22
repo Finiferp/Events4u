@@ -24,8 +24,6 @@ async function checkLoginStatus(req, res, next) {
                               if (err.name === 'TokenExpiredError') {
                                     const inputData = { id };
                                     db.deleteToken(inputData);
-                              } else {
-
                               }
                         } else {
                               const { userID } = decoded;
@@ -40,13 +38,16 @@ async function checkLoginStatus(req, res, next) {
       // append activeUser to the request body and call the next function
       if (activeUser === -1) {
             try {
-                  if (token !== null) {
+                  if (token !== null || token !== undefined) {
                         const information = jwt.decode(token);
-                        const sub = information.sub;
-                        const inputData = { sub };
-                        const dbOutput = await db.checkIfLuxIdExists(inputData);
-                        const { userId } = JSON.parse(dbOutput.outputJSON).data;
-                        activeUser = userId;
+                        if(information !== null) {
+                              const sub = information.sub;
+                              const inputData = { sub };
+                              const dbOutput = await db.checkIfLuxIdExists(inputData);
+                              const { userId } = JSON.parse(dbOutput.outputJSON).data;
+                              activeUser = userId;
+                        }
+                       
                   }
             } catch (error) {
                   console.error(error);

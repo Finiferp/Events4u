@@ -17,22 +17,21 @@
           <label>Password*</label>
         </span>
       </div>
-
-      <div class="flex items-center justify-center">
+      <div class="flex items-center justify-center space-x-4">
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline"
           type="submit">
           Login
         </button>
-        <p>OR</p>  <!-- TODO: design this -->
+        <span class="text-gray-600 font-semibold">
+          or
+        </span>
         <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg focus:outline-none focus:shadow-outline"
           (click)="luxID(); $event.preventDefault();">
           LuxID
         </button>
       </div>
     </form>
   </div>
-
-
 </div>
