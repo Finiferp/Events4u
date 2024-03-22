@@ -176,7 +176,7 @@ export class GroupEditComponent implements OnInit {
     });
 
     // If user confirms deletion
-    if (!result.isConfirmed) {
+    if (result.isConfirmed) {
       // Delete user from the group
       const inputData = { userID: userID, groupID: this.id };
       const response = await fetch(`http://192.168.129.237:3000/group/user/delete`, {

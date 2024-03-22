@@ -18,7 +18,7 @@ module.exports = function (app) {
     const storage = multer.diskStorage({
         destination: (req, file, cb) => {
             // create directory if it doesn't exist
-            const userdir = `./assets/images/${req.body.title}`;
+            const userdir = `./assets/images/${req.body.title.toUpperCase()}`;
             if (!fs.existsSync(userdir)) {
                 fs.mkdirSync(userdir, { recursive: true });
             }
@@ -26,7 +26,7 @@ module.exports = function (app) {
         },
         // generate a unique filename
         filename: (req, file, cb) => {
-            const name = `${req.body.title}.png`;
+            const name = `${req.body.title.toUpperCase()}.png`;
             cb(null, Date.now() + "-" + name);
         }
     });

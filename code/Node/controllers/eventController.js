@@ -207,7 +207,7 @@ const create = async (req, res) => {
         // console.log(req.body);
 
         // Set the image path to be saved in the database
-        const imageUrl = `http://192.168.129.237:3000/assets/images/${title}/` + req.file.filename;
+        const imageUrl = `http://192.168.129.237:3000/assets/images/${title.toUpperCase()}/` + req.file.filename;
         const inputData = { title, startDateTime, endDateTime, price, location_FK, categories, ownerId, imageUrl, group };
         // console.log(inputData);
         const dbOutput = await db.createEvent(inputData);
@@ -243,7 +243,7 @@ const updateEvent = async (req, res) => {
         let imageUrl;
         // If an image is uploaded, save the image path in the database else use the old image path
         if (req.file) {
-            imageUrl = `http://192.168.129.237:3000/assets/images/${title}/` + req.file.filename;
+            imageUrl = `http://192.168.129.237:3000/assets/images/${title.toUpperCase()}/` + req.file.filename;
         } else {
             imageUrl = (req.body.oldImageUrl).toString();
         }

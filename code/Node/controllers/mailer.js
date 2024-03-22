@@ -23,16 +23,16 @@ const transporter = nodemailer.createTransport({
  * @return {Promise<void>} A promise that resolves when the cron job is started
  */
 const startCron = async (app) => {
+    console.log("Cron started");
+
     // Sends reminders at 1am every day for upcoming events
     cron.schedule('* 1 * * *', async () => {
         const dbOutput = await db.getReminders();
         const events = (JSON.parse(dbOutput.outputJSON)).events;
-        console.log("cron");
         events.forEach(event => {
             // check if the event is attended by the users, if so send a reminder to the user, 1 day before the event
             if (event.attending_users !== null) {
                 event.attending_users.forEach(user => {
-                    //console.log(user);
                     let mailOptions = {
                         from: 'event4u@david-nerdspace.net',
                         to: user.email,

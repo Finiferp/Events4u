@@ -60,6 +60,7 @@ export class MyGroupsComponent implements OnInit {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `${this.token}`
       },
       body: JSON.stringify(inputData),
     });
