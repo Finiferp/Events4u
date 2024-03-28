@@ -279,6 +279,48 @@ const addUserAndMapping = async (JSON) => {
   return await executeQuery(sql, values);
 }
 
+const getUser = async (JSON) => {
+  const sql = 'CALL sp_getUser(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const toggleMails = async (JSON) => {
+  const sql = 'CALL sp_updateMailPreferences(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const toggleConcent = async (JSON) => {
+  const sql = 'CALL sp_updateConcent(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getAllGroups = async (JSON) => {
+  const sql = 'CALL sp_getAllGroups(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const apllyToGroup = async (JSON) => {
+  const sql = 'CALL sp_applyForGroup(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const getAppliedUsersForGroup = async (JSON) => {
+  const sql = 'CALL sp_getAppliedUsersForGroup(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
+const declineGroupDemands = async (JSON) => {
+  const sql = 'CALL sp_declineGroupDemands(?, @output)';
+  const values = [JSON];
+  return await executeQuery(sql, values);
+}
+
 module.exports = {
     getEvents,
     getEvent,
@@ -320,5 +362,12 @@ module.exports = {
     getUserFavorites,
     checkIfUserExists,
     checkIfLuxIdExists,
-    addUserAndMapping
+    addUserAndMapping,
+    getUser,
+    toggleMails,
+    toggleConcent,
+    getAllGroups,
+    apllyToGroup,
+    getAppliedUsersForGroup,
+    declineGroupDemands
 }

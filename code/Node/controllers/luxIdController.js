@@ -40,11 +40,26 @@ const authenticateLuxID = async (req, res) => {
 
         const information = jwt.decode(responseData.id_token);
 
-        const token = responseData.id_token
+        const token = responseData.id_token;
         if (information !== null) {
+            const { email } = information;
+
+            const inputData = { email };
+            const dbOutput = await db.checkIfUserExists(inputData);
+
+            const { status_code, message } = JSON.parse(dbOutput.outputJSON);
+
+            let login = false;
+
+            if (status_code === 200) {
+                login = true;
+            } else if (status_code === 404) {
+                login = false;
+            }
 
             res.status(200).json({
-                "information": token
+                "information": token,
+                login
             });
         }
 

@@ -33,6 +33,7 @@ BEGIN
             SET response_code = 400;
             SET response_message = 'Invalid input';
         ELSE
+            
             SET response_code = 200;
             SET response_message = 'OK';
             INSERT INTO User (firstName, lastName, email, salt, password)

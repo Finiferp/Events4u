@@ -96,6 +96,11 @@ export class ReviewsComponent implements OnChanges {
         body: JSON.stringify(inputData)
       });
       if(response.ok){
+        Swal.fire({
+          icon: 'success',
+          title: 'Review added successfully',
+          text: 'Thank you for your review!',
+        })
         // Reset the form after submitting the review
         this.resetForm();
         this.fetchReviews();

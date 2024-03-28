@@ -163,7 +163,13 @@ export class EventAddComponent implements OnInit {
             this.router.navigateByUrl('/myEvents'); // Redirect to user's events page 
           }
         });
-      }
+      } 
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Every field is required.',
+        icon: 'error'
+      })
     }
   }
 

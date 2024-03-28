@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { LocalService } from '../local.service';
+import { log } from 'console';
 
 @Component({
   selector: 'app-group-edit',
@@ -18,6 +19,7 @@ export class GroupEditComponent implements OnInit {
   public showAddUserFormFlag: boolean = false;  // Flag to control display of add user form
   id: any = -1;                                 // Variable to store group ID
   token = this.localService.getItem("token");   // Variable to store token from local storage
+  apllications: any[] = [];                     // Array to store applications
 
   constructor(private route: ActivatedRoute, private localService: LocalService, private router: Router) { }
 
@@ -25,6 +27,28 @@ export class GroupEditComponent implements OnInit {
     this.getIdFromUrl();    // Call method to get ID from URL
     this.loadGroup();       // Call method to load group data
     this.loadGroupUsers();  // Call method to load group users
+    this.loadApplications();// Call method to load applications
+  }
+
+
+  async loadApplications() {
+    const inputData = { "groupID": this.id };
+    const response = await fetch(`http://192.168.129.237:3000/groups/applications`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `${this.token}`
+      },
+      body: JSON.stringify(inputData)
+    });
+    const data = await response.json();
+    if (data.data) {
+      this.apllications = data.data;
+    } else {
+      this.apllications = [];
+    }
+
+
   }
 
   /**
@@ -39,7 +63,7 @@ export class GroupEditComponent implements OnInit {
       }
     });
     // Handle unauthorized or forbidden status
-    if(response.status === 401 || response.status === 403){
+    if (response.status === 401 || response.status === 403) {
       this.router.navigateByUrl("/login");
     }
     const data = await response.json();
@@ -109,13 +133,11 @@ export class GroupEditComponent implements OnInit {
     }
 
     const ownerName = this.groupData.owner_name;
-    console.log(this.users);
-    
+
     let indexToRemove = this.users.findIndex(user => user.user_name === ownerName);
-    console.log(indexToRemove);
-    
+
     if (indexToRemove !== -1) {
-      this.users.splice(indexToRemove,1);
+      this.users.splice(indexToRemove, 1);
     }
   }
 
@@ -203,7 +225,63 @@ export class GroupEditComponent implements OnInit {
           icon: 'error'
         });
       }
-     
+
     }
   }
+
+
+  async declineApplication(userID: any) {
+    const inputData = { "userIDDecline": userID, "groupID": this.id };
+    const response = await fetch(`http://192.168.129.237:3000/group/decline`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `${this.token}`
+      },
+      body: JSON.stringify(inputData)
+    });
+    const data = await response.json();
+    if (response.ok) {
+      Swal.fire({
+        title: 'Declined!',
+        text: 'The user has been declined.',
+        icon: 'success'
+      });
+    }
+    this.loadGroupUsers();
+    this.loadApplications();
+  }
+
+
+  async approveApplication(userID: any) {
+    const inputData = { userID: userID, groupID: this.id };
+    const response = await fetch(`http://192.168.129.237:3000/group/user/add`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData)
+    });
+
+    const inputData2 = { "userIDDecline": userID, "groupID": this.id };
+    const response2 = await fetch(`http://192.168.129.237:3000/group/decline`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `${this.token}`
+      },
+      body: JSON.stringify(inputData2)
+    });
+    const data2 = await response2.json();
+    if (response2.ok) {
+      Swal.fire({
+        title: 'Approved!',
+        text: 'The user has been approved.',
+        icon: 'success'
+      });
+    }
+    this.loadGroupUsers();
+    this.loadApplications();
+  }
+
 }

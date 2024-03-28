@@ -27,4 +27,12 @@ module.exports = function (app) {
     app.route("/user/loginStatus").get(checkLoginStatus, user.checkLoginStatus);
     app.route("/user/adminStatus").get(checkLoginStatus, user.checkAdminStatus);
     app.route("/user/favorites").get(authenticateToken, user.getUserFavorites);
+    app.route("/getUser").get(authenticateToken, user.getUser);
+    app.route("/user/toggle/mail").post(authenticateToken, user.toggleMails);
+    app.route("/user/toggle/concent").post(authenticateToken, user.toggleConcent);
+    app.route("/groups/all").get(authenticateToken, user.getAllGroups);
+    app.route("/user/apply").post(authenticateToken, user.apllyToGroup);
+    app.route("/groups/applications").post(authenticateToken, user.getAppliedUsersForGroup);
+    app.route("/group/decline").post(authenticateToken, user.declineGroupDemands);
+    app.route("/verify/email").post(user.emailVerification);
 };

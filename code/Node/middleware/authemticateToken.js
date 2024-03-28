@@ -39,10 +39,12 @@ async function authenticateToken(req, res, next) {
                         const inputData = { sub };
                         const dbOutput = await db.checkIfLuxIdExists(inputData);
                         const { userId, exists } = JSON.parse(dbOutput.outputJSON).data;
-                        if (exists) {
+
+                        if (exists === "true") {
                             req.body.userID = userId;
                         } else {
                             const { given_name, family_name, email } = information;
+                            console.log(given_name, family_name, email, sub);
                             const inputData2 = { "firstName": given_name, "lastName": family_name, email, sub };
                             const dbOutput2 = await db.addUserAndMapping(inputData2);
                             const { userId } = JSON.parse(dbOutput2.outputJSON).data;

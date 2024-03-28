@@ -108,8 +108,11 @@
 
         <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2" for="imageUrl">
-                Image URL <sub>Image is not copied!</sub>
+                Image URL
             </label>
+            <div class="mb-4 flex justify-center items-center" >
+                <img src="{{eventData.eventImage}}" alt="Event Image" class="max-h-96 max-w-full">
+            </div>
             <input type="file" id="imageUrl" placeholder="Upload event image" (change)="onFileChange($event)"
                 class="form-input" required>
         </div>

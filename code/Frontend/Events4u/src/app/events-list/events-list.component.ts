@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute, NavigationExtras } from '@angular/router';
 import { LocalService } from '../local.service';
 import { LoginStatusService } from '../login-status.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -51,6 +52,7 @@ export class EventsListComponent implements OnInit {
       if (code !== undefined && state !== undefined) {
         this.authenticate(code, state);
       }
+
     });
 
   }
@@ -106,11 +108,36 @@ export class EventsListComponent implements OnInit {
     if (response.ok) {
 
       const data = await response.json();
-      const { information } = data;
+      const { information, login } = data;
+      if (login) {
+        this.localService.setItem('token', information);
+        this.router.navigateByUrl('/myEvents');
+        this.loginStatusService.sendLoginStatus(true);
+      } else {
+        Swal.fire({
+          title: "Terms and Conditions",
+          html: `<p>To use your register on our website you have to accept the terms and conditions.<br> If you accept you give the concent to show your full name when you comment on events, apply or are invited for groups, create an event or group, and if you mark an event as attending or interested, so that the owner can see who is interested in his event. This is valid as long as you have an account  </p>`,
+          icon: 'info',
+          confirmButtonText: 'Accept',
+          cancelButtonText: 'Decline',
+          showCancelButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.localService.setItem('token', information);
+            this.router.navigateByUrl('/myEvents');
+            this.loginStatusService.sendLoginStatus(true);
+          } else {
+            Swal.fire({
+              title: "Can't register",
+              text: "You can not register without accepting the terms and conditions",
+              icon: 'error'
+            })
+            this.router.navigateByUrl('/register');
+          }
+        }
+        );
+      }
 
-      this.localService.setItem('token', information);
-      this.router.navigateByUrl('/myEvents');
-      this.loginStatusService.sendLoginStatus(true);
 
     }
   }

@@ -37,7 +37,10 @@ const startCron = async (app) => {
                         from: 'event4u@david-nerdspace.net',
                         to: user.email,
                         subject: 'Reminder',
-                        text: `Dear ${user.name},\n\nWe would like to remind you that you are going to the event ${event.event_name} tomorrow.`
+                        html: `<p>Dear ${user.name},</p>
+                        <p>We would like to remind you that you are going to the event <a href="http://192.168.131.123:8080/event/${event.event_code}">${event.event_name}</a> tomorrow.</p>
+                        <p>This is an automated message. Please do not reply.</p>
+                        <p>Thank you.</p>`,
                     };
                     console.log(`sending mail to ${user.name}`);
                     transporter.sendMail(mailOptions);
@@ -64,15 +67,19 @@ const updateEventMessage = async (eventID) => {
     const { events } = JSON.parse(dbOutput.outputJSON);
 
     events.forEach(event => {
+        console.log(event.event_code);
         // check if the event is attended by the users, if so send a mail to the user that the event was updated
         if (event.attending_users !== null) {
             event.attending_users.forEach(user => {
-                //console.log(user);
                 let mailOptions = {
                     from: 'event4u@david-nerdspace.net',
                     to: user.email,
                     subject: 'Update warning.',
-                    text: `Dear ${user.name},\n\nWe would like to inform you that the event ${event.event_name} was edited. Please check the event page for the latest information.`
+                    html: `
+                    <p>Dear ${user.name},</p>
+                    <p>We would like to inform you that the event <a href="http://192.168.131.123:8080/event/${event.event_code}">${event.event_name}</a> was edited. Please check the event page for the latest information.</p>
+                    <p>This is an automated message. Please do not reply.</p>
+                    <p>Thank you.</p>`
                 };
                 console.log(`sending mail to ${user.name}`);
                 transporter.sendMail(mailOptions);

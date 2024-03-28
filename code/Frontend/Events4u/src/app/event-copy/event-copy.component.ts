@@ -24,6 +24,7 @@ export class EventCopyComponent {
   categories: string[] = [];                  // Array to store categories
   options: any[] = [];                        // Array to store options
   locations: any[] = [];                      // Array to store locations
+  oldImageUrl: string = '';                   // Old image URL
   groups: any[] = [];                         // Array to store groups
   token = this.localService.getItem("token"); // Get token from local storage
   public file: any;                           // Initialize file variable
@@ -85,9 +86,9 @@ export class EventCopyComponent {
       this.router.navigateByUrl("/myEvents");
     } else {
       this.eventData = data.data;
-      const activeUser =data.activeUser;
+      const activeUser = data.activeUser;
       const ownerID = data.data.ownerCode;
-      if(activeUser !== ownerID){         // Redirect to myEvents if active user is not the owner
+      if (activeUser !== ownerID) {         // Redirect to myEvents if active user is not the owner
         this.router.navigateByUrl("/myEvents");
       }
 
@@ -100,7 +101,8 @@ export class EventCopyComponent {
       this.eventAddForm.patchValue({ location: this.eventData.eventLocationCode });
       this.eventAddForm.get('group')?.setValue(1);
       this.eventAddForm.patchValue({ categories: this.eventData.categories });
-      this.categories = this.eventData.categories;      
+      this.categories = this.eventData.categories;
+      this.oldImageUrl = this.eventData.eventImage;
     }
 
   }
@@ -243,19 +245,20 @@ export class EventCopyComponent {
     let price = this.eventAddForm.value.price;
     let location = this.eventAddForm.value.location;
     let categories = this.eventAddForm.value.categories;
-    let group = this.eventAddForm.value.group;    
+    let group = this.eventAddForm.value.group;
 
     if (title && startDateTime && endDateTime && price && location && categories && group) {
       const formData = new FormData();  // Create new FormData object
       // Append form data to FormData object
       formData.append("title", title);
-      formData.append("startDateTime", startDateTime)
-      formData.append("endDateTime", endDateTime)
-      formData.append("price", price)
-      formData.append("location", location)
-      formData.append("categories", categories)
+      formData.append("startDateTime", startDateTime);
+      formData.append("endDateTime", endDateTime);
+      formData.append("price", price);
+      formData.append("location", location);
+      formData.append("categories", categories);
       formData.append("imageUrl", this.file);
-      formData.append("group", group+"");
+      formData.append("oldImageUrl", this.oldImageUrl);
+      formData.append("group", group + "");
 
 
 
@@ -267,7 +270,7 @@ export class EventCopyComponent {
         }
       });
 
-      if(response.ok){
+      if (response.ok) {
         // If response is ok, show success message
         Swal.fire({
           title: 'Created!',
@@ -279,6 +282,13 @@ export class EventCopyComponent {
           }
         });
       }
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Every field is required.',
+        icon: 'error'
+      })
+
     }
   }
 }

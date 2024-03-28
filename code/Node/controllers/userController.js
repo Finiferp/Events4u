@@ -3,6 +3,20 @@
 const db = require("../DB");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const nodemailer = require('nodemailer');
+
+// Configuration of the email transport
+const transporter = nodemailer.createTransport({
+    host: 'david-nerdspace.net',
+
+    port: 465,
+    auth: {
+        user: 'event4u@david-nerdspace.net',
+        pass: 'gdi52&3wV8C_'
+
+    }
+});
+
 
 /**
  * Asynchronously creates a group using the data provided in the request body.
@@ -15,7 +29,7 @@ const createGroup = async (req, res) => {
     try {
         const name = req.body.name;
         const userID = parseInt(req.body.userID);
-        
+
         const inputData = { name, userID };
 
         const dbOutput = await db.createGroup(inputData);
@@ -23,12 +37,12 @@ const createGroup = async (req, res) => {
 
         res.status(status_code).json({
             message
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -50,12 +64,12 @@ const getGroups = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -76,12 +90,12 @@ const updateGroup = async (req, res) => {
 
         res.status(status_code).json({
             message
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 /**
  * Retrieves a group by its ID from the database and sends the response.
@@ -103,12 +117,12 @@ const getGroup = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -131,12 +145,12 @@ const getGroupUsers = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -155,12 +169,12 @@ const getUsers = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -188,7 +202,7 @@ const addUserToGroup = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -211,12 +225,12 @@ const deleteUserFromGroup = async (req, res) => {
 
         res.status(status_code).json({
             message
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -239,12 +253,12 @@ const getUsersGroups = async (req, res) => {
         res.status(status_code).json({
             message,
             data
-        })
+        });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -273,7 +287,7 @@ const toggleAsAttending = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -303,7 +317,7 @@ const toggleAsInterested = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -315,7 +329,7 @@ const toggleAsInterested = async (req, res) => {
  */
 const register = async (req, res) => {
     try {
-        const firstName= req.body.firstName;
+        const firstName = req.body.firstName;
         const lastName = req.body.lastName;
         const email = req.body.email;
         const password = req.body.password;
@@ -336,7 +350,7 @@ const register = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 
 /**
@@ -358,7 +372,7 @@ const login = async (req, res) => {
         let { salt, userID } = JSON.parse(dbSaltOutput.outputJSON);
 
         // If no email, password, salt, or userID is found, return an error
-        if(!email || !password || !salt || !userID) {
+        if (!email || !password || !salt || !userID) {
             return res.status(400).send('Missing required fields');
         } else {
             // Hash password using the salt
@@ -378,13 +392,13 @@ const login = async (req, res) => {
                 message,
                 user,
                 token: token_out
-            })
+            });
         }
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 /**
  * Asynchronous function to check the login status of the active user.
@@ -399,7 +413,7 @@ const checkLoginStatus = async (req, res) => {
         let isLoggedIn;
 
         // If activeUser is -1, the user is not logged in else the user has a positive value which means the user is logged in
-        if(activeUser !== -1) {
+        if (activeUser !== -1) {
             isLoggedIn = true;
         } else {
             isLoggedIn = false;
@@ -407,20 +421,20 @@ const checkLoginStatus = async (req, res) => {
 
         res.status(200).json({
             isLoggedIn
-        })
+        });
 
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 /**
  * Generate a salt using crypto.randomBytes and convert it to a hexadecimal string.
  *
  * @return {string} The generated salt as a hexadecimal string.
  */
-function generateSalt(){
+function generateSalt() {
     return crypto.randomBytes(32).toString('hex');
 }
 
@@ -431,7 +445,7 @@ function generateSalt(){
  * @param {string} salt - The salt to be used in the hashing process
  * @return {string} The hashed password
  */
-function hashPassword(password, salt){
+function hashPassword(password, salt) {
     return crypto.pbkdf2Sync(password, salt, 1000, 128, 'sha512').toString('hex');
 }
 
@@ -449,7 +463,7 @@ function generateAuthToken(email, userID) {
         exp: Math.floor(Date.now() / 1000) + 12 * 3600,
     };
     const token = jwt.sign(payload, 'Events4USecretKey');
- 
+
     return token;
 };
 
@@ -477,7 +491,7 @@ const checkAdminStatus = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
-}
+};
 
 /**
  * Function to retrieve user favorites asynchronously.
@@ -500,7 +514,211 @@ const getUserFavorites = async (req, res) => {
         console.error(error);
         res.status(500).send('Internal Server Error');
     }
+};
+
+/**
+ * Async function to get user data based on the provided userID from the request body.
+ *
+ * @param {Object} req - The request object
+ * @param {Object} res - The response object
+ * @return {Promise} Promise representing the completion of getting user data
+ */
+const getUser = async (req, res) => {
+    try {
+        console.log(req.body.userID);
+        const userID = parseInt(req.body.userID);
+        const inputData = { userID };
+        const dbOutput = await db.getUser(inputData);
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({
+            message,
+            data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+/**
+ * Toggles the consent for a user.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the consent is toggled.
+ */
+const toggleConcent = async (req, res) => {
+    try {
+        const userID = parseInt(req.body.userID);
+        const haveConcent = parseInt(req.body.haveConcent);
+        const inputData = { userID, haveConcent };
+        const dbOutput = await db.toggleConcent(inputData);
+        const { status_code, message } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({ message });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+/**
+ * Toggles the notification settings for a user and updates the database accordingly.
+ *
+ * @param {Object} req - The request object containing the user ID and notification preferences.
+ * @param {Object} res - The response object to send back the result.
+ * @return {Promise<void>} A Promise that resolves once the notification settings are toggled.
+ */
+const toggleMails = async (req, res) => {
+    try {
+        const userID = parseInt(req.body.userID);
+        const acceptsNotifications = parseInt(req.body.acceptsNotifications);
+        const inputData = { userID, acceptsNotifications };
+        const dbOutput = await db.toggleMails(inputData);
+        const { status_code, message } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({ message });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+/**
+ * Retrieves all groups a specific user is not a part of and sends the response.
+ *
+ * @param {Object} req - The request object containing the user ID.
+ * @param {Object} res - The response object to send the groups data.
+ * @return {Promise} A promise that resolves when all groups are retrieved and response is sent.
+ */
+const getAllGroups = async (req, res) => {
+    try {
+        const userID = parseInt(req.body.userID);
+        const inputData = { userID };
+        const dbOutput = await db.getAllGroups(inputData);
+
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({
+            message,
+            data
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+
 }
+
+/**
+ * Applies a user to a group and sends a response with the status code and message from the database.
+ *
+ * @param {Object} req - The request object containing the userID, groupID, and message in the body.
+ * @param {Object} res - The response object used to send the status code and message.
+ * @return {Promise<void>} - A promise that resolves when the response has been sent.
+ */
+const apllyToGroup = async (req, res) => {
+    try {
+        const userID = parseInt(req.body.userID);
+        const groupID = parseInt(req.body.groupID);
+        const inputMessage = req.body.message;
+        const inputData = { userID, groupID, "message": inputMessage };
+        const dbOutput = await db.apllyToGroup(inputData);
+        let { status_code, message } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({ message });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+
+}
+
+/**
+ * Retrieves the list of users who have applied to a specific group.
+ *
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ * @return {Promise<void>} - A promise that resolves when the list of applied users is retrieved and sent as a response.
+ */
+const getAppliedUsersForGroup = async (req, res) => {
+    try {
+        const groupID = parseInt(req.body.groupID);
+        const inputData = { groupID };
+        const dbOutput = await db.getAppliedUsersForGroup(inputData);
+        let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({
+            message,
+            data
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+
+/**
+ * Function to decline group demands. Functions more to delete a user from the applied users list.
+ *
+ * @param {Object} req - the request object
+ * @param {Object} res - the response object
+ * @return {Promise<void>} - a Promise that resolves to nothing
+ */
+const declineGroupDemands = async (req, res) => {
+    try {
+        const userID = parseInt(req.body.userIDDecline);
+        const groupID = parseInt(req.body.groupID);
+        const inputData = { groupID, userID };
+        console.log(inputData);
+
+        const dbOutput = await db.declineGroupDemands(inputData);
+        let { status_code, message } = JSON.parse(dbOutput.outputJSON);
+        res.status(status_code).json({ message });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+
+const emailVerification = async (req, res) => {
+    try {
+        const email = req.body.email;
+        const code = Math.floor(1000 + Math.random() * 9000);
+
+        let mailOptions = {
+            from: 'event4u@david-nerdspace.net',
+            to: email,
+            subject: 'Email verification',
+            html: `<p>Here you find the code to verify your email.</p>
+            <p>This code has to be entered on the register page. ${code}</p>
+            <p>This is an automated message. Please do not reply.</p>
+            <p>Thank you.</p>`,
+        };
+        transporter.sendMail(mailOptions);
+        
+        const hashedCode = customHash(code.toString());
+
+        res.status(200).json({ hashedCode });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
+    }
+}
+
+
+function customHash(data) {
+    let hash = 0;
+    if (data.length === 0) return hash.toString();
+    for (let i = 0; i < data.length; i++) {
+      let char = data.charCodeAt(i);
+      hash = (hash << 20) - hash + char;
+      hash = hash & hash; 
+    }
+    return hash.toString();
+  }
+
+
+
 
 
 module.exports = {
@@ -519,5 +737,14 @@ module.exports = {
     login,
     checkLoginStatus,
     checkAdminStatus,
-    getUserFavorites
+    getUserFavorites,
+    getUser,
+    toggleConcent,
+    toggleMails,
+    getAllGroups,
+    apllyToGroup,
+    getAppliedUsersForGroup,
+    declineGroupDemands,
+    emailVerification
+    
 };

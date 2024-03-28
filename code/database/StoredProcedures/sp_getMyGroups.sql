@@ -1,7 +1,6 @@
 DELIMITER //
 DROP PROCEDURE IF EXISTS sp_getMyGroups;
-CREATE PROCEDURE sp_getMyGroups(IN inputJSON JSON, OUT outputJSON JSON
-)
+CREATE PROCEDURE sp_getMyGroups(IN inputJSON JSON, OUT outputJSON JSON)
 BEGIN
     DECLARE input_UserID INT;
     DECLARE response_code INT;

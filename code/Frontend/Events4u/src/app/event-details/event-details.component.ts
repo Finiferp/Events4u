@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { ReviewsComponent } from '../reviews/reviews.component';
 import { Router } from '@angular/router';
 import { LocalService } from '../local.service';
+import { TooltipModule } from 'primeng/tooltip';
+
 
 
 @Component({
   selector: 'app-event-details',
   standalone: true,
-  imports: [CommonModule, ReviewsComponent],
+  imports: [CommonModule, ReviewsComponent, TooltipModule],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss'
 })
@@ -17,11 +19,13 @@ export class EventDetailsComponent implements OnInit {
   public eventData: any = {};                 // Stores the event data fetched from the API
   public id: any = -1;                        // Initialize the event ID variable
   token = this.localService.getItem("token"); // Get the authentication token from the local storage
+  userConcent = false;                        // Represents whether the user has agreed to the terms and conditions
 
   constructor(private route: ActivatedRoute, private router: Router, private localService: LocalService) { };
 
   async ngOnInit() {
-    this.loadEvent() //Load event details
+    this.loadUser()        // Load user data
+    this.loadEvent()  //Load event details
   } 
 
   /**
@@ -43,6 +47,25 @@ export class EventDetailsComponent implements OnInit {
     } else {
       this.eventData = data.data;               // Store the event data
     }
+  }
+
+
+  async loadUser() {
+    const response = await fetch(`http://192.168.129.237:3000/getUser`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `${this.token}`
+      },
+    });
+    if(response.ok){
+      const data = await response.json();
+      const user = data.data;
+      console.log(user);
+      
+      this.userConcent = user.haveConcent === 1 ? true : false;
+    }
+   
   }
 
   /**

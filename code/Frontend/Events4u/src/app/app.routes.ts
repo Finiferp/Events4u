@@ -14,6 +14,7 @@ import { AttendedEventsComponent } from './attended-events/attended-events.compo
 import { LoginComponentComponent } from './login-component/login-component.component';
 import { RegisterComponentComponent } from './register-component/register-component.component';
 import { UserFavoritesComponent } from './user-favorites/user-favorites.component';
+import { SettingsComponent } from './settings/settings.component';
 
 export const routes: Routes = [
     {path: 'event/add', component: EventAddComponent },                     
@@ -30,7 +31,8 @@ export const routes: Routes = [
     {path: 'events/attended', component: AttendedEventsComponent },         
     {path: 'login', component: LoginComponentComponent },                   
     {path: 'register', component: RegisterComponentComponent },
-    {path: 'favorites', component: UserFavoritesComponent },             
+    {path: 'favorites', component: UserFavoritesComponent },
+    {path: 'settings', component: SettingsComponent },
    
     { path: '', redirectTo: 'events', pathMatch: 'full' },
 

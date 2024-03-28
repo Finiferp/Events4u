@@ -21,6 +21,7 @@ BEGIN
             SELECT JSON_ARRAYAGG(
                 JSON_OBJECT(
                     'event_name', e.title,
+                    'event_code', e.code_PK,
                     'attending_users', (
                         SELECT JSON_ARRAYAGG(
                             JSON_OBJECT(

@@ -72,6 +72,10 @@
         class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg">
         Logout
       </button>
+      <button *ngIf="isLoggedIn" (click)="goTo('/settings')"
+      class="block mt-4 lg:inline-block lg:mt-0 text-green-200 hover:text-white mr-4 text-lg">
+        Settings
+    </button>
     </div>
   </div>
 </nav>

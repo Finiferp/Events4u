@@ -1,5 +1,6 @@
-<div class="flex flex-col items-center justify-center h-screen">
+<div class="flex flex-col items-center ">
     <div class="w-full md:w-1/2 px-4">
+        <h1 class="text-3xl text-emerald-800 font-semibold mb-2 text-center">Your Groups</h1>
         <!-- Iterate over each group in groupsData array -->
         <div *ngFor="let group of groupsData"
             class="border border-gray-300 rounded-lg p-4 my-2 shadow-md bg-white min-width-20 text-center relative hover:bg-emerald-100 cursor-pointer"
@@ -20,6 +21,32 @@
         </div>
     </div>
 </div>
+
+<div class="flex flex-col items-center " >
+    <div class="w-full md:w-1/2 px-4">
+        <h1 class="text-3xl text-emerald-800 font-semibold mb-2 text-center">All the Groups</h1>
+        <div *ngFor="let group of allGroupsData"
+            class="border border-gray-300 rounded-lg p-4 my-2 shadow-md bg-white min-width-20 relative hover:bg-emerald-100 text-center">
+
+            <div class="flex flex-col">
+                <p class="text-xl text-emerald-600 font-semibold mb-2">{{ group.group_name }}</p>
+                <p class="text-gray-700">Owner: {{ group.owner_name }}</p>
+            </div>
+
+            <span *ngIf="group.applied_for === 0" class="cursor-pointer">
+                <button class="ml-2 px-3 py-1 bg-emerald-500 text-white rounded hover:bg-emerald-700"
+                    (click)="applyForGroup(group.group_code_PK)">Apply</button>
+            </span>
+        </div>
+        <h1 *ngIf="allGroupsData.length === 0"
+        class="text-3xl font-bold text-center mt-8 text-gray-500 italic">
+        No other groups.
+        </h1>
+    </div>
+</div>
+
+
+
 
 
 <!-- Create Group Dialog -->

@@ -41,7 +41,7 @@ export class EventUpdateComponent implements OnInit {
     isVisible: new FormControl(true),
     group: new FormControl(''),
   });
- 
+
 
   ngOnInit() {
     this.loadEvent();         // Load event data
@@ -90,7 +90,7 @@ export class EventUpdateComponent implements OnInit {
       const activeUser = data.activeUser;
       const ownerID = data.data.ownerCode;
       // Redirect if the active user is not the owner of the event
-      if(activeUser !== ownerID){
+      if (activeUser !== ownerID) {
         this.router.navigateByUrl("/myEvents");
       }
 
@@ -217,11 +217,18 @@ export class EventUpdateComponent implements OnInit {
           icon: 'success'
         }).then((result) => {
           if (result.isConfirmed) {
-             this.ngOnInit();
+            this.ngOnInit();
           }
         });
-       
+
       }
+    } else {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Every field is required.',
+        icon: 'error'
+      })
+
     }
   }
 

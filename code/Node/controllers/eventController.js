@@ -2,10 +2,8 @@
 
 const db = require("../DB");
 const PDFDocument = require('pdfkit');
-const fs = require('fs');
 const mailer = require('./mailer');
-const { parse } = require("path");
-const { log } = require("console");
+
 
 
 /**
@@ -207,7 +205,14 @@ const create = async (req, res) => {
         // console.log(req.body);
 
         // Set the image path to be saved in the database
-        const imageUrl = `http://192.168.129.237:3000/assets/images/${title.toUpperCase()}/` + req.file.filename;
+        // const imageUrl = `http://192.168.129.237:3000/assets/images/${title.toUpperCase()}/` + req.file.filename;
+        let imageUrl;
+        // If an image is uploaded, save the image path in the database else use the old image path
+        if (req.file) {
+            imageUrl = `http://192.168.129.237:3000/assets/images/${title.toUpperCase()}/` + req.file.filename;
+        } else {
+            imageUrl = (req.body.oldImageUrl).toString();
+        }
         const inputData = { title, startDateTime, endDateTime, price, location_FK, categories, ownerId, imageUrl, group };
         // console.log(inputData);
         const dbOutput = await db.createEvent(inputData);
@@ -354,6 +359,8 @@ const getUserEvents = async (req, res) => {
     try {
         const userID = parseInt(req.body.userID);
         const inputData = { userID };
+
+        console.log(inputData);
 
         const dbOutput = await db.getUserEvents(inputData);
         let { status_code, message, data } = JSON.parse(dbOutput.outputJSON);
